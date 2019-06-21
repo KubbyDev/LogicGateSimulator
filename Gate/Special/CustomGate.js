@@ -1,11 +1,14 @@
 class CustomGate extends Gate {
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    constructor() {
+        super();
+        this.internGates = []; //Liste des portes contenues dans cette CustomGate
+        this.inputGates = [];  //Liste des portes qui servent d'input. Ils ne sont pas presents dans internGates
+        this.outputGates = []; //Liste des Nodes qui servent d'output. Ils ne sont pas presents dans internGates
+        this.string = "";      //String de donnees a partir duquel cette porte a ete construite
+    }
 
-    internGates = []; //Liste des portes contenues dans cette CustomGate
-    inputGates = [];  //Liste des portes qui servent d'input. Ils ne sont pas presents dans internGates
-    outputGates = []; //Liste des Nodes qui servent d'output. Ils ne sont pas presents dans internGates
-    string;
+    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
 
     update() {
 
@@ -335,7 +338,7 @@ class CustomGate extends Gate {
      */
     getOutputPosition(index) {
         return [
-            this.x + this.width/2 - Connection.WIDTH,
+            this.x + this.width/2 - connectionWidth,
             this.y - this.height/2 + this.height*(index+1)/(this.outputGates.length+1)
         ]
     }
@@ -410,7 +413,7 @@ class CustomGate extends Gate {
             gate.onClick();
 
             //Enregistrement de cette porte comme lastCustomGate
-            BuildMode.lastCustomGate = gate.string;
+            buildModeLastCustomGate = gate.string;
         });
         button.innerHTML = "Done";
         div.appendChild(button);

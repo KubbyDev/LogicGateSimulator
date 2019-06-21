@@ -5,6 +5,12 @@ class Output extends Gate {
         Sert aussi a designer les sorties des CustomGates
      */
 
+    constructor() {
+        super();
+        this.upColor = "#ea120c";
+        this.downColor = "#7a7a7a";
+    }
+
     //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
 
     tickEnd() {
@@ -19,6 +25,4 @@ class Output extends Gate {
 
     //Proprietes graphiques --------------------------------------------------------------------------------------------
 
-    upColor = "#ea120c";
-    downColor = "#7a7a7a";
 }

@@ -10,7 +10,7 @@ document.addEventListener('mousemove', function(event) {
 //Traque les clics souris
 document.addEventListener('click', function() {
 
-    if(Interface.blockInputs)
+    if(interfaceBlockInputs)
         return;
 
     //Si on a clique sur un bouton on appelle son onClick
@@ -32,7 +32,7 @@ document.onkeydown = function(event) {
             Interface.closePopup();
     }
 
-    if(Interface.blockInputs)
+    if(interfaceBlockInputs)
         return;
 
     switch(event.key) {
@@ -53,7 +53,7 @@ document.onkeydown = function(event) {
 //On traque les entrees par la molette de la souris
 canvas.addEventListener('wheel', function(event) {
 
-    if(Interface.blockInputs)
+    if(interfaceBlockInputs)
         return;
 
     Interface.zoom(1 - event.deltaY/1000);

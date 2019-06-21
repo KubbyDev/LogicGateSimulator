@@ -1,6 +1,10 @@
+let interactionModeButtons = []; //Les boutons du menu contextuel (menu de droite)
+
 class InteractionMode {
 
-    static buttons; //Les boutons du menu contextuel (menu de droite)
+    static get buttons() {
+        return interactionModeButtons;
+    }
 
     /***
      * Appellee quand l'utilisateur fait un clic avec ce mode selectionne
@@ -22,7 +26,7 @@ class InteractionMode {
      * Appellee quand l'utilisateur passe sur ce mode
      */
     static enable() {
-        Interface.mode = 2;
+        interfaceMode = 2;
     }
 
     /***
@@ -32,7 +36,7 @@ class InteractionMode {
     }
 
     static init() {
-        InteractionMode.buttons = [];
+        interactionModeButtons = [];
     }
 
     /***

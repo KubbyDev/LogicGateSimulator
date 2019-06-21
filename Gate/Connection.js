@@ -1,14 +1,15 @@
+let connectionWidth = 3;
+let connectionDownColor = "#d3d3d3";
+let connectionUpColor = "#ea120c";
+
 class Connection {
 
     constructor(origin, destination) {
-        this.destination = destination;
-        this.origin = origin;
+        this.destination = destination; //La gate de laquelle cette connection part (output d'une porte)
+        this.origin = origin;           //La gate qui contient cette connection (cette connection est donc son input)
     }
 
     //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
-
-    destination;   //La gate de laquelle cette connection part (output d'une porte)
-    origin;        //La gate qui contient cette connection (cette connection est donc son input)
 
     /***
      * Renvoie la porte qui determine l'etat de cette connection
@@ -35,10 +36,6 @@ class Connection {
 
     //Proprietes graphiques --------------------------------------------------------------------------------------------
 
-    static WIDTH = 3;
-    static DOWN_COLOR = "#d3d3d3";
-    static UP_COLOR = "#ea120c";
-
     /***
      * Dessine la connexion
      * @param i: index de l'input sur la porte a laquelle cette connexion est connectee
@@ -54,8 +51,8 @@ class Connection {
         for(let point of this.calculateIntermediates(this.destination.x, this.destination.y, this.origin.x, inputPosition[1]))
             ctx.lineTo(point[0], point[1]);
         ctx.lineTo(outputPosition[0], outputPosition[1]);
-        ctx.lineWidth = Connection.WIDTH;
-        ctx.strokeStyle = this.getValue() ? Connection.UP_COLOR : Connection.DOWN_COLOR;
+        ctx.lineWidth = connectionWidth;
+        ctx.strokeStyle = this.getValue() ? connectionUpColor : connectionDownColor;
         ctx.stroke();
         ctx.closePath();
     }

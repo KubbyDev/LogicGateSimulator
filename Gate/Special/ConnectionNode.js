@@ -4,6 +4,12 @@ class ConnectionNode extends Gate {
         Comme un output sauf que c'est plus petit et le courant passe dedans sans delai
      */
 
+    constructor() {
+        super();
+        this.upColor = "#ea120c";
+        this.downColor = "#7a7a7a";
+    }
+
     //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
 
     tickEnd() {
@@ -12,8 +18,5 @@ class ConnectionNode extends Gate {
     }
 
     //Proprietes graphiques --------------------------------------------------------------------------------------------
-
-    upColor = "#ea120c";
-    downColor = "#7a7a7a";
 
 }

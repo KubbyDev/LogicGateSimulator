@@ -5,9 +5,14 @@ class Input extends Gate {
         Sert aussi a designer les entrees des CustomGates
      */
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    constructor() {
+        super();
+        this.upColor = "#ea120c";
+        this.downColor = "#7a7a7a";
+        this.isOn = true;
+    }
 
-    isOn = true;
+    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
 
     update() {
         this.tempOutput = this.isOn;
@@ -21,9 +26,6 @@ class Input extends Gate {
     }
 
     //Proprietes graphiques --------------------------------------------------------------------------------------------
-
-    upColor = "#ae110b";
-    downColor = "#7a7a7a";
 
     drawBody() {
 

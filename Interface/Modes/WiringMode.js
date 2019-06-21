@@ -1,9 +1,13 @@
+let wiringModeSelectedInput; //La porte qui sert d'input a la connexion (celle qui a la connexion sur son output)
+let wiringModeSelectedOutput; //La porte qui sert d'output a la connexion (celle qui a la connexion sur son input)
+let wiringModeInputIndex; //L'index de l'input selectionne parmis les inputs de la porte qui sert d'output (selectedOutput)
+let wiringModeButtons; //Les boutons du menu contextuel (menu de droite)
+
 class WiringMode {
 
-    static selectedInput; //La porte qui sert d'input a la connexion (celle qui a la connexion sur son output)
-    static selectedOutput; //La porte qui sert d'output a la connexion (celle qui a la connexion sur son input)
-    static inputIndex; //L'index de l'input selectionne parmis les inputs de la porte qui sert d'output (selectedOutput)
-    static buttons; //Les boutons du menu contextuel (menu de droite)
+    static get buttons() {
+        return wiringModeButtons;
+    }
 
     /***
      * Appellee quand l'utilisateur fait un clic avec ce mode selectionne
@@ -14,30 +18,30 @@ class WiringMode {
 
         //Si on clique dans le vide, on annule tout
         if(!gate) {
-            WiringMode.selectedInput = null;
-            WiringMode.selectedOutput = null;
+            wiringModeSelectedInput = null;
+            wiringModeSelectedOutput = null;
             return;
         }
 
-        if(!WiringMode.selectedInput) { //Si aucun input n'est selectionnee pour l'instant
+        if(!wiringModeSelectedInput) { //Si aucun input n'est selectionnee pour l'instant
             let connectorIndex = gate.getConnector(mouseX, mouseY);
             if(connectorIndex < 0) //Si on a clique sur un output (qui peut donc etre input de notre connexion)
-                WiringMode.selectedInput = gate.getGateForOutput(-connectorIndex-1); //On s'y connecte
+                wiringModeSelectedInput = gate.getGateForOutput(-connectorIndex-1); //On s'y connecte
         }
 
-        if(!WiringMode.selectedOutput) { //Si aucun output n'est selectionnee pour l'instant
+        if(!wiringModeSelectedOutput) { //Si aucun output n'est selectionnee pour l'instant
             let connectorIndex = gate.getConnector(mouseX, mouseY);
             if(connectorIndex > 0) { //Si on a clique sur un input (qui peut donc etre output de notre connexion)
-                WiringMode.selectedOutput = gate; //On s'y connecte
-                WiringMode.inputIndex = connectorIndex-1;
+                wiringModeSelectedOutput = gate; //On s'y connecte
+                wiringModeInputIndex = connectorIndex-1;
             }
         }
 
         //Si l'input et l'output sont definis on cree une connexion
-        if(WiringMode.selectedOutput && WiringMode.selectedInput) {
-            WiringMode.selectedOutput.addInput(WiringMode.selectedInput, WiringMode.inputIndex);
-            WiringMode.selectedInput = null;
-            WiringMode.selectedOutput = null;
+        if(wiringModeSelectedOutput && wiringModeSelectedInput) {
+            wiringModeSelectedOutput.addInput(wiringModeSelectedInput, wiringModeInputIndex);
+            wiringModeSelectedInput = null;
+            wiringModeSelectedOutput = null;
         }
     }
 
@@ -47,17 +51,17 @@ class WiringMode {
     static update() {
 
         //Si un input ou un output est selectionne
-        if(WiringMode.selectedInput || WiringMode.selectedOutput) {
+        if(wiringModeSelectedInput || wiringModeSelectedOutput) {
 
             //Un des points sera la souris, l'autre sera soit l'input selectionne, soit l'output selectionne
-            let otherPoint = WiringMode.selectedOutput
-                ? WiringMode.selectedOutput.getInputPosition(WiringMode.inputIndex)
-                : [WiringMode.selectedInput.x  + WiringMode.selectedInput.width/2 - Connection.WIDTH, WiringMode.selectedInput.y];
+            let otherPoint = wiringModeSelectedOutput
+                ? wiringModeSelectedOutput.getInputPosition(wiringModeInputIndex)
+                : [wiringModeSelectedInput.x  + wiringModeSelectedInput.width/2 - connectionWidth, wiringModeSelectedInput.y];
 
             //Dessin d'une ligne d'un point a l'autre
             ctx.beginPath();
             ctx.strokeStyle = "#d3d3d3";
-            ctx.lineWidth = Connection.WIDTH;
+            ctx.lineWidth = connectionWidth;
             ctx.moveTo(otherPoint[0], otherPoint[1]);
             ctx.lineTo(mouseX, mouseY);
             ctx.stroke();
@@ -69,9 +73,9 @@ class WiringMode {
      * Appellee quand l'utilisateur passe sur ce mode
      */
     static enable() {
-        Interface.mode = 1;
-        WiringMode.selectedInput = null;
-        WiringMode.selectedOutput = null;
+        interfaceMode = 1;
+        wiringModeSelectedInput = null;
+        wiringModeSelectedOutput = null;
     }
 
     /***
@@ -81,7 +85,7 @@ class WiringMode {
     }
 
     static init() {
-        WiringMode.buttons = [];
+        wiringModeButtons = [];
     }
 
     /***

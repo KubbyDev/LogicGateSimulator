@@ -4,9 +4,12 @@ class Switch extends Gate {
         Interrupteur
      */
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    constructor() {
+        super();
+        this.isOn = true;
+    }
 
-    isOn = true;
+    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
 
     update() {
 
@@ -40,7 +43,7 @@ class Switch extends Gate {
         super.drawBody();
 
         if(!this.isOn) {
-            ctx.fillStyle = Interface.BACKGROUND_COLOR;
+            ctx.fillStyle = interfaceBackgroundColor;
             ctx.fillRect(this.x - this.width/2 + this.width/5, this.y - this.height/2, this.width - 2*this.width/5, this.height);
         }
     }

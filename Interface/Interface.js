@@ -1,8 +1,11 @@
-class Interface {
+let interfaceBackgroundColor = "#353535";
+let interfaceButtonSpacing = 5;
+let interfaceZoomFactor = 1; //Plus ce nombre est grand, plus les portes seront grossies
+let interfaceMode = 0;
+let interfaceBlockInputs = false;
+let interfaceButtons = [];
 
-    static BACKGROUND_COLOR = "#353535";
-    static BUTTON_SPACING = 5;
-    static ZOOM_FACTOR = 1; //Plus ce nombre est grand, plus les portes seront grossies
+class Interface {
 
     //0 = BUILD: cliquer une fois pour selectionner une porte, puis une autre fois pour la placer
     //Cliquer sur les portes a droite pour les ajouter, ou drag une porte dans la poubelle pour la supprimer
@@ -11,12 +14,8 @@ class Interface {
 
     //2 = INTERACTION: Cliquer sur un interrupteur pour changer son etat
 
-    static mode = 0;
-    static blockInputs = false;
-    static buttons;
-
     static clear() {
-        ctx.fillStyle = Interface.BACKGROUND_COLOR;
+        ctx.fillStyle = interfaceBackgroundColor;
         ctx.fillRect(0,0,canvas.width, canvas.height);
     }
 
@@ -27,20 +26,20 @@ class Interface {
 
         Interface.getCurrentMode().updateContextualMenu();
 
-        Interface.buttons[0].x = (0.5)*Interface.buttons[0].width + Interface.BUTTON_SPACING;
-        Interface.buttons[0].y = Interface.buttons[0].height/2 + Interface.BUTTON_SPACING;
-        Interface.buttons[1].x = (1.5)*Interface.buttons[0].width + 2*Interface.BUTTON_SPACING;
-        Interface.buttons[1].y = Interface.buttons[0].height/2 + Interface.BUTTON_SPACING;
-        Interface.buttons[2].x = (2.5)*Interface.buttons[0].width + 3*Interface.BUTTON_SPACING;
-        Interface.buttons[2].y = Interface.buttons[0].height/2 + Interface.BUTTON_SPACING;
-        Interface.buttons[0].draw();
-        Interface.buttons[1].draw();
-        Interface.buttons[2].draw();
+        interfaceButtons[0].x = (0.5)*interfaceButtons[0].width + interfaceButtonSpacing;
+        interfaceButtons[0].y = interfaceButtons[0].height/2 + interfaceButtonSpacing;
+        interfaceButtons[1].x = (1.5)*interfaceButtons[0].width + 2*interfaceButtonSpacing;
+        interfaceButtons[1].y = interfaceButtons[0].height/2 + interfaceButtonSpacing;
+        interfaceButtons[2].x = (2.5)*interfaceButtons[0].width + 3*interfaceButtonSpacing;
+        interfaceButtons[2].y = interfaceButtons[0].height/2 + interfaceButtonSpacing;
+        interfaceButtons[0].draw();
+        interfaceButtons[1].draw();
+        interfaceButtons[2].draw();
     }
 
     static getButtonAtPosition(x, y) {
 
-        for (let button of Interface.getCurrentMode().buttons.concat(Interface.buttons))
+        for (let button of Interface.getCurrentMode().buttons.concat(interfaceButtons))
             if (Math.abs(x - button.x) < button.width / 2 && Math.abs(y - button.y) < button.height / 2)
                 return button;
 
@@ -53,7 +52,7 @@ class Interface {
         WiringMode.init();
         InteractionMode.init();
 
-        Interface.buttons = [
+        interfaceButtons = [
             new Button()
                 .setGraphicProperties(90, 40, "Build", "#ffffff")
                 .setOnClick(() => BuildMode.enable()),
@@ -75,7 +74,7 @@ class Interface {
      * @returns {*}
      */
     static getCurrentMode() {
-        switch(Interface.mode) {
+        switch(interfaceMode) {
             case 0: return BuildMode;
             case 1: return WiringMode;
             case 2: return InteractionMode;
@@ -88,9 +87,9 @@ class Interface {
      */
     static zoom(factor) {
 
-        Interface.ZOOM_FACTOR *= factor;
+        interfaceZoomFactor *= factor;
         CIRCLE_RADIUS *= factor;
-        Connection.WIDTH *= factor;
+        connectionWidth *= factor;
 
         for(let gate of gates) {
 
@@ -107,7 +106,7 @@ class Interface {
     static openPopup() {
 
         popupBackground.style.display = 'block';
-        Interface.blockInputs = true;
+        interfaceBlockInputs = true;
     }
 
     static closePopup() {
@@ -120,7 +119,7 @@ class Interface {
         }
 
         popupBackground.style.display = 'none';
-        Interface.blockInputs = false;
+        interfaceBlockInputs = false;
     }
 }
 

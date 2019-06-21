@@ -1,3 +1,5 @@
+let clockOpenedPopup; //Cette variable enregistre la clock qui a requis l'ouverture d'un popup (celle qui doit donc etre modifiee)
+
 class Clock extends Gate {
 
     /*
@@ -5,10 +7,13 @@ class Clock extends Gate {
         Elle compte le nombre de frames et sa sortie change d'etat tout les <period> frames
      */
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    constructor() {
+        super();
+        this.period = 50; //Le nombre de frames avant un changement d'etat
+        this.current = 0; //Le nombre de frames avant le prochain changement d'etat
+    }
 
-    period = 50; //Le nombre de frames avant un changement d'etat
-    current = 0; //Le nombre de frames avant le prochain changement d'etat
+    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
 
     update() {
 
@@ -37,10 +42,9 @@ class Clock extends Gate {
         div.appendChild(button);
         mainDiv.appendChild(div);
 
-        Clock.openedPopup = this;
+        clockOpenedPopup = this;
     }
 
-    static openedPopup; //Cette variable enregistre la clock qui a requis l'ouverture d'un popup (celle qui doit donc etre modifiee)
     /***
      * Cette fonction est appellee par le bouton Done du popup
      */
@@ -48,7 +52,7 @@ class Clock extends Gate {
 
         let chosenValue = document.getElementById("clockInput").value;
         if(!isNaN(chosenValue))
-            Clock.openedPopup.setPeriod(chosenValue);
+            clockOpenedPopup.setPeriod(chosenValue);
 
         Interface.closePopup();
     }

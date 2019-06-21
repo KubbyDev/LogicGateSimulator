@@ -1,12 +1,25 @@
 class Gate {
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    constructor() {
 
-    activation;            //Fonction d'activation de la porte (exemple: and = a && b)
-    inputs = [];           //References aux connections vers les portes auquelles cette portes est connectee
-    tempOutput = false;    //La valeur de l'output pendant le tick. Il passe dans output a la fin du tick
-    output = false;        //Valeur de la sortie de la porte
-    maxInputs = 0;         //Le nombre d'inputs que cette porte accepte
+        this.activation = () => true;//Fonction d'activation de la porte (exemple: and = a && b)
+        this.inputs = [];            //References aux connections vers les portes auquelles cette portes est connectee
+        this.tempOutput = false;     //La valeur de l'output pendant le tick. Il passe dans output a la fin du tick
+        this.output = false;         //Valeur de la sortie de la porte
+        this.maxInputs = 0;          //Le nombre d'inputs que cette porte accepte
+
+        this.x = 10;
+        this.y = 10;
+        this.width = 20;
+        this.height = 20;
+        this.color = "#379f1f";
+        this.type = "Gate";
+        this.name = "Gate";
+        this.fontSize = 8;
+        this.hideName = false;
+    }
+
+    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
 
     /***
      * Modifie les proprietes fonctionnelles de la gate
@@ -133,16 +146,6 @@ class Gate {
 
     //Proprietes graphiques --------------------------------------------------------------------------------------------
 
-    x = 10;
-    y = 10;
-    width = 20;
-    height = 20;
-    color = "#379f1f";
-    type = "Gate";
-    name = "Gate";
-    fontSize = 8;
-    hideName = false;
-
     /***
      * Modifie les proprietes graphiques de la gate
      * @param x
@@ -156,13 +159,13 @@ class Gate {
 
         this.x = x;
         this.y = y;
-        this.width = width * Interface.ZOOM_FACTOR;
-        this.height = height * Interface.ZOOM_FACTOR;
+        this.width = width * interfaceZoomFactor;
+        this.height = height * interfaceZoomFactor;
         this.color = color;
         this.type = type;
         this.name = name !== undefined ? name : type;
 
-        this.fontSize *= Interface.ZOOM_FACTOR;
+        this.fontSize *= interfaceZoomFactor;
 
         return this;
     }
@@ -239,7 +242,7 @@ class Gate {
      */
     getOutputPosition() {
         return [
-            this.x + this.width/2 - Connection.WIDTH,
+            this.x + this.width/2 - connectionWidth,
             this.y
         ]
     }
