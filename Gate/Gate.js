@@ -44,6 +44,11 @@ class Gate {
         return this;
     }
 
+    setHideName(hideName) {
+        this.hideName = hideName;
+        return this;
+    }
+
     /***
      * Ajoute une entree a cette porte (ne fait rien si elle a deja tous ses inputs)
      * Met l'entree a un index precis si il est renseigne
@@ -139,7 +144,7 @@ class Gate {
     }
 
     /***
-     * Applique les caracteristiques de la porte (Apellee dans CustomGate.parse)
+     * Applique les caracteristiques de la porte (Apellee dans SerializerParser.parseCustomGate)
      */
     parseParameters(parameters) {
     }

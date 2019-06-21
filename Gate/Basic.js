@@ -260,13 +260,15 @@ class Basic {
     static OUTPUT(x, y, input) {
         return new Output()
             .setFonctionnalProperties((i) => i[0], input, 1)
-            .setGraphicProperties(x,y,40,40,"#000000", "OUTPUT", "")
+            .setGraphicProperties(x,y,40,40,"#7a7a7a", "OUTPUT", "OUTPUT")
+            .setHideName(true);
     }
 
     static NODE(x,y, input) {
         return new ConnectionNode()
             .setFonctionnalProperties((i) => i[0], input, 1)
-            .setGraphicProperties(x,y,10,7,"#000000", "NODE", "")
+            .setGraphicProperties(x,y,10,7,"#7a7a7a", "NODE", "NODE")
+            .setHideName(true);
     }
 
     static SWITCH(x, y, input) {

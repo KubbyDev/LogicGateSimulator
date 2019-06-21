@@ -53,6 +53,18 @@ class Button {
             this.height - 2*this.height/15
         );
 
+        this.drawCenter();
+    }
+
+    /***
+     * Definit ce qui doit s'afficher dans le carre au centre du bouton
+     */
+    drawCenter() {
+        this.drawName();
+    }
+
+    drawName() {
+
         //Nom
         ctx.fillStyle = "#ffffff";
         ctx.textAlign = "center";

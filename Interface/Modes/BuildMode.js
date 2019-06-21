@@ -118,7 +118,7 @@ class BuildMode {
                 .setOnClick(() => CustomGate.openPopup()),
             new Button()
                 .setGraphicProperties(150, 60, "Last Custom Gate", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(CustomGate.parse(buildModeLastCustomGate))),
+                .setOnClick(() => BuildMode.addGate(SerializerParser.parseCustomGate(buildModeLastCustomGate))),
             new Button()
                 .setGraphicProperties(80, 80, "AND", "#379f1f")
                 .setOnClick(() => BuildMode.addGate(Basic.AND(mouseX, mouseY))),
@@ -164,7 +164,31 @@ class BuildMode {
             new Button()
                 .setGraphicProperties(80,80, "CUSTOM", "#379f1f")
                 .setOnClick(() => BuildMode.openCustomGatePopup())
-        ]
+        ];
+
+        buildModeButtons[1].drawCenter = function() {
+
+            ctx.beginPath();
+            ctx.moveTo(this.x - this.width/8, this.y + this.height/8);
+            ctx.lineTo(this.x + this.width/8, this.y + this.height/8);
+            ctx.lineTo(this.x, this.y - this.height/8);
+            ctx.moveTo(this.x - this.width/8, this.y - this.height/8);
+            ctx.fillStyle = "#379f1f";
+            ctx.fill();
+            ctx.closePath();
+        };
+
+        buildModeButtons[2].drawCenter = function() {
+
+            ctx.beginPath();
+            ctx.moveTo(this.x - this.width/8, this.y - this.height/8);
+            ctx.lineTo(this.x + this.width/8, this.y - this.height/8);
+            ctx.lineTo(this.x, this.y + this.height/8);
+            ctx.moveTo(this.x - this.width/8, this.y - this.height/8);
+            ctx.fillStyle = "#379f1f";
+            ctx.fill();
+            ctx.closePath();
+        };
     }
 
     /***
@@ -183,13 +207,12 @@ class BuildMode {
 
         let input = document.createElement("INPUT");
         input.id = "rawData";
-        input.minlength="0";
-        input.maxlength="6";
+        input.size = 100;
         div.appendChild(input);
 
         let button = document.createElement("BUTTON");
         button.addEventListener('click', () => {
-            let gate = CustomGate.parse(document.getElementById("rawData").value);
+            let gate = SerializerParser.parseCustomGate(document.getElementById("rawData").value);
             BuildMode.addGate(gate);
             buildModeLastCustomGate = gate.string;
             Interface.closePopup();
