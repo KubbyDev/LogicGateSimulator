@@ -1,3 +1,5 @@
+Try it out: [https://kubbydev.github.io/LogicGateSimulator/](https://kubbydev.github.io/LogicGateSimulator/)
+
 A simulator to design and test logic gates circuits. It can handle all basic gates, clocks with custom periods, switches etc...  
 
 Cycles can be formed in the circuits, openning the way for circuits containing latches for examples.  
