@@ -1,8 +1,8 @@
 class Input extends Gate {
 
     /*
-        Bouton on/off
-        Sert aussi a designer les entrees des CustomGates
+        ON/OFF switch
+        Also used to designate the inputs of custom gates
      */
 
     constructor() {
@@ -12,20 +12,18 @@ class Input extends Gate {
         this.isOn = true;
     }
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    // Functionnal properties ------------------------------------------------------------------------------------------
 
     update() {
         this.tempOutput = this.isOn;
     }
 
-    /***
-     * Inverse l'etat de l'input
-     */
+    /*** Toggles the output */
     onClick() {
         this.isOn = !this.isOn;
     }
 
-    //Proprietes graphiques --------------------------------------------------------------------------------------------
+    // Graphical properties --------------------------------------------------------------------------------------------
 
     drawBody() {
 

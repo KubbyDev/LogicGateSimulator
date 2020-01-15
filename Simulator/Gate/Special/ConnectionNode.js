@@ -1,7 +1,7 @@
 class ConnectionNode extends Gate {
 
     /*
-        Comme un output sauf que c'est plus petit et le courant passe dedans sans delai
+        This gate is not really a gate, it is only there for technical reasons and to redirect wires
      */
 
     constructor() {
@@ -10,13 +10,13 @@ class ConnectionNode extends Gate {
         this.downColor = "#7a7a7a";
     }
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    // Functionnal properties ------------------------------------------------------------------------------------------
 
     tickEnd() {
         super.tickEnd();
         this.color = this.output ? this.upColor : this.downColor;
     }
 
-    //Proprietes graphiques --------------------------------------------------------------------------------------------
+    // Graphical properties --------------------------------------------------------------------------------------------
 
 }

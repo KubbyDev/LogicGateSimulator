@@ -4,18 +4,21 @@ let connectionUpColor = "#ea120c";
 
 class Connection {
 
+    /*
+        This class represents a connection between two gates
+        Connections start from an Gate's input and go backward to reach another Gate's output
+     */
+
     constructor(origin, destination) {
-        this.destination = destination; //La gate de laquelle cette connection part (output d'une porte)
-        this.origin = origin;           //La gate qui contient cette connection (cette connection est donc son input)
+        this.destination = destination;  // The gate from which this connection starts (this connection is the output of this gate)
+        this.origin = origin;            // The gate that contains this connection (this connection is an input of this gate)
     }
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    // Functionnal properties ------------------------------------------------------------------------------------------
 
-    /***
-     * Renvoie la porte qui determine l'etat de cette connection
-     * En general c'est destination, mais si destination est un Node
-     * Faut remonter plus loin
-     */
+    /*** Returns the gate the determines the state of this connection
+     * Generally is the just this.destination. But if this.destination is a Node,
+     * we have to go further because Nodes don't slow down current */
     getInput() {
 
         if(this.destination instanceof ConnectionNode)
@@ -27,25 +30,20 @@ class Connection {
         return this.destination;
     }
 
-    /***
-     * Renvoie l'etat (on/off) de la connexion
-     */
+    /*** Returns the state of this connection */
     getValue() {
         return this.getInput() !== undefined && this.getInput().output;
     }
 
-    //Proprietes graphiques --------------------------------------------------------------------------------------------
+    // Graphical properties --------------------------------------------------------------------------------------------
 
-    /***
-     * Dessine la connexion
-     * @param i: index de l'input sur la porte a laquelle cette connexion est connectee
-     */
+    /*** Draws the connection
+     * @param i: index of the input on which this connection is on the origin */
     draw(i) {
 
-        let inputPosition = this.origin.getInputPosition(i); //Position de la connection sur le cote input de l'origine
-        let outputPosition = this.destination.getOutputPosition(); //Position de la connection sur le cote output de la destination
+        let inputPosition = this.origin.getInputPosition(i); //Position of the connection on the input side of the origin
+        let outputPosition = this.destination.getOutputPosition(); //Position of the connection on the ouput side of the destination
 
-        //Dessine la connection
         ctx.beginPath();
         ctx.moveTo(inputPosition[0], inputPosition[1]);
         for(let point of this.calculateIntermediates(this.destination.x, this.destination.y, this.origin.x, inputPosition[1]))
@@ -57,16 +55,15 @@ class Connection {
         ctx.closePath();
     }
 
-    /***
-     * Calcule les points intermediaires par lesquels cette connexion passe avant d'arriver a sa cible
-     * From est la porte qui a la connection comme output, To est celle qui a la connection comme input
-     */
+    /*** Calculates the intermediates through which the connection goes before arriving to its destination
+     * From is the destination, To is the origin */
     calculateIntermediates(fromX, fromY, toX, toY) {
 
         let averageX = (toX + fromX) /2;
         let averageY = (toY + fromY) /2;
 
-        if(toX - this.origin.width/2 - this.origin.width/6 < fromX + this.destination.width/2 + this.destination.width/6) //Cas ou la porte d'arrivee est derriere la porte de depart
+        // Case where the origin is behind the destination
+        if(toX - this.origin.width/2 - this.origin.width/6 < fromX + this.destination.width/2 + this.destination.width/6)
             return [
                 [toX - this.origin.width/2 - this.origin.width/6, toY],
                 [toX - this.origin.width/2 - this.origin.width/6, averageY],

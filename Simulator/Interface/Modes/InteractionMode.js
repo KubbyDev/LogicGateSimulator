@@ -1,4 +1,4 @@
-let interactionModeButtons = []; //Les boutons du menu contextuel (menu de droite)
+let interactionModeButtons = []; // Buttons that should be displayed only in this mode
 
 class InteractionMode {
 
@@ -6,32 +6,24 @@ class InteractionMode {
         return interactionModeButtons;
     }
 
-    /***
-     * Appellee quand l'utilisateur fait un clic avec ce mode selectionne
-     */
+    /*** Called when the user clicks somewhere with this mode selected */
     static onClick() {
 
         let selectedGate = getGateAtPosition(mouseX, mouseY);
-        if(selectedGate && typeof selectedGate.onClick === 'function') //Si la fonction onClick existe
+        if(selectedGate)
             selectedGate.onClick();
     }
 
-    /***
-     * Appellee a chaque frame quand ce mode est selectionne
-     */
+    /*** Called on every frame when this menu is selected */
     static update() {
     }
 
-    /***
-     * Appellee quand l'utilisateur passe sur ce mode
-     */
+    /*** Called when the user switches to this mode */
     static enable() {
         interfaceMode = 2;
     }
 
-    /***
-     * Met a jour puis dessine le menu de droite
-     */
+    /*** Updates and draws the menu on the right */
     static updateContextualMenu() {
     }
 
@@ -39,10 +31,7 @@ class InteractionMode {
         interactionModeButtons = [];
     }
 
-    /***
-     * Apelle par UserInteraction a chaque key press dans ce mode
-     * @param key
-     */
+    /*** Called for each key press with this mode selected */
     static onKeyPressed(key) {
     }
 }

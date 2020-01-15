@@ -1,4 +1,7 @@
-class Basic {
+/*
+This class contains functions to generate all the gates that are not custom gates
+ */
+class GateFactory {
 
     static UP(x, y) {
         return new Gate()

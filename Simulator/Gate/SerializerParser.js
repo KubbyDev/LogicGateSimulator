@@ -1,13 +1,10 @@
 class SerializerParser {
 
-    /***
-     * Cree une CustomGate a partir du string qui lui est donne
+    /*** Creates a Custom gate from the data string
      * Format: Name;input_1&...&input_n;output_1&...&output_n;intern_1&...&intern_n
      * Input: Name
      * Output: Name§input_1_index§...§input_n_index
-     * InternGate: Type@param_2@...@param_n§input_1_index§...§input_n_index
-     * @param rawData
-     */
+     * InternGate: Type@param_2@...@param_n§input_1_index§...§input_n_index */
     static parseCustomGate(rawData) {
 
         let customGate = new CustomGate();
@@ -15,7 +12,7 @@ class SerializerParser {
 
         let parts = rawData.split(';');
 
-        //Decodage des inputs
+        // Inputs decoding
         let inputsData = parts[1].split('&').filter(data => data !== "");
         for(let i = 0; i < inputsData.length; i++) {
             let input = new Gate();
@@ -24,30 +21,31 @@ class SerializerParser {
         }
         customGate.maxInputs = inputsData.length;
 
-        //Decodage des outputs
+        // Outputs decoding
         let outputsData = parts[2].split('&').filter(data => data !== "");
         for(let i = 0; i < outputsData.length; i++) {
             let data = outputsData[i].split('§');
-            let output = Basic.NODE(0,0);
+            let output = GateFactory.NODE(0,0);
             output.name = data[0];
             customGate.outputGates[i] = output;
         }
 
-        //Decodage des internGates
+        // Intern gates decoding
         let gatesData = parts[3].split('&').filter(data => data !== "");
         for(let i = 0; i < gatesData.length; i++) {
             let gateParameters = gatesData[i].split('§')[0].split('@');
-            customGate.internGates[i] = Basic[gateParameters[0]](0,0);
+            //Calls the function that has the name corresponding to the type of the gate in GateFactory
+            customGate.internGates[i] = GateFactory[gateParameters[0]](0,0);
             customGate.internGates[i].parseParameters(gateParameters);
         }
 
-        //Decodage des connexions
+        // Connexions decoding
         function connect(gate, data) {
 
-            //Pour chaque index dans les donnees
+            // For each index in the data
             for(let i = 1; i < data.length; i++) {
-                if(data[i] !== '') //Si l'index n'est pas vide
-                //On cree une connection qui amene vers un input si l'index fait reference a un input sinon vers une internGate
+                if(data[i] !== '') // if the index is not empty
+                    // Creates a connection to an input if the index refers to an input, otherwise to an intern gate
                     gate.inputs[i-1] = new Connection(gate, data[i] < customGate.maxInputs
                         ? customGate.inputGates[data[i]]
                         : customGate.internGates[data[i] - customGate.maxInputs]);
@@ -69,39 +67,37 @@ class SerializerParser {
             .setGraphicProperties(mouseX, mouseY,100,30+Math.max(customGate.maxInputs,customGate.outputGates.length)*20,"#379f1f",parts[0]);
     }
 
-    /***
-     * Serialize l'affichage principal
+    /*** Serializes all the gates in the simulator world
      * Format: Name;input_1&...&input_n;output_1&...&output_n;intern_1&...&intern_n
      * Input: Name
      * Output: Name§input_1_index§...§input_n_index
-     * InternGate: Type@param_2@...@param_n§input_1_index§...§input_n_index
-     */
+     * InternGate: Type@param_2@...@param_n§input_1_index§...§input_n_index */
     static serializeCustomGate(name, inputNames, outputNames) {
 
         let data = "";
 
-        //Casse une CustomGate (passe les internGates dans fromGates)
+        // Breaks a custom gate (transfers all the intern gates in the simulator world)
         function breakCustomGate(customGate) {
 
-            //Pour chaque porte dans les outputs ou dans les internes
+            // For each gate in the intern gates or in the output gates
             for(let gate of customGate.internGates.concat(customGate.outputGates)) {
 
                 for (let i = 0; i < gate.maxInputs; i++) {
 
                     let inputIndex = customGate.inputGates.indexOf(gate.inputs[i].destination);
 
-                    //Si la connection donne sur un input de la CustomGate
-                    if (inputIndex !== -1) //On se connecte a la destination de l'input correspondant sur la CustomGate
+                    // If the connection goes to an input of the CustomGate
+                    if (inputIndex !== -1) // Connects to the destination of the corresponding input
                         gate.inputs[i].destination = customGate.inputs[inputIndex].destination;
-                    //Si ca donne sur une autre porte interne, aucun probleme
+
+                    // If it goes to another intern gate, no problem
                 }
 
                 gates.push(gate);
             }
         }
 
-        //Supprime le caractere lastToRemove a la fin de data si il existe
-        //et ajoute le caractere separator derriere
+        // Removes lastToRemove if it exists and adds separator
         function addSeparator(lastToRemove, separator) {
 
             if(data[data.length-1] === lastToRemove)
@@ -110,32 +106,30 @@ class SerializerParser {
                 data += separator;
         }
 
-        //Cette fonction renvoie l'index de la porte en parametre
-        //L'indexation prend d'abord les inputs qui ont donc un index entre 0 et le nombre d'inputs
-        //Puis les internGates (les outputs ne sont pas indexes parce qu'aucune porte n'y est connecte)
+        // This function returns the index of the gate in parameter
+        // The indices start with the inputs (indices 0 to the number of inputs -1)
+        // Then the intern gates. The outputs have no index because no gate is connected to them
+        // Returns -1 if the gate has not been found
         function getIndex(g) {
 
             let isInput = g instanceof Input;
             let currentIndex = isInput ? 0 : inputNames.length;
 
-            //On parcours toutes les portes sauf les outputs
             for(let i = 0; i < gates.length; i++) {
 
-                //Si on a trouve la porte on renvoie l'index
+                // If the gate is found, returns the index
                 if(gates[i] === g)
                     return currentIndex;
 
-                //Si la porte n'est pas celle qu'on cherche
+                if(isInput) { // If we are searching for inputs
 
-                if(isInput) { //Si on cherche des inputs
-
-                    //Si la porte trouvee est un input mais pas celui qu'on cherche on incremente
+                    // If the gate is an input but not the one searched, increments the index
                     if(gates[i] instanceof Input)
                         currentIndex++;
                 }
-                else { //Si on cherche une internGate
+                else { // If we are searching for an intern gate
 
-                    //Si c'est un output on s'en fous, sinon on incremente le currentIndex
+                    // If it is an input or an output, ignores it. Otherwise, increments the index
                     if(!(gates[i] instanceof Output) && !(gates[i] instanceof Input))
                         currentIndex++;
                 }
@@ -144,14 +138,15 @@ class SerializerParser {
             return -1;
         }
 
-        //Casse toutes les CustomGates (Passe les internGates dans fromGates)
-        let previousLength = gates.length; //Enregistre la longeur de la liste avant l'ajout des portes resultantes du cassage des CustomGates
+        // Saves the number of gates before breaking the custom gates
+        let previousLength = gates.length;
+        // Breaks all the custom gates (transfers their intern gates to the simulator world)
         for(let i = 0; i < previousLength; i++)
             if(gates[i] instanceof CustomGate)
                 breakCustomGate(gates[i]);
 
-        //Supprime toutes les CustomGates de la liste puis
-        //range les gates par ordre de hauteur pour que les inputs et les outputs soient dans le bon ordre
+        // Deletes all the custom gates from the list and sorts them
+        // by decreasing height (increasing y) so the inputs and the outputs are in the right order
         gates = gates.filter(g => !(g instanceof CustomGate)).sort((a,b) => a.y - b.y);
 
         data = name + ';';
@@ -160,7 +155,6 @@ class SerializerParser {
         for(let inputName of inputNames)
             data += inputName + '&';
 
-        //Supprime le dernier & et rajoute un ;
         addSeparator('&', ';');
 
         //Outputs
@@ -176,12 +170,10 @@ class SerializerParser {
                 }
                 index++;
 
-                //Supprime le dernier § et rajoute un &
                 addSeparator('§', '&');
             }
         }
 
-        //Supprime le dernier & et rajoute un ;
         addSeparator('&', ';');
 
         //Intern Gates
@@ -196,17 +188,14 @@ class SerializerParser {
                 }
                 index++;
 
-                //Supprime le dernier § et rajoute un &
                 addSeparator('§', '&');
             }
         }
 
-        //Supprime le dernier &
         addSeparator('&', '');
 
         gates = [];
 
         return data;
     }
-
 }

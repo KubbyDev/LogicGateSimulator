@@ -1,8 +1,8 @@
 class Output extends Gate {
 
     /*
-        Ampoule
-        Sert aussi a designer les sorties des CustomGates
+        Like a light bulb
+        Also used to designate custom gates outputs
      */
 
     constructor() {
@@ -11,18 +11,18 @@ class Output extends Gate {
         this.downColor = "#7a7a7a";
     }
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    // Functionnal properties ------------------------------------------------------------------------------------------
 
     tickEnd() {
         super.tickEnd();
         this.color = this.output ? this.upColor : this.downColor;
     }
 
-    //Empeche l'Output d'avoir des outputs
+    // Prevents the gate from having outputs
     getConnector(x,y) {
         return 1;
     }
 
-    //Proprietes graphiques --------------------------------------------------------------------------------------------
+    // Graphical properties --------------------------------------------------------------------------------------------
 
 }

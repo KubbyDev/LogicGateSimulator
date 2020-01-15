@@ -21,5 +21,3 @@ This image represents the circuit of a 7 segments display and its use
 The simulator lacks 2 important features that can be implemented in the future:
 - A possibility to save circuits (for the moment the only way to do that is to make a custom gate)
 - A possibility to edit custom gates (could be solved by saving feature).
-
-Oh, and sorry for the french comments. I was still commenting my code in french when I created the core of the simulator... 

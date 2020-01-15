@@ -1,32 +1,33 @@
 class Gate {
 
+    /*
+        Base class of all gates
+        It can work as a Gate, or be extended to change some behaviour
+     */
+
     constructor() {
 
-        this.activation = () => true;//Fonction d'activation de la porte (exemple: and = a && b)
-        this.inputs = [];            //References aux connections vers les portes auquelles cette portes est connectee
-        this.tempOutput = false;     //La valeur de l'output pendant le tick. Il passe dans output a la fin du tick
-        this.output = false;         //Valeur de la sortie de la porte
-        this.maxInputs = 0;          //Le nombre d'inputs que cette porte accepte
+        this.activation = () => true; // Activation function. For example to create an AND put (a,b) => a&&b
+        this.inputs = [];             // References to Connections that lead to the gates that serves as input of this gate
+        this.tempOutput = false;      // The output during the update. Copied in output at the end of the update
+        this.output = false;          // State of the output of the gate
+        this.maxInputs = 0;           // The maximum number of inputs this gate can have
+        this.id = gates.length;       // The identifier of the gate (its index in gates)
 
-        this.x = 10;
-        this.y = 10;
-        this.width = 20;
-        this.height = 20;
-        this.color = "#379f1f";
-        this.type = "Gate";
-        this.name = "Gate";
-        this.fontSize = 8;
-        this.hideName = false;
+        this.x = 10;                  // Position x of the center of the gate (horizontal, 0 = left)
+        this.y = 10;                  // Position y of the center of the gate (vertical, 0 = top)
+        this.width = 20;              // The width of the gate, can vary with zoom
+        this.height = 20;             // The height of the gate, can vary with zoom
+        this.color = "#379f1f";       // The color
+        this.type = "Gate";           // Stores the name of the function in GateFactory used to generate this gate (useful for custom gates)
+        this.name = "Gate";           // Display name
+        this.fontSize = 8;            // Font size of the display name, can vary with zoom
+        this.hideName = false;        // Hide the display name
     }
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    // Functionnal properties ------------------------------------------------------------------------------------------
 
-    /***
-     * Modifie les proprietes fonctionnelles de la gate
-     * @param activation
-     * @param inputs
-     * @param maxInputs
-     */
+    /*** Changes the gate's functionnal properties */
     setFonctionnalProperties(activation, inputs, maxInputs) {
 
         this.activation = activation;
@@ -35,10 +36,7 @@ class Gate {
         return this;
     }
 
-    /***
-     * Modifie les inputs de la gate
-     * @param inputGates
-     */
+    /*** Creates Connections to the Gates in parameter */
     setInputs(inputGates) {
         this.inputs = inputGates.map(inputGate => new Connection(this, inputGate)).slice(0,this.maxInputs);
         return this;
@@ -49,12 +47,8 @@ class Gate {
         return this;
     }
 
-    /***
-     * Ajoute une entree a cette porte (ne fait rien si elle a deja tous ses inputs)
-     * Met l'entree a un index precis si il est renseigne
-     * @param gate
-     * @param index
-     */
+    /*** Adds an input (does nothing if the gate already has all its inputs)
+     * Puts the Connection at a specific index if requested */
     addInput(gate, index) {
 
         if(index !== undefined && index < this.maxInputs)
@@ -63,25 +57,19 @@ class Gate {
             this.inputs.push(new Connection(this, gate));
     }
 
-    /***
-     * Met a jour la sortie de la porte en fonction des entrees
-     */
+    /*** Updates the tempOutput of the gate according to the inputs
+     * Can be overriden by child classes for custom behaviour */
     update() {
         let inputs = this.inputs.map(connection => connection !== undefined && connection.getValue());
         this.tempOutput = this.activation(inputs);
     }
 
-    /***
-     * Appeller cette fonction a la fin de chaque tick pour mettre a jour sa sortie
-     */
+    /*** Call this function at the end of each update */
     tickEnd() {
         this.output = this.tempOutput;
     }
 
-    /***
-     * Met a jour les sorties de toutes les portes passees en parametre
-     * @param gates
-     */
+    /*** Updates all the gates */
     static updateAll(gates) {
 
         for(let gate of gates)
@@ -91,11 +79,7 @@ class Gate {
             gate.tickEnd();
     }
 
-    /***
-     * Supprime toutes les connections a la porte gate parmis les portes allGates
-     * @param gate
-     * @param allGates
-     */
+    /*** Removes all the connections from this gate to the gates in allGates */
     static removeAllConnectionsTo(gate, allGates) {
 
         for(let g of allGates)
@@ -104,16 +88,13 @@ class Gate {
                     g.inputs[i] = undefined;
     }
 
-    /***
-     * Renvoie l'index du connecteur le plus proche.
-     * Si c'est un input l'index sera positif (1 et +), negatif si c'est un output (-1 et -)
-     * @param x
-     * @param y
-     */
+    /*** Returns the index of the nearest connector
+     * If it is an input the index will be positive (1 and higher), negative if it is an output (-1 and lower)
+     * Overriden by CustomGate to be able to select the output */
     getConnector(x,y) {
 
-        if(x > this.x || this.maxInputs < 1) //Si on est sur la droite de la porte ou qu'elle n'a pas d'inputs
-            return -1; //renvoie l'output
+        if(x > this.x || this.maxInputs < 1) // If the position is on the right then the output is selected
+            return -1;
 
         let minDistY = Infinity;
         let minIndex = 0;
@@ -128,38 +109,28 @@ class Gate {
         return minIndex;
     }
 
-    /***
-     * Renvoie la porte correspondante pour un numero d'output donne
-     * (Utile pour les portes custom)
-     */
+    /*** Returns the corresponding gate for a given output number (useful for custom gates) */
     getGateForOutput(index) {
         return this;
     }
 
-    /***
-     * Renvoie un string qui contient les caracteristique de la porte (la periode pour une clock par exemple)
-     */
+    /*** Returns a string that contains the parameters of the gate (the clock's period for example)
+     * Useful for custom gate creation */
     serializeParameters() {
         return "";
     }
 
-    /***
-     * Applique les caracteristiques de la porte (Apellee dans SerializerParser.parseCustomGate)
-     */
+    /*** Applies the parameters on the gate (Useful to load custom gates) */
     parseParameters(parameters) {
     }
 
-    //Proprietes graphiques --------------------------------------------------------------------------------------------
+    /*** Called when the user clicks on the gate in Interaction mode */
+    onClick() {
+    }
 
-    /***
-     * Modifie les proprietes graphiques de la gate
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param color
-     * @param type
-     */
+    // Graphical properties --------------------------------------------------------------------------------------------
+
+    /*** Changes the gates graphical properties */
     setGraphicProperties(x, y, width, height, color, type, name) {
 
         this.x = x;
@@ -175,20 +146,13 @@ class Gate {
         return this;
     }
 
-    /***
-     * Modifie la position du centre de la porte
-     * @param x
-     * @param y
-     */
+    /*** Changes the position of the gate (its center) */
     setPosition(x, y) {
         this.x = x;
         this.y = y;
         return this;
     }
 
-    /***
-     * Dessine la gate
-     */
     draw() {
 
         this.drawBody();
@@ -202,9 +166,7 @@ class Gate {
         }
     }
 
-    /***
-     * Dessine le corps de la porte (cette methode peut etre redefinie pour une forme custom)
-     */
+    /*** Draws the body of the gate (almost always overriden or redifined) */
     drawBody() {
 
         ctx.fillStyle = this.color;
@@ -214,27 +176,20 @@ class Gate {
         ctx.strokeRect(this.x - this.width/2, this.y - this.height/2, this.width, this.height);
     }
 
-    /***
-     * Dessine toutes les portes passees en parametre
-     * @param gates
-     */
     static drawAll(gates) {
 
-        //Dessine toutes les connections de chaque gate
+        // Draws all the connections of all the gates
         for(let gate of gates)
             for(let i = 0; i < gate.maxInputs; i++)
                 if(gate.inputs[i])
                     gate.inputs[i].draw(i);
 
-        //Dessine toutes les gates
+        // Draws all the gates
         for(let gate of gates)
             gate.draw();
     }
 
-    /***
-     * Renvoie la position de l'input index sur la porte
-     * @param index
-     */
+    /*** Returns the position of the ith input in the simulator plane */
     getInputPosition(index) {
         return [
             this.x - this.width/2  + this.width/4,
@@ -242,9 +197,7 @@ class Gate {
         ]
     }
 
-    /***
-     * Renvoie la position de l'output sur la porte
-     */
+    /*** Returns the position of the output in the simulator plane */
     getOutputPosition() {
         return [
             this.x + this.width/2 - connectionWidth,

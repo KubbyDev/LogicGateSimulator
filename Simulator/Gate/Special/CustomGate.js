@@ -1,21 +1,29 @@
+/*
+Custom gates are like a box where you put some gates but they are displayed as one gate.
+The simulator sees it as one gate, but during the simulation the custom gate will simulate its internal
+circuit as if it was real
+ */
 class CustomGate extends Gate {
 
     constructor() {
         super();
-        this.internGates = []; //Liste des portes contenues dans cette CustomGate
-        this.inputGates = [];  //Liste des portes qui servent d'input. Ils ne sont pas presents dans internGates
-        this.outputGates = []; //Liste des Nodes qui servent d'output. Ils ne sont pas presents dans internGates
-        this.string = "";      //String de donnees a partir duquel cette porte a ete construite
+        this.internGates = []; // List of the gates that are contained in this custom gate
+        this.inputGates = [];  // List of the gates that act as inputs. Not in internGates
+        this.outputGates = []; // List of the Nodes that act as outputs. Not in internGates
+        this.string = "";      // String used to build this gate
     }
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    // Functionnal properties ------------------------------------------------------------------------------------------
 
     update() {
 
-        //Recupere les valeurs d'entrees et les met dans les inputGates
+        // Takes the input values and puts them in the input gates
         for(let i = 0; i < this.inputGates.length; i++)
             this.inputGates[i].output = this.inputs[i] && this.inputs[i].getValue();
 
+        // Simulates the internal circuit
+        // The outputs of the custom gate are Nodes connected to some
+        // gates of the internal circuit so they are automatically updated
         for(let gate of this.internGates)
             gate.update();
     }
@@ -25,19 +33,13 @@ class CustomGate extends Gate {
             gate.tickEnd();
     }
 
-    /***
-     * Renvoie la porte correspondante pour un numero d'output donne
-     */
+    /*** Returns the gate that corresponds to the given index */
     getGateForOutput(index) {
         return this.outputGates[index];
     }
 
-    /***
-     * Renvoie l'index du connecteur le plus proche.
-     * Si c'est un input l'index sera positif (1 et +), negatif si c'est un output (-1 et -)
-     * @param x
-     * @param y
-     */
+    /*** Returns the index of the nearest connector
+     * If it is an input the index will be positive (1 and higher), negative if it is an output (-1 and lower) */
     getConnector(x,y) {
 
         if(x > this.x || this.maxInputs < 1) { //Si on est sur la droite de la porte ou qu'elle n'a pas d'inputs
@@ -68,9 +70,7 @@ class CustomGate extends Gate {
         return minIndex;
     }
 
-    /***
-     * Affiche un popup qui montre le string serialise de la porte
-     */
+    /*** Displays a popup that shows the string used to build this gate */
     onClick() {
 
         Interface.openPopup();
@@ -94,11 +94,11 @@ class CustomGate extends Gate {
         mainDiv.appendChild(div);
     }
 
-    //Proprietes graphiques --------------------------------------------------------------------------------------------
+    // Graphical properties --------------------------------------------------------------------------------------------
 
     draw() {
 
-        //Met a jour la position des outputs pour que les connexions s'affichent correctement
+        // Updates the position of the outputs so connections are displayed correctly
         for(let i = 0; i < this.outputGates.length; i++) {
 
             let position = this.getOutputPosition(i);
@@ -108,7 +108,7 @@ class CustomGate extends Gate {
 
         super.draw();
 
-        //Affiche les noms des inputs et outputs
+        // Displays the names of the inputs and the outputs
         ctx.fillStyle = "#ffffff";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -123,10 +123,7 @@ class CustomGate extends Gate {
         }
     }
 
-    /***
-     * Renvoie la position de l'output index sur la porte
-     * @param index
-     */
+    /*** Returns the position of the ith output on the gate */
     getOutputPosition(index) {
         return [
             this.x + this.width/2 - connectionWidth,
@@ -134,14 +131,12 @@ class CustomGate extends Gate {
         ]
     }
 
-    /***
-     * Affiche le menu de selection de noms des inputs/outputs pour creer une nouvelle custom gate
-     */
+    /*** Displays the menu to select the names of the inputs/outputs to create a new custom gate */
     static openPopup() {
 
         Interface.openPopup();
 
-        //Compte le nombre d'inputs et d'outputs de la Custom Gate
+        // Counts the number of inputs and outputs of the gate
         let nbInputs = 0;
         let nbOutputs = 0;
         for(let gate of gates) {
@@ -171,12 +166,12 @@ class CustomGate extends Gate {
         addSeparator("Gate name");
         addInput("name");
 
-        //Cree les fields pour les inputs
+        //Creates the fields for the inputs
         addSeparator("Input names");
         for(let i = 0; i < nbInputs; i++)
             addInput("input" + i);
 
-        //Cree les fields pour les outputs
+        //Creates the fields for the outputs
         addSeparator("Output names");
         for(let i = 0; i < nbOutputs; i++)
             addInput("output" + i);
@@ -185,25 +180,25 @@ class CustomGate extends Gate {
         let button = document.createElement("BUTTON");
         button.addEventListener('click', () => {
 
-            //Recuperation des inputs
+            // Retrieving of the inputs
             let inputs = [];
             for(let i = 0; i < nbInputs; i++)
                 inputs[i] = document.getElementById("input" + i).value;
 
-            //Recuperation des outputs
+            // Retrieving of the outputs
             let outputs = [];
             for(let i = 0; i < nbOutputs; i++)
                 outputs[i] = document.getElementById("output" + i).value;
 
-            //Creation de la porte
+            // Creation of the gate
             let gate = SerializerParser.parseCustomGate(SerializerParser.serializeCustomGate(document.getElementById("name").value, inputs, outputs));
             gates.push(gate);
 
-            //Affichage de l'interface pour afficher le string serialise
+            // Displays the interface to show the serialized string
             Interface.closePopup();
             gate.onClick();
 
-            //Enregistrement de cette porte comme lastCustomGate
+            // Saves this gate as the lastCustomGate
             buildModeLastCustomGate = gate.string;
         });
         button.innerHTML = "Done";

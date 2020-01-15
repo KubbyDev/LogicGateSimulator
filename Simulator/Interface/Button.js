@@ -10,12 +10,9 @@ class Button {
         this.fontSize = 14;
     }
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    // Functionnal properties ------------------------------------------------------------------------------------------
 
-    /***
-     * Modifie le code a executer quand on clique sur le bouton
-     * @param onClick
-     */
+    /*** Changes the code to execute when this button is pressed */
     setOnClick(onClick) {
         this.onClick = onClick;
         return this;
@@ -24,7 +21,7 @@ class Button {
     onClick() {
     }
 
-    //Proprietes graphiques --------------------------------------------------------------------------------------------
+    // Graphical properties --------------------------------------------------------------------------------------------
 
     setGraphicProperties(width, height, name,color) {
 
@@ -35,16 +32,13 @@ class Button {
         return this;
     }
 
-    /***
-     * Dessine le bouton
-     */
     draw() {
 
-        //Contours
+        // Borders
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x - this.width/2, this.y - this.height/2, this.width, this.height);
 
-        //Millieu
+        // Middle
         ctx.fillStyle = interfaceBackgroundColor;
         ctx.fillRect(
             this.x - this.width/2 + this.width/15,
@@ -56,16 +50,14 @@ class Button {
         this.drawCenter();
     }
 
-    /***
-     * Definit ce qui doit s'afficher dans le carre au centre du bouton
-     */
+    /*** Draws something in the center of the button
+     * Can be overriden for custom behaviour */
     drawCenter() {
         this.drawName();
     }
 
     drawName() {
-
-        //Nom
+        // Name
         ctx.fillStyle = "#ffffff";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";

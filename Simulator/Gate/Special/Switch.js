@@ -1,15 +1,11 @@
 class Switch extends Gate {
 
-    /*
-        Interrupteur
-     */
-
     constructor() {
         super();
         this.isOn = true;
     }
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    // Functionnal properties ------------------------------------------------------------------------------------------
 
     update() {
 
@@ -21,9 +17,7 @@ class Switch extends Gate {
         super.update();
     }
 
-    /***
-     * Inverse l'etat de l'interrupteur
-     */
+    /*** Toggles the state of the switch */
     onClick() {
         this.isOn = !this.isOn;
     }
@@ -33,10 +27,10 @@ class Switch extends Gate {
     }
 
     parseParameters(parameters) {
-        this.isOn = parameters[1] === "1"; //0 est le type de la porte
+        this.isOn = parameters[1] === "1"; //0 is the type on the gate
     }
 
-    //Proprietes graphiques --------------------------------------------------------------------------------------------
+    // Graphical properties --------------------------------------------------------------------------------------------
 
     drawBody() {
 

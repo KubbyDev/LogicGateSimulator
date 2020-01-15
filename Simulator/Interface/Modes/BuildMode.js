@@ -1,8 +1,8 @@
 let buildModeSelectedGate = null;
-let buildModeSelectorPosition = 0; //Index du premier bouton affiche dans la liste de droite
-let buildModeListLength = 0; //Nombre de boutons affiches dans la liste de droite
-let buildModeButtons = []; //Les boutons du menu contextuel (menu de droite)
-let buildModeLastCustomGate = ""; //La derniere CustomGate ajoutee
+let buildModeSelectorPosition = 0; // Index of the first button displayed in the list on the right
+let buildModeListLength = 0; // Number of buttons in the list on the right
+let buildModeButtons = []; // Buttons that should be displayed only in this mode
+let buildModeLastCustomGate = ""; // Last custom gate loaded
 
 class BuildMode {
 
@@ -10,9 +10,7 @@ class BuildMode {
         return buildModeButtons;
     }
 
-    /***
-     * Appellee quand l'utilisateur fait un clic avec ce mode selectionne
-     */
+    /*** Called when the user clicks somewhere with this mode selected */
     static onClick() {
 
         if(buildModeSelectedGate !== null)
@@ -21,9 +19,7 @@ class BuildMode {
             buildModeSelectedGate = getGateAtPosition(mouseX, mouseY);
     }
 
-    /***
-     * Appellee a chaque frame quand ce mode est selectionne
-     */
+    /*** Called on every frame when this menu is selected */
     static update() {
 
         if(buildModeSelectedGate) {
@@ -32,33 +28,29 @@ class BuildMode {
         }
     }
 
-    /***
-     * Appellee quand l'utilisateur passe sur ce mode
-     */
+    /*** Called when the user switches to this mode */
     static enable() {
         interfaceMode = 0;
         buildModeSelectedGate = null;
     }
 
-    /***
-     * Met a jour puis dessine le menu de droite
-     */
+    /*** Updates and draws the menu on the right */
     static updateContextualMenu() {
 
-        //GL si t'essayes de comprendre ce foutoir
+        // Displays the list of gates on the right
 
-        //On met tous les boutons a l'exterieur de base pour eviter tout probleme
+        // To limit problems we start by putting everything in the exterior of the screen
         for(let button of buildModeButtons) {
             button.x = -100;
             button.y = -100;
         }
 
-        //Bouton destroy
+        // Destroy button
         buildModeButtons[0].x = canvas.width - buildModeButtons[0].width/2 - interfaceButtonSpacing;
         buildModeButtons[0].y = canvas.height - buildModeButtons[0].height/2 - interfaceButtonSpacing;
         buildModeButtons[0].draw();
 
-        //Calcul du nombre de boutons affichables a droite
+        // Calculates the number of buttons that can be displayed
         buildModeListLength = Math.floor(
             (canvas.height
             - buildModeButtons[0].height
@@ -66,7 +58,7 @@ class BuildMode {
             - 5*interfaceButtonSpacing)
             / (buildModeButtons[5].height+interfaceButtonSpacing));
 
-        //Boutons de controle de la liste de creation de gates
+        // Buttons to control the list (up and down)
         buildModeButtons[1].x = canvas.width - buildModeButtons[1].width/2 - interfaceButtonSpacing;
         buildModeButtons[1].y = buildModeButtons[1].height/2 + interfaceButtonSpacing;
         buildModeButtons[2].x = canvas.width - buildModeButtons[2].width/2 - interfaceButtonSpacing;
@@ -74,10 +66,10 @@ class BuildMode {
         buildModeButtons[1].draw();
         buildModeButtons[2].draw();
 
-        //Boutons de creation de gates
+        // Gate creation buttons
         for(let i = 0; i < buildModeListLength; i++) {
 
-            if(buildModeSelectorPosition+i+5 > buildModeButtons.length) //Si il n'y a pas assez de boutons on sort
+            if(buildModeSelectorPosition+i+5 > buildModeButtons.length) // If there is no more buttons to display, breaks
                 break;
 
             buildModeButtons[buildModeSelectorPosition+i+5].x = canvas.width - buildModeButtons[5].width/2 - interfaceButtonSpacing;
@@ -85,7 +77,7 @@ class BuildMode {
             buildModeButtons[buildModeSelectorPosition+i+5].draw();
         }
 
-        //Boutons des Custom Gates
+        // Custom gate buttons
         buildModeButtons[3].x = buildModeButtons[3].width/2 + interfaceButtonSpacing;
         buildModeButtons[3].y = canvas.height - buildModeButtons[3].height/2 - interfaceButtonSpacing;
         if(buildModeLastCustomGate !== "") {
@@ -103,6 +95,7 @@ class BuildMode {
 
     static init() {
 
+        // Create all the buttons of the list on the right
         buildModeButtons = [
             new Button()
                 .setGraphicProperties(80, 50, "Destroy", "#ae110b")
@@ -121,53 +114,53 @@ class BuildMode {
                 .setOnClick(() => BuildMode.addGate(SerializerParser.parseCustomGate(buildModeLastCustomGate))),
             new Button()
                 .setGraphicProperties(80, 80, "AND", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.AND(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.AND(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "OR", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.OR(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.OR(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "NOT", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.NOT(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.NOT(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "XOR", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.XOR(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.XOR(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "NOR", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.NOR(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.NOR(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "NAND", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.NAND(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.NAND(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "XNOR", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.XNOR(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.XNOR(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "UP", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.UP(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.UP(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "DOWN", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.DOWN(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.DOWN(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "CLOCK", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.CLOCK(mouseX, mouseY, 50))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.CLOCK(mouseX, mouseY, 50))),
             new Button()
                 .setGraphicProperties(80, 80, "INPUT", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.INPUT(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.INPUT(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "OUTPUT", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.OUTPUT(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.OUTPUT(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "SWITCH", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.SWITCH(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.SWITCH(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "NODE", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(Basic.NODE(mouseX, mouseY))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.NODE(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80,80, "CUSTOM", "#379f1f")
                 .setOnClick(() => BuildMode.openCustomGatePopup())
         ];
 
+        // Draws arrows on the buttons to control the list of gates
         buildModeButtons[1].drawCenter = function() {
-
             ctx.beginPath();
             ctx.moveTo(this.x - this.width/8, this.y + this.height/8);
             ctx.lineTo(this.x + this.width/8, this.y + this.height/8);
@@ -177,9 +170,7 @@ class BuildMode {
             ctx.fill();
             ctx.closePath();
         };
-
         buildModeButtons[2].drawCenter = function() {
-
             ctx.beginPath();
             ctx.moveTo(this.x - this.width/8, this.y - this.height/8);
             ctx.lineTo(this.x + this.width/8, this.y - this.height/8);
@@ -191,9 +182,7 @@ class BuildMode {
         };
     }
 
-    /***
-     * Ouvre le popup qui demande de donner un string pour la CustomGate
-     */
+    /*** Opens the popup that asks for a string to build a CustomGate */
     static openCustomGatePopup() {
 
         Interface.openPopup();
@@ -222,19 +211,13 @@ class BuildMode {
         mainDiv.appendChild(div);
     }
 
-    /***
-     * Ajoute une porte a l'affichage principal
-     * @param gate
-     */
+    /*** Adds a gate to the simulation */
     static addGate(gate) {
         buildModeSelectedGate = gate;
         gates.push(gate);
     }
 
-    /***
-     * Supprime une porte de l'affichage principal
-     * @param gate
-     */
+    /*** Removes a gate from the simulation */
     static removeGate(gate) {
 
         gates = gates.remove(gate);
@@ -247,12 +230,8 @@ class BuildMode {
             Gate.removeAllConnectionsTo(gate, gates);
     }
 
-    /***
-     * Appelle par UserInteraction a chaque key press dans ce mode
-     * @param key
-     */
+    /*** Called for each key press with this mode selected */
     static onKeyPressed(key) {
-
         if(key === 'Delete')
             BuildMode.removeGate(buildModeSelectedGate);
     }

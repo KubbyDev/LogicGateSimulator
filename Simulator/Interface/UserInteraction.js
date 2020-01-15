@@ -1,5 +1,5 @@
 
-//Traque la position de la souris
+// Tracks the mouse position
 let mouseX = 0;
 let mouseY = 0;
 document.addEventListener('mousemove', function(event) {
@@ -7,24 +7,24 @@ document.addEventListener('mousemove', function(event) {
     mouseY = event.clientY - canvas.offsetTop;
 });
 
-//Traque les clics souris
+// Listens for mouse clicks
 document.addEventListener('click', function() {
 
     if(interfaceBlockInputs)
         return;
 
-    //Si on a clique sur un bouton on appelle son onClick
+    // If the user clicked on a button, triggers the onClick function of the button
     let clickedButton = Interface.getButtonAtPosition(mouseX, mouseY);
     if(clickedButton) {
         clickedButton.onClick();
         return;
     }
 
-    //Sinon on appelle le onClick du mode dans lequel on est
+    // If there is no button where the user clicked, calls the onClick of the current mode
     Interface.getCurrentMode().onClick();
 });
 
-//Traque les entrees clavier
+// Listens for keyboard inputs
 document.onkeydown = function(event) {
 
     switch(event.key) {
@@ -50,7 +50,7 @@ document.onkeydown = function(event) {
     Interface.getCurrentMode().onKeyPressed(event.key);
 };
 
-//On traque les entrees par la molette de la souris
+// Listens for mouse wheel inputs
 canvas.addEventListener('wheel', function(event) {
 
     if(interfaceBlockInputs)
@@ -59,11 +59,6 @@ canvas.addEventListener('wheel', function(event) {
     Interface.zoom(1 - event.deltaY/1000);
 });
 
-/***
- * Renvoie la porte a la position demandee
- * @param x
- * @param y
- */
 function getGateAtPosition(x, y) {
 
     for (let gate of gates)

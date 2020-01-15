@@ -1,19 +1,19 @@
-let clockOpenedPopup; //Cette variable enregistre la clock qui a requis l'ouverture d'un popup (celle qui doit donc etre modifiee)
+let clockOpenedPopup; // This variable saves the clock that requested a popup openning (the one that should be modified)
 
 class Clock extends Gate {
 
     /*
-        Cette porte n'a pas d'input
-        Elle compte le nombre de frames et sa sortie change d'etat tout les <period> frames
+        This gate has no inputs
+        It counts the number of frames and its outputs changes every <period> frames
      */
 
     constructor() {
         super();
-        this.period = 50; //Le nombre de frames avant un changement d'etat
-        this.current = 0; //Le nombre de frames avant le prochain changement d'etat
+        this.period = 50; // The number of frames between 2 state changes
+        this.current = 0; // The number of frames before the next state change
     }
 
-    //Proprietes fonctionnelles ----------------------------------------------------------------------------------------
+    // Functionnal properties ------------------------------------------------------------------------------------------
 
     update() {
 
@@ -24,45 +24,54 @@ class Clock extends Gate {
         }
     }
 
-    /***
-     * Ouvre un popup pour choisir la periode
-     */
+    /*** Opens a popup to choose the period and current values */
     onClick() {
 
         Interface.openPopup();
 
         let mainDiv = document.getElementById("popup_main_div");
-        let input = document.createElement("INPUT");
-        input.id = "clockInput";
+
+        let text1 = document.createElement("P");
+        text1.innerHTML = "Period: ";
+        let input1 = document.createElement("INPUT");
+        input1.id = "clockPeriod";
+        input1.value = this.period;
+        let text2 = document.createElement("P");
+        text2.innerHTML = "Current: ";
+        let input2 = document.createElement("INPUT");
+        input2.id = "clockCurrent";
+        input2.value = this.current;
+
         let button = document.createElement("BUTTON");
-        button.addEventListener('click', Clock.choosePeriod);
+        button.addEventListener('click', Clock.chooseParameters);
         button.innerHTML = "Done";
+
         let div = document.createElement("DIV");
-        div.appendChild(input);
+        text1.appendChild(input1);
+        div.appendChild(text1);
+        text2.appendChild(input2);
+        div.appendChild(text2);
         div.appendChild(button);
         mainDiv.appendChild(div);
 
         clockOpenedPopup = this;
     }
 
-    /***
-     * Cette fonction est appellee par le bouton Done du popup
-     */
-    static choosePeriod() {
+    /*** This function is called by the Done button on the popup */
+    static chooseParameters() {
 
-        let chosenValue = document.getElementById("clockInput").value;
-        if(!isNaN(chosenValue))
-            clockOpenedPopup.setPeriod(chosenValue);
+        let period = document.getElementById("clockPeriod").value;
+        if(!isNaN(period))
+            clockOpenedPopup.period = period;
+
+        let current = document.getElementById("clockCurrent").value;
+        if(!isNaN(current))
+            clockOpenedPopup.current = current;
 
         Interface.closePopup();
     }
 
-    /***
-     * Change la periode de la clock (nombre de frames entre 2 changements d'etat)
-     * @param period
-     * @param current
-     * @returns {Clock}
-     */
+    /*** Changes the clock's period */
     setPeriod(period, current) {
 
         this.period = period;
@@ -73,10 +82,12 @@ class Clock extends Gate {
         return this;
     }
 
+    /***  Serializes the parameters of the clock (useful to create a custom gate) */
     serializeParameters() {
         return `@${this.period}@${this.current}`;
     }
 
+    /*** Applies the parameters of the clock (useful to load a custom gate) */
     parseParameters(parameters) {
         this.period = parameters[1]; //0 est le type de la porte
         this.current = parameters[2];

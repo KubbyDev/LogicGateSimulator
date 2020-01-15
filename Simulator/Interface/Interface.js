@@ -1,27 +1,19 @@
 let interfaceBackgroundColor = "#353535";
 let interfaceButtonSpacing = 5;
-let interfaceZoomFactor = 1; //Plus ce nombre est grand, plus les portes seront grossies
+let interfaceZoomFactor = 1; // The bigger this number is, the bigger the gates will be
 let interfaceMode = 0;
 let interfaceBlockInputs = false;
 let interfaceButtons = [];
 
 class Interface {
 
-    //0 = BUILD: cliquer une fois pour selectionner une porte, puis une autre fois pour la placer
-    //Cliquer sur les portes a droite pour les ajouter, ou drag une porte dans la poubelle pour la supprimer
-
-    //1 = CONNECTION: Cliquer sur une porte pour la selectionner, puis sur une autre porte pour la connecter
-
-    //2 = INTERACTION: Cliquer sur un interrupteur pour changer son etat
+    //Interface modes: 0 = Build, 1: Wiring, 2: Interaction
 
     static clear() {
         ctx.fillStyle = interfaceBackgroundColor;
         ctx.fillRect(0,0,canvas.width, canvas.height);
     }
 
-    /***
-     * Dessine le menu contextuel du mode actuel
-     */
     static draw() {
 
         Interface.getCurrentMode().updateContextualMenu();
@@ -69,10 +61,7 @@ class Interface {
         Interface.getCurrentMode().update();
     }
 
-    /***
-     * Renvoie la classe correspondant au mode actuel (Build, Wiring ou Interaction)
-     * @returns {*}
-     */
+    /*** Returns the class that handles the selected mode */
     static getCurrentMode() {
         switch(interfaceMode) {
             case 0: return BuildMode;
@@ -81,10 +70,6 @@ class Interface {
         }
     }
 
-    /***
-     * Zoome ou dezoome
-     * @param factor
-     */
     static zoom(factor) {
 
         interfaceZoomFactor *= factor;

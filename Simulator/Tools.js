@@ -1,6 +1,4 @@
-/***
- * Dessine un cercle blanc plein
- */
+/*** Draws a full white circle */
 function fillCircle(x, y) {
     ctx.beginPath();
     ctx.fillStyle = "#ffffff";
@@ -13,14 +11,14 @@ function fillCircle(x, y) {
 }
 let CIRCLE_RADIUS = 5;
 
-//Outil pour supprimer des elements d'une array
+/*** Removes elements from an array */
 Array.prototype.remove = function(value) {
     return this.filter(function(e){
         return e !== value;
     });
 };
 
-//Garde toujours le canvas en pleine page
+/*** Forces the canvas to take the entire page */
 function resizeCanvas() {
     canvas.width = window.innerWidth+1;
     setTimeout(function() {
@@ -30,6 +28,13 @@ function resizeCanvas() {
 window.onresize = resizeCanvas;
 resizeCanvas();
 
-function closePopup(popup) {
-
+/*** Downloads the data string as a file */
+function download(data, filename) {
+    let blob = new Blob([data], {type: 'text/plain'});
+    let elem = window.document.createElement('a');
+    elem.href = window.URL.createObjectURL(blob);
+    elem.download = filename || "LogicGateSimulator";
+    document.body.appendChild(elem);
+    elem.click();
+    document.body.removeChild(elem);
 }
