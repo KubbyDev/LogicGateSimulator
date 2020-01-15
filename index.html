@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logic Gate Simulator</title>
+    <link rel="stylesheet" type="text/css" href="Simulator/Style.css"/>
+</head>
+<body>
+
+<canvas id="canvas" width="1400" height="700"></canvas>
+<div id="popup_bg">
+    <div id="popup_main_div">
+        <!-- Rempli automatiquement -->
+    </div>
+</div>
+
+<script src="Simulator/Tools.js"></script>
+
+<script src="Simulator/Gate/GateFactory.js"></script>
+<script src="Simulator/Gate/Connection.js"></script>
+<script src="Simulator/Gate/Gate.js"></script>
+<script src="Simulator/Gate/Special/Clock.js"></script>
+<script src="Simulator/Gate/Special/Output.js"></script>
+<script src="Simulator/Gate/Special/Switch.js"></script>
+<script src="Simulator/Gate/Special/Input.js"></script>
+<script src="Simulator/Gate/Special/ConnectionNode.js"></script>
+<script src="Simulator/Gate/Special/CustomGate.js"></script>
+<script src="Simulator/Gate/SerializerParser.js"></script>
+<script src="Simulator/Gate/Save.js"></script>
+
+<script src="Simulator/Interface/Interface.js"></script>
+<script src="Simulator/Interface/Button.js"></script>
+<script src="Simulator/Interface/UserInteraction.js"></script>
+<script src="Simulator/Interface/Modes/BuildMode.js"></script>
+<script src="Simulator/Interface/Modes/WiringMode.js"></script>
+<script src="Simulator/Interface/Modes/InteractionMode.js"></script>
+
+<script>
+
+    //TODO:
+    // Supprimer les Nodes dans le serializer de CustomGates (opti)
+    // Saving system
+    // Cleanup (comments + robustesse + generalisation de code)
+    // manuel d'utilisation dans le readme
+    // serveur pour update auto des customgate
+    // snap auto sur la connection la plus proche
+    // boutons pause et next frame
+    // bug: error when small screen go down in list then full screen
+
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const popupBackground = document.getElementById("popup_bg");
+
+    let gates = [];
+
+    Interface.init();
+
+    setInterval(() => {
+
+        Interface.clear();
+        Interface.update();
+        Gate.updateAll(gates);
+        Gate.drawAll(gates);
+        Interface.draw();
+
+    }, 10);
+
+</script>
+
+</body>
+</html>
