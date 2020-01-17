@@ -39,19 +39,20 @@
 
     //TODO:
     // Supprimer les Nodes dans le serializer de CustomGates (opti)
-    // Saving system
+    // Saving system (add interfaceZoomFactor)
     // Cleanup (comments + robustesse + generalisation de code)
     // manuel d'utilisation dans le readme
     // serveur pour update auto des customgate
     // snap auto sur la connection la plus proche
-    // boutons pause et next frame
     // bug: error when small screen go down in list then full screen
+	// Shortcut for some gates + last gate
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     const popupBackground = document.getElementById("popup_bg");
 
-    let gates = [];
+    let gates = []; // List of the gates in the simulation world
+    let framesToCalculate = -1; // -1: calculate frames without stopping, 0+: calculate x frames and stop
 
     Interface.init();
 
@@ -59,7 +60,12 @@
 
         Interface.clear();
         Interface.update();
-        Gate.updateAll(gates);
+
+        if(framesToCalculate !== 0)
+            Gate.updateAll(gates);
+        if(framesToCalculate > 0)
+            framesToCalculate--;
+
         Gate.drawAll(gates);
         Interface.draw();
 

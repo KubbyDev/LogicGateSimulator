@@ -37,7 +37,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            ctx.closePath();
+
 
             fillCircle(this.x + this.width/2 - CIRCLE_RADIUS, this.y);
         };
@@ -69,7 +69,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            ctx.closePath();
+
         };
         g.hideName = true;
 
@@ -98,7 +98,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            ctx.closePath();
+
         };
         g.hideName = true;
 
@@ -127,7 +127,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            ctx.closePath();
+
             ctx.beginPath();
 
             ctx.moveTo(this.x - this.width/2, this.y + this.height/2);
@@ -137,7 +137,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            ctx.closePath();
+
         };
         g.hideName = true;
 
@@ -167,7 +167,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            ctx.closePath();
+
 
             fillCircle(this.x + this.width/2 - CIRCLE_RADIUS, this.y);
         };
@@ -199,7 +199,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            ctx.closePath();
+
 
             fillCircle(this.x + this.width/2 - CIRCLE_RADIUS, this.y);
         };
@@ -230,7 +230,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            ctx.closePath();
+
             ctx.beginPath();
 
             ctx.moveTo(this.x - this.width/2, this.y + this.height/2);
@@ -240,7 +240,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            ctx.closePath();
+
 
             fillCircle(this.x + this.width/2 - CIRCLE_RADIUS, this.y);
         };

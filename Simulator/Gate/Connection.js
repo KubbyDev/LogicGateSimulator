@@ -52,7 +52,7 @@ class Connection {
         ctx.lineWidth = connectionWidth;
         ctx.strokeStyle = this.getValue() ? connectionUpColor : connectionDownColor;
         ctx.stroke();
-        ctx.closePath();
+
     }
 
     /*** Calculates the intermediates through which the connection goes before arriving to its destination

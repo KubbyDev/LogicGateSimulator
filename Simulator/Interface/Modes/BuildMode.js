@@ -168,7 +168,7 @@ class BuildMode {
             ctx.moveTo(this.x - this.width/8, this.y - this.height/8);
             ctx.fillStyle = "#379f1f";
             ctx.fill();
-            ctx.closePath();
+
         };
         buildModeButtons[2].drawCenter = function() {
             ctx.beginPath();
@@ -178,7 +178,7 @@ class BuildMode {
             ctx.moveTo(this.x - this.width/8, this.y - this.height/8);
             ctx.fillStyle = "#379f1f";
             ctx.fill();
-            ctx.closePath();
+
         };
     }
 

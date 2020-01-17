@@ -7,7 +7,7 @@ function fillCircle(x, y) {
     ctx.lineWidth = 1;
     ctx.strokeStyle = "#000000";
     ctx.stroke();
-    ctx.closePath();
+
 }
 let CIRCLE_RADIUS = 5;
 
@@ -34,7 +34,5 @@ function download(data, filename) {
     let elem = window.document.createElement('a');
     elem.href = window.URL.createObjectURL(blob);
     elem.download = filename || "LogicGateSimulator";
-    document.body.appendChild(elem);
     elem.click();
-    document.body.removeChild(elem);
 }

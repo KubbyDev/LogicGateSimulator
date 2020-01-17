@@ -61,7 +61,7 @@ class WiringMode {
             ctx.moveTo(otherPoint[0], otherPoint[1]);
             ctx.lineTo(mouseX, mouseY);
             ctx.stroke();
-            ctx.closePath();
+
         }
     }
 

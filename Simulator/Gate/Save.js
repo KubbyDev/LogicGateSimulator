@@ -1,3 +1,18 @@
+function askForStateSave() {
+
+    // Asks the user to choose a .lgs file
+    let elem = window.document.createElement('INPUT');
+    elem.accept = ".lgs";
+    elem.type = "file";
+    elem.click();
+
+    // Reads the file and calls loadSimulatorState with its content
+    elem.addEventListener('change', () => {
+        if(elem.files[0])
+            elem.files[0].text().then(loadSimulatorState);
+    });
+}
+
 function saveSimulatorState() {
 
     // TODO Special case of custom gates
@@ -11,7 +26,11 @@ function saveSimulatorState() {
     }
 
     // Creates the save as a string and downloads it
-    download(JSON.stringify(gates), "LogicGateSimulator.save");
+    let data = {
+        gates: gates,
+        interfaceZoomFactor: interfaceZoomFactor
+    };
+    download(JSON.stringify(data), "LogicGateSimulator.lgs");
 
     // Puts back the Connection objects
     for(let i = 0; i < gates.length; i++)
@@ -20,9 +39,13 @@ function saveSimulatorState() {
 
 function loadSimulatorState(data) {
 
-    gates = JSON.parse(data).map(obj => {
+    let dataObj = JSON.parse(data);
+
+    interfaceZoomFactor = dataObj.interfaceZoomFactor;
+
+    gates = dataObj.gates.map(obj => {
         // Calls the function of name obj.type in GateFactory
-        let gateConstructor = GateFactory[obj.type]
+        let gateConstructor = GateFactory[obj.type];
         let g = gateConstructor(0,0);
         // Copies all the properties of obj into g
         Object.assign(g, obj);
