@@ -64,7 +64,11 @@ class SerializerParser {
         }
 
         return customGate
-            .setGraphicProperties(mouseX, mouseY,100,30+Math.max(customGate.maxInputs,customGate.outputGates.length)*20,"#379f1f",parts[0]);
+            .setGraphicProperties(
+                mouseX, mouseY,
+                100, 30+Math.max(customGate.maxInputs,customGate.outputGates.length)*20,
+                "#379f1f", "CUSTOM", parts[0]
+            );
     }
 
     /*** Serializes all the gates in the simulator world

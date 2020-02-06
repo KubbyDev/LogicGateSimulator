@@ -92,4 +92,12 @@ class Clock extends Gate {
         this.period = parameters[1]; //0 est le type de la porte
         this.current = parameters[2];
     }
+
+    /*** Creates an object that contains all the useful to save this gate in a save file */
+    createSave() {
+        let gateSave = super.createSave();
+        gateSave.period = this.period;
+        gateSave.current = this.current;
+        return gateSave;
+    }
 }

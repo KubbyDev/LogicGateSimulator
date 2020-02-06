@@ -211,9 +211,13 @@ class BuildMode {
         mainDiv.appendChild(div);
     }
 
-    /*** Adds a gate to the simulation */
-    static addGate(gate) {
-        buildModeSelectedGate = gate;
+    /*** Adds a gate to the simulation
+     * Put select to automatically select the new gate */
+    static addGate(gate, select) {
+        if(select === undefined || !select)
+            buildModeSelectedGate = gate;
+        gate.id = Gate.nextID;
+        Gate.nextID++;
         gates.push(gate);
     }
 

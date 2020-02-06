@@ -30,6 +30,13 @@ class Switch extends Gate {
         this.isOn = parameters[1] === "1"; //0 is the type on the gate
     }
 
+    /*** Creates an object that contains all the useful to save this gate in a save file */
+    createSave() {
+        let gateSave = super.createSave();
+        gateSave.isOn = this.isOn;
+        return gateSave;
+    }
+
     // Graphical properties --------------------------------------------------------------------------------------------
 
     drawBody() {

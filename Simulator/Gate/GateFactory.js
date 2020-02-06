@@ -26,7 +26,7 @@ class GateFactory {
             ctx.beginPath();
 
             ctx.moveTo(this.x - this.width/2, this.y - this.height/2);
-            ctx.lineTo(this.x + this.width/2 - CIRCLE_RADIUS*2, this.y);
+            ctx.lineTo(this.x + this.width/2 - circleRadius*2, this.y);
             ctx.lineTo(this.x - this.width/2, this.y + this.height/2);
             ctx.lineTo(this.x - this.width/2, this.y - this.height/2);
 
@@ -39,7 +39,7 @@ class GateFactory {
 
 
 
-            fillCircle(this.x + this.width/2 - CIRCLE_RADIUS, this.y);
+            fillCircle(this.x + this.width/2 - circleRadius, this.y);
         };
         g.hideName = true;
 
@@ -155,8 +155,8 @@ class GateFactory {
             ctx.beginPath();
 
             ctx.moveTo(this.x - this.width/2, this.y - this.height/2);
-            ctx.lineTo(this.x + this.width/2 - this.height/2 - CIRCLE_RADIUS*2, this.y - this.height/2);
-            ctx.arc(this.x + this.width/2 - this.height/2 - CIRCLE_RADIUS*2, this.y, this.height/2, -Math.PI/2, Math.PI/2);
+            ctx.lineTo(this.x + this.width/2 - this.height/2 - circleRadius*2, this.y - this.height/2);
+            ctx.arc(this.x + this.width/2 - this.height/2 - circleRadius*2, this.y, this.height/2, -Math.PI/2, Math.PI/2);
             ctx.lineTo(this.x - this.width/2, this.y + this.height/2);
             ctx.lineTo(this.x - this.width/2, this.y - this.height/2);
 
@@ -169,7 +169,7 @@ class GateFactory {
 
 
 
-            fillCircle(this.x + this.width/2 - CIRCLE_RADIUS, this.y);
+            fillCircle(this.x + this.width/2 - circleRadius, this.y);
         };
         g.hideName = true;
 
@@ -188,9 +188,9 @@ class GateFactory {
 
             ctx.moveTo(this.x - this.width/2, this.y + this.height/2);
             ctx.quadraticCurveTo(this.x - this.width/4, this.y, this.x - this.width/2, this.y - this.height/2);
-            ctx.quadraticCurveTo(this.x + this.width/4 - 2*CIRCLE_RADIUS, this.y - this.height/2, this.x + this.width/2 - 2*CIRCLE_RADIUS, this.y);
+            ctx.quadraticCurveTo(this.x + this.width/4 - 2*circleRadius, this.y - this.height/2, this.x + this.width/2 - 2*circleRadius, this.y);
             ctx.moveTo(this.x - this.width/2, this.y + this.height/2);
-            ctx.quadraticCurveTo(this.x + this.width/4 - 2*CIRCLE_RADIUS, this.y + this.height/2, this.x + this.width/2 - 2*CIRCLE_RADIUS, this.y);
+            ctx.quadraticCurveTo(this.x + this.width/4 - 2*circleRadius, this.y + this.height/2, this.x + this.width/2 - 2*circleRadius, this.y);
 
             ctx.fillStyle = this.color;
             ctx.fill();
@@ -201,7 +201,7 @@ class GateFactory {
 
 
 
-            fillCircle(this.x + this.width/2 - CIRCLE_RADIUS, this.y);
+            fillCircle(this.x + this.width/2 - circleRadius, this.y);
         };
         g.hideName = true;
 
@@ -219,9 +219,9 @@ class GateFactory {
 
             ctx.moveTo(this.x - this.width/2 + this.width/8, this.y + this.height/2);
             ctx.quadraticCurveTo(this.x - this.width/4 + this.width/8, this.y, this.x - this.width/2 + this.width/8, this.y - this.height/2);
-            ctx.quadraticCurveTo(this.x + this.width/4 - 2*CIRCLE_RADIUS, this.y - this.height/2, this.x + this.width/2 - 2*CIRCLE_RADIUS, this.y);
+            ctx.quadraticCurveTo(this.x + this.width/4 - 2*circleRadius, this.y - this.height/2, this.x + this.width/2 - 2*circleRadius, this.y);
             ctx.moveTo(this.x - this.width/2 + this.width/8, this.y + this.height/2);
-            ctx.quadraticCurveTo(this.x + this.width/4 - 2*CIRCLE_RADIUS, this.y + this.height/2, this.x + this.width/2 - 2*CIRCLE_RADIUS, this.y);
+            ctx.quadraticCurveTo(this.x + this.width/4 - 2*circleRadius, this.y + this.height/2, this.x + this.width/2 - 2*circleRadius, this.y);
 
             ctx.fillStyle = this.color;
             ctx.fill();
@@ -242,7 +242,7 @@ class GateFactory {
 
 
 
-            fillCircle(this.x + this.width/2 - CIRCLE_RADIUS, this.y);
+            fillCircle(this.x + this.width/2 - circleRadius, this.y);
         };
         g.hideName = true;
 

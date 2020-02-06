@@ -23,6 +23,13 @@ class Input extends Gate {
         this.isOn = !this.isOn;
     }
 
+    /*** Creates an object that contains all the useful to save this gate in a save file */
+    createSave() {
+        let gateSave = super.createSave();
+        gateSave.isOn = this.isOn;
+        return gateSave;
+    }
+
     // Graphical properties --------------------------------------------------------------------------------------------
 
     drawBody() {

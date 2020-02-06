@@ -1,6 +1,6 @@
 let wiringModeSelectedInput; // The gate that acts as the input of the current connection (it has the connection on its output)
 let wiringModeSelectedOutput; // The gate that acts as the ouptut of the current connection (it has the connection on its input)
-let wiringModeInputIndex; // The index of the selected input among the inputs of the selectedOutput
+let wiringModeInputIndex; // The index of the selectedInput among the inputs of the selectedOutput
 let wiringModeButtons; // Buttons that should be displayed only in this mode
 
 class WiringMode {
@@ -21,18 +21,27 @@ class WiringMode {
             return;
         }
 
-        if(!wiringModeSelectedInput) { // If no input is selected for the moment
-            let connectorIndex = gate.getConnector(mouseX, mouseY);
-            if(connectorIndex < 0) // If the user clicked on an output (that can then be the selectedInput)
-                wiringModeSelectedInput = gate.getGateForOutput(-connectorIndex-1);
+        let connectorIndex = gate.getConnector(mouseX, mouseY);
+
+        // If the user clicked on a gate input without havng selected a connection input
+        // and if the selected input already has something connected, disconnects the connection on its output
+        // and puts the connection input as selectedInput
+        if(!wiringModeSelectedInput && connectorIndex > 0 && gate.inputs[connectorIndex-1]) {
+            wiringModeSelectedInput = gate.inputs[connectorIndex-1].destination;
+            gate.inputs[connectorIndex-1] = undefined;
+            return;
         }
 
-        if(!wiringModeSelectedOutput) { // If no output is selected for the moment
-            let connectorIndex = gate.getConnector(mouseX, mouseY);
-            if(connectorIndex > 0) { // If the user clicked on an input (that can then be the selectedOutput)
-                wiringModeSelectedOutput = gate;
-                wiringModeInputIndex = connectorIndex-1;
-            }
+        // If no input is selected for the moment
+        // and the user clicked on an output (that can then be the selectedInput)
+        if(!wiringModeSelectedInput && connectorIndex < 0)
+            wiringModeSelectedInput = gate.getGateForOutput(-connectorIndex-1);
+
+        // If no output is selected for the moment
+        // and the user clicked on an input (that can then be the selectedOutput)
+        if(!wiringModeSelectedOutput && connectorIndex > 0) {
+            wiringModeSelectedOutput = gate;
+            wiringModeInputIndex = connectorIndex-1;
         }
 
         // If both the input and the output are defined, builds a Connection

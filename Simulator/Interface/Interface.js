@@ -154,7 +154,7 @@ class Interface {
     static zoom(factor) {
 
         interfaceZoomFactor *= factor;
-        CIRCLE_RADIUS *= factor;
+        circleRadius *= factor;
         connectionWidth *= factor;
 
         for(let gate of gates) {

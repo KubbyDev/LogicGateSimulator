@@ -5,6 +5,8 @@ class Gate {
         It can work as a Gate, or be extended to change some behaviour
      */
 
+    static nextID = 0; // The Id that will be given to the next gate to be built
+
     constructor() {
 
         this.activation = () => true; // Activation function. For example to create an AND put (a,b) => a&&b
@@ -12,14 +14,14 @@ class Gate {
         this.tempOutput = false;      // The output during the update. Copied in output at the end of the update
         this.output = false;          // State of the output of the gate
         this.maxInputs = 0;           // The maximum number of inputs this gate can have
-        this.id = gates.length;       // The identifier of the gate (its index in gates)
+        this.id = -1;                 // The identifier of the gate (its index in gates)
 
         this.x = 10;                  // Position x of the center of the gate (horizontal, 0 = left)
         this.y = 10;                  // Position y of the center of the gate (vertical, 0 = top)
         this.width = 20;              // The width of the gate, can vary with zoom
         this.height = 20;             // The height of the gate, can vary with zoom
         this.color = "#379f1f";       // The color
-        this.type = "Gate";           // Stores the name of the function in GateFactory used to generate this gate (useful for custom gates)
+        this.type = "Gate";           // Stores the name of the function in GateFactory used to generate this gate (useful for custom gates and saving)
         this.name = "Gate";           // Display name
         this.fontSize = 8;            // Font size of the display name, can vary with zoom
         this.hideName = false;        // Hide the display name
@@ -126,6 +128,20 @@ class Gate {
 
     /*** Called when the user clicks on the gate in Interaction mode */
     onClick() {
+    }
+
+    /*** Creates an object that contains all the useful to save this gate in a save file */
+    createSave() {
+        return {
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            fontSize: this.fontSize,
+            output: this.output,
+            type: this.type,
+            id: this.id,
+        };
     }
 
     // Graphical properties --------------------------------------------------------------------------------------------

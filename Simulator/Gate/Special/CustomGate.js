@@ -1,7 +1,7 @@
 /*
 Custom gates are like a box where you put some gates but they are displayed as one gate.
 The simulator sees it as one gate, but during the simulation the custom gate will simulate its internal
-circuit as if it was real
+circuit as if it was real. Only the gate itself and the outputGates have ids (useful for saving)
  */
 class CustomGate extends Gate {
 
@@ -42,7 +42,7 @@ class CustomGate extends Gate {
      * If it is an input the index will be positive (1 and higher), negative if it is an output (-1 and lower) */
     getConnector(x,y) {
 
-        if(x > this.x || this.maxInputs < 1) { //Si on est sur la droite de la porte ou qu'elle n'a pas d'inputs
+        if(x > this.x || this.maxInputs < 1) { // If we are on the right of the gate or if it has no input
 
             let minDistY = Infinity;
             let minIndex = 0;
@@ -92,6 +92,14 @@ class CustomGate extends Gate {
         div.appendChild(button);
 
         mainDiv.appendChild(div);
+    }
+
+    /*** Creates an object that contains all the useful to save this gate in a save file */
+    createSave() {
+        let gateSave = super.createSave();
+        gateSave.string = this.string;
+        gateSave.maxInputs = this.maxInputs;
+        return gateSave;
     }
 
     // Graphical properties --------------------------------------------------------------------------------------------
@@ -192,7 +200,7 @@ class CustomGate extends Gate {
 
             // Creation of the gate
             let gate = SerializerParser.parseCustomGate(SerializerParser.serializeCustomGate(document.getElementById("name").value, inputs, outputs));
-            gates.push(gate);
+            BuildMode.addGate(gate, false);
 
             // Displays the interface to show the serialized string
             Interface.closePopup();

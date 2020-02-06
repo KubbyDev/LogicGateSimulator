@@ -10,7 +10,7 @@
 <canvas id="canvas" width="1400" height="700"></canvas>
 <div id="popup_bg">
     <div id="popup_main_div">
-        <!-- Rempli automatiquement -->
+        <!-- Filled by the program when needed -->
     </div>
 </div>
 
@@ -38,14 +38,17 @@
 <script>
 
     //TODO:
-    // Supprimer les Nodes dans le serializer de CustomGates (opti)
-    // Saving system (add interfaceZoomFactor)
+    // Possible probleme SerializerParser line 174: si la gate n'est pas full sur les inputs
+    // Remove all zoom related values in Save
+    // auto save when create custom gate
+    // Shortcut for some gates + last gate
+    // Improve popup graphics + Enter pour Done, croix pour quitter
+    // snap auto sur la connection la plus proche
     // Cleanup (comments + robustesse + generalisation de code)
     // manuel d'utilisation dans le readme
     // serveur pour update auto des customgate
-    // snap auto sur la connection la plus proche
     // bug: error when small screen go down in list then full screen
-	// Shortcut for some gates + last gate
+    // Supprimer les Nodes dans le serializer de CustomGates (opti)
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");

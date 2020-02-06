@@ -2,14 +2,14 @@
 function fillCircle(x, y) {
     ctx.beginPath();
     ctx.fillStyle = "#ffffff";
-    ctx.arc(x, y, CIRCLE_RADIUS, 0, 2*Math.PI);
+    ctx.arc(x, y, circleRadius, 0, 2*Math.PI);
     ctx.fill();
     ctx.lineWidth = 1;
     ctx.strokeStyle = "#000000";
     ctx.stroke();
 
 }
-let CIRCLE_RADIUS = 5;
+let circleRadius = 5;
 
 /*** Removes elements from an array */
 Array.prototype.remove = function(value) {
