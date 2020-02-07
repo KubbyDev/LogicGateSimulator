@@ -1,5 +1,7 @@
 class SerializerParser {
 
+    // Parsing ---------------------------------------------------------------------------------------------------------
+
     /*** Creates a Custom gate from the data string
      * Format: Name;input_1&...&input_n;output_1&...&output_n;intern_1&...&intern_n
      * Input: Name
@@ -8,6 +10,7 @@ class SerializerParser {
     static parseCustomGate(rawData) {
 
         let customGate = new CustomGate();
+        customGate.type = "CUSTOM";
         customGate.string = rawData;
 
         let parts = rawData.split(';');
@@ -67,9 +70,11 @@ class SerializerParser {
             .setGraphicProperties(
                 mouseX, mouseY,
                 100, 30+Math.max(customGate.maxInputs,customGate.outputGates.length)*20,
-                "#379f1f", "CUSTOM", parts[0]
+                "#379f1f", parts[0]
             );
     }
+
+    // Serialization ---------------------------------------------------------------------------------------------------
 
     /*** Serializes all the gates in the simulator world
      * Format: Name;input_1&...&input_n;output_1&...&output_n;intern_1&...&intern_n
@@ -77,6 +82,9 @@ class SerializerParser {
      * Output: Name§input_1_index§...§input_n_index
      * InternGate: Type@param_2@...@param_n§input_1_index§...§input_n_index */
     static serializeCustomGate(name, inputNames, outputNames) {
+
+        // Saves the current state of the simulator to be able to edit this custom gate later
+        saveSimulatorState(name);
 
         let data = "";
 

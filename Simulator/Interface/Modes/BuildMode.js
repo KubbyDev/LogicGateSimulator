@@ -3,6 +3,7 @@ let buildModeSelectorPosition = 0; // Index of the first button displayed in the
 let buildModeListLength = 0; // Number of buttons in the list on the right
 let buildModeButtons = []; // Buttons that should be displayed only in this mode
 let buildModeLastCustomGate = ""; // Last custom gate loaded
+let buildModeLastGate = "";
 
 class BuildMode {
 
@@ -65,6 +66,10 @@ class BuildMode {
         buildModeButtons[2].y = buildModeButtons[5].height*buildModeListLength + 1.5*buildModeButtons[1].height + interfaceButtonSpacing*(2+buildModeListLength);
         buildModeButtons[1].draw();
         buildModeButtons[2].draw();
+
+        // Updates the list if there is space on the bottom (if the user went down with small screen and then full screen)
+        if(5+buildModeSelectorPosition+buildModeListLength-1 >= buildModeButtons.length)
+            buildModeSelectorPosition = buildModeButtons.length-buildModeListLength-5;
 
         // Gate creation buttons
         for(let i = 0; i < buildModeListLength; i++) {
@@ -214,10 +219,11 @@ class BuildMode {
     /*** Adds a gate to the simulation
      * Put select to automatically select the new gate */
     static addGate(gate, select) {
-        if(select === undefined || !select)
+        if(select === undefined || select)
             buildModeSelectedGate = gate;
         gate.id = Gate.nextID;
         Gate.nextID++;
+        buildModeLastGate = gate.type;
         gates.push(gate);
     }
 
@@ -238,5 +244,21 @@ class BuildMode {
     static onKeyPressed(key) {
         if(key === 'Delete')
             BuildMode.removeGate(buildModeSelectedGate);
+        if(key === 'a')
+            BuildMode.addGate(GateFactory.AND(mouseX, mouseY), false);
+        if(key === 'o')
+            BuildMode.addGate(GateFactory.OR(mouseX, mouseY), false);
+        if(key === 'n')
+            BuildMode.addGate(GateFactory.NOT(mouseX, mouseY), false);
+        if(key === 'x')
+            BuildMode.addGate(GateFactory.XOR(mouseX, mouseY), false);
+        if(key === ' ') {
+            if(buildModeLastGate === "CUSTOM")
+                BuildMode.addGate(SerializerParser.parseCustomGate(buildModeLastCustomGate), false);
+            else if(buildModeLastGate !== "") {
+                let gateConstructor = GateFactory[buildModeLastGate];
+                BuildMode.addGate(gateConstructor(mouseX,mouseY), false);
+            }
+        }
     }
 }

@@ -21,8 +21,8 @@ class Gate {
         this.width = 20;              // The width of the gate, can vary with zoom
         this.height = 20;             // The height of the gate, can vary with zoom
         this.color = "#379f1f";       // The color
-        this.type = "Gate";           // Stores the name of the function in GateFactory used to generate this gate (useful for custom gates and saving)
-        this.name = "Gate";           // Display name
+        this.type = "";               // Stores the name of the function in GateFactory used to generate this gate (useful for custom gates and saving)
+        this.name = "";               // Display name
         this.fontSize = 8;            // Font size of the display name, can vary with zoom
         this.hideName = false;        // Hide the display name
     }
@@ -30,11 +30,13 @@ class Gate {
     // Functionnal properties ------------------------------------------------------------------------------------------
 
     /*** Changes the gate's functionnal properties */
-    setFonctionnalProperties(activation, inputs, maxInputs) {
+    setFonctionnalProperties(type, activation, inputs, maxInputs) {
 
-        this.activation = activation;
+        if(activation)
+            this.activation = activation;
         this.maxInputs = maxInputs !== undefined ? maxInputs : 0;
         this.setInputs(inputs !== undefined ? inputs : []);
+        this.type = type;
         return this;
     }
 
@@ -135,9 +137,6 @@ class Gate {
         return {
             x: this.x,
             y: this.y,
-            width: this.width,
-            height: this.height,
-            fontSize: this.fontSize,
             output: this.output,
             type: this.type,
             id: this.id,
@@ -147,15 +146,15 @@ class Gate {
     // Graphical properties --------------------------------------------------------------------------------------------
 
     /*** Changes the gates graphical properties */
-    setGraphicProperties(x, y, width, height, color, type, name) {
+    setGraphicProperties(x, y, width, height, color, name) {
 
         this.x = x;
         this.y = y;
         this.width = width * interfaceZoomFactor;
         this.height = height * interfaceZoomFactor;
         this.color = color;
-        this.type = type;
-        this.name = name !== undefined ? name : type;
+        if(name)
+            this.name = name;
 
         this.fontSize *= interfaceZoomFactor;
 

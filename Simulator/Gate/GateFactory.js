@@ -5,21 +5,21 @@ class GateFactory {
 
     static UP(x, y) {
         return new Gate()
-            .setFonctionnalProperties(() => true, [])
-            .setGraphicProperties(x,y,40,40,"#ae110b", "UP", "1");
+            .setFonctionnalProperties("UP", () => true, [])
+            .setGraphicProperties(x,y,40,40,"#ae110b", "1");
     }
 
     static DOWN(x, y) {
         return new Gate()
-            .setFonctionnalProperties(() => false, [])
-            .setGraphicProperties(x,y,40,40,"#5f5f5f", "DOWN", "0");
+            .setFonctionnalProperties("DOWN", () => false, [])
+            .setGraphicProperties(x,y,40,40,"#5f5f5f", "0");
     }
 
     static NOT(x, y, input) {
 
         let g = new Gate()
-            .setFonctionnalProperties((i) => !i[0], input, 1)
-            .setGraphicProperties(x,y,30,20,"#379f1f","NOT");
+            .setFonctionnalProperties("NOT", (i) => !i[0], input, 1)
+            .setGraphicProperties(x, y, 30, 20, "#379f1f");
 
         g.drawBody = function() {
 
@@ -49,8 +49,8 @@ class GateFactory {
     static AND(x, y, inputs) {
 
         let g = new Gate()
-            .setFonctionnalProperties((i) => i[0] && i[1], inputs, 2)
-            .setGraphicProperties(x,y,40,40,"#379f1f","AND");
+            .setFonctionnalProperties("AND", (i) => i[0] && i[1], inputs, 2)
+            .setGraphicProperties(x, y, 40, 40, "#379f1f");
 
         g.drawBody = function() {
 
@@ -78,8 +78,8 @@ class GateFactory {
 
     static OR(x, y, inputs) {
         let g = new Gate()
-            .setFonctionnalProperties((i) => i[0] || i[1], inputs, 2)
-            .setGraphicProperties(x,y,40,40,"#379f1f","OR");
+            .setFonctionnalProperties("OR", (i) => i[0] || i[1], inputs, 2)
+            .setGraphicProperties(x, y, 40, 40, "#379f1f");
 
         g.drawBody = function() {
 
@@ -107,8 +107,8 @@ class GateFactory {
 
     static XOR(x, y, inputs) {
         let g = new Gate()
-            .setFonctionnalProperties((i) => i[0] !== i[1], inputs, 2)
-            .setGraphicProperties(x,y,45,40,"#379f1f","XOR");
+            .setFonctionnalProperties("XOR", (i) => i[0] !== i[1], inputs, 2)
+            .setGraphicProperties(x, y, 45, 40, "#379f1f");
 
         g.drawBody = function() {
 
@@ -147,8 +147,8 @@ class GateFactory {
     static NAND(x, y, inputs) {
 
         let g = new Gate()
-            .setFonctionnalProperties((i) => !(i[0] && i[1]), inputs, 2)
-            .setGraphicProperties(x,y,50,40,"#379f1f","NAND");
+            .setFonctionnalProperties("NAND", (i) => !(i[0] && i[1]), inputs, 2)
+            .setGraphicProperties(x, y, 50, 40, "#379f1f");
 
         g.drawBody = function() {
 
@@ -179,8 +179,8 @@ class GateFactory {
     static NOR(x, y, inputs) {
 
         let g = new Gate()
-            .setFonctionnalProperties((i) => !(i[0] || i[1]), inputs, 2)
-            .setGraphicProperties(x,y,50,40,"#379f1f","NOR");
+            .setFonctionnalProperties("NOR", (i) => !(i[0] || i[1]), inputs, 2)
+            .setGraphicProperties(x, y, 50, 40, "#379f1f");
 
         g.drawBody = function() {
 
@@ -210,8 +210,8 @@ class GateFactory {
 
     static XNOR(x, y, inputs) {
         let g = new Gate()
-            .setFonctionnalProperties((i) => i[0] === i[1], inputs, 2)
-            .setGraphicProperties(x,y,55,40,"#379f1f","XNOR");
+            .setFonctionnalProperties("XNOR", (i) => i[0] === i[1], inputs, 2)
+            .setGraphicProperties(x, y, 55, 40, "#379f1f");
 
         g.drawBody = function() {
 
@@ -251,32 +251,34 @@ class GateFactory {
 
     static INPUT(x, y) {
         return new Input()
-            .setGraphicProperties(x,y,40,40,"#db7ed2", "INPUT")
+            .setFonctionnalProperties("INPUT")
+            .setGraphicProperties(x, y, 40, 40, "#db7ed2")
     }
 
     static CLOCK(x, y, period) {
         return new Clock()
             .setPeriod(period)
-            .setGraphicProperties(x,y,40,40,"#3d79e7", "CLOCK");
+            .setFonctionnalProperties("CLOCK")
+            .setGraphicProperties(x, y, 40, 40, "#3d79e7");
     }
 
     static OUTPUT(x, y, input) {
         return new Output()
-            .setFonctionnalProperties((i) => i[0], input, 1)
-            .setGraphicProperties(x,y,40,40,"#7a7a7a", "OUTPUT", "OUTPUT")
+            .setFonctionnalProperties("OUTPUT", (i) => i[0], input, 1)
+            .setGraphicProperties(x, y, 40, 40, "#7a7a7a")
             .setHideName(true);
     }
 
     static NODE(x,y, input) {
         return new ConnectionNode()
-            .setFonctionnalProperties((i) => i[0], input, 1)
-            .setGraphicProperties(x,y,10,7,"#7a7a7a", "NODE", "NODE")
+            .setFonctionnalProperties("NODE", (i) => i[0], input, 1)
+            .setGraphicProperties(x, y, 10, 7, "#7a7a7a")
             .setHideName(true);
     }
 
     static SWITCH(x, y, input) {
         return new Switch()
-            .setFonctionnalProperties((i) => i[0], input, 1)
-            .setGraphicProperties(x,y,45,20,"#ffbb25", "SWITCH")
+            .setFonctionnalProperties("SWITCH", (i) => i[0], input, 1)
+            .setGraphicProperties(x, y, 45, 20, "#ffbb25")
     }
 }

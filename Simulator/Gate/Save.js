@@ -1,19 +1,6 @@
-function askForStateSave() {
+// Saving --------------------------------------------------------------------------------------------------------------
 
-    // Asks the user to choose a .lgs file
-    let elem = window.document.createElement('INPUT');
-    elem.accept = ".lgs";
-    elem.type = "file";
-    elem.click();
-
-    // Reads the file and calls loadSimulatorState with its content
-    elem.addEventListener('change', () => {
-        if(elem.files[0])
-            elem.files[0].text().then(loadSimulatorState);
-    });
-}
-
-function saveSimulatorState() {
+function saveSimulatorState(saveName) {
 
     let data = {
         gates: [],
@@ -43,7 +30,24 @@ function saveSimulatorState() {
     }
 
     // Creates the save as a string and downloads it
-    download(JSON.stringify(data), "LogicGateSimulator.lgs");
+    download(JSON.stringify(data), (saveName || "LogicGateSimulator") + ".lgs");
+}
+
+// Loading -------------------------------------------------------------------------------------------------------------
+
+function askForStateSave() {
+
+    // Asks the user to choose a .lgs file
+    let elem = window.document.createElement('INPUT');
+    elem.accept = ".lgs";
+    elem.type = "file";
+    elem.click();
+
+    // Reads the file and calls loadSimulatorState with its content
+    elem.addEventListener('change', () => {
+        if(elem.files[0])
+            elem.files[0].text().then(loadSimulatorState);
+    });
 }
 
 function loadSimulatorState(data) {
@@ -53,12 +57,6 @@ function loadSimulatorState(data) {
     // The ids in the save may not start at the same point. So while loading, all ids are offset by the number
     // of gates already in the simulation state before loading.
     let gatesIdOffset = Gate.nextID;
-
-    circleRadius /= interfaceZoomFactor;
-    connectionWidth /= interfaceZoomFactor;
-    interfaceZoomFactor = dataObj.interfaceZoomFactor;
-    circleRadius *= interfaceZoomFactor;
-    connectionWidth *= interfaceZoomFactor;
 
     // Builds all the gates
     const newGates = dataObj.gates.map(saveObj => {
@@ -76,7 +74,11 @@ function loadSimulatorState(data) {
 
         // Copies all the properties of save object into the gate
         Object.assign(gate, saveObj);
-        gate.id += gatesIdOffset;
+
+        gate.id += gatesIdOffset; // Makes sure there is no ID collisions with already placed gates
+        gate.x *= interfaceZoomFactor/dataObj.interfaceZoomFactor; // Updates the gaps between gates (width, height and
+        gate.y *= interfaceZoomFactor/dataObj.interfaceZoomFactor; // fontSize are updated by setGraphicProperties)
+
         return gate;
     });
 
