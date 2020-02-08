@@ -94,15 +94,24 @@ class SerializerParser {
             // For each gate in the intern gates or in the output gates
             for(let gate of customGate.internGates.concat(customGate.outputGates)) {
 
+                // Rewires the connections that goes to an input of the custom gate
+                // to the gate the input is connected to
                 for (let i = 0; i < gate.maxInputs; i++) {
+
+                    if(gate.inputs[i] === undefined || gate.inputs[i] === null)
+                        continue;
 
                     let inputIndex = customGate.inputGates.indexOf(gate.inputs[i].destination);
 
                     // If the connection goes to an input of the CustomGate
-                    if (inputIndex !== -1) // Connects to the destination of the corresponding input
-                        gate.inputs[i].destination = customGate.inputs[inputIndex].destination;
+                    if (inputIndex !== -1) { // Connects to the destination of the corresponding input
+                        if(customGate.inputs[inputIndex])
+                            gate.inputs[i].destination = customGate.inputs[inputIndex].destination;
+                        else
+                            gate.inputs.splice(i, 1); // Removes the ith element
+                    }
 
-                    // If it goes to another intern gate, no problem
+                    // If it goes to another intern gate or to nothing, no problem
                 }
 
                 gates.push(gate);
@@ -176,10 +185,8 @@ class SerializerParser {
             if (gate instanceof Output) {
 
                 data += outputNames[index] + '§';
-                for (let input of gate.inputs) {
-                    if (input)
-                        data += getIndex(input.destination) + '§';
-                }
+                for (let input of gate.inputs)
+                    data += (input ? getIndex(input.destination) : "NULL") + '§';
                 index++;
 
                 addSeparator('§', '&');
@@ -194,10 +201,8 @@ class SerializerParser {
             if (!(gate instanceof Output) && !(gate instanceof Input)) {
 
                 data += gate.type + gate.serializeParameters() + '§';
-                for (let input of gate.inputs) {
-                    if (input)
-                        data += getIndex(input.destination) + '§';
-                }
+                for (let input of gate.inputs)
+                    data += (input ? getIndex(input.destination) : "NULL") + '§';
                 index++;
 
                 addSeparator('§', '&');

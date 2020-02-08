@@ -26,34 +26,12 @@ class Clock extends Gate {
 
     /*** Opens a popup to choose the period and current values */
     onClick() {
-
-        Interface.openPopup();
-
-        let mainDiv = document.getElementById("popup_main_div");
-
-        let text1 = document.createElement("P");
-        text1.innerHTML = "Period: ";
-        let input1 = document.createElement("INPUT");
-        input1.id = "clockPeriod";
-        input1.value = this.period;
-        let text2 = document.createElement("P");
-        text2.innerHTML = "Current: ";
-        let input2 = document.createElement("INPUT");
-        input2.id = "clockCurrent";
-        input2.value = this.current;
-
-        let button = document.createElement("BUTTON");
-        button.addEventListener('click', Clock.chooseParameters);
-        button.innerHTML = "Done";
-
-        let div = document.createElement("DIV");
-        text1.appendChild(input1);
-        div.appendChild(text1);
-        text2.appendChild(input2);
-        div.appendChild(text2);
-        div.appendChild(button);
-        mainDiv.appendChild(div);
-
+        Popup.open();
+        Popup.addTitle("Clock configuration");
+        Popup.addSpace();
+        Popup.addFields([{id: "clockPeriod", defaultValue: this.period}], "Period (milliseconds):");
+        Popup.addFields([{id: "clockCurrent", defaultValue: this.current}], "Current (milliseconds):");
+        Popup.addDoneButton(Clock.chooseParameters);
         clockOpenedPopup = this;
     }
 
@@ -68,7 +46,7 @@ class Clock extends Gate {
         if(!isNaN(current))
             clockOpenedPopup.current = current;
 
-        Interface.closePopup();
+        Popup.close();
     }
 
     /*** Changes the clock's period */

@@ -146,7 +146,7 @@ class BuildMode {
                 .setOnClick(() => BuildMode.addGate(GateFactory.DOWN(mouseX, mouseY))),
             new Button()
                 .setGraphicProperties(80, 80, "CLOCK", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(GateFactory.CLOCK(mouseX, mouseY, 50))),
+                .setOnClick(() => BuildMode.addGate(GateFactory.CLOCK(mouseX, mouseY, 200))),
             new Button()
                 .setGraphicProperties(80, 80, "INPUT", "#379f1f")
                 .setOnClick(() => BuildMode.addGate(GateFactory.INPUT(mouseX, mouseY))),
@@ -189,31 +189,16 @@ class BuildMode {
 
     /*** Opens the popup that asks for a string to build a CustomGate */
     static openCustomGatePopup() {
-
-        Interface.openPopup();
-
-        let mainDiv = document.getElementById("popup_main_div");
-        let div = document.createElement("DIV");
-
-        let separator = document.createElement("HR");
-        separator.innerHTML = "Data for your gate (you can generate it with the Build Custom Gate button)";
-        div.appendChild(separator);
-
-        let input = document.createElement("INPUT");
-        input.id = "rawData";
-        input.size = 100;
-        div.appendChild(input);
-
-        let button = document.createElement("BUTTON");
-        button.addEventListener('click', () => {
+        Popup.open();
+        Popup.addTitle("Custom Gate");
+        Popup.addText("Data for your gate (you can generate it with the Build Custom Gate button)");
+        Popup.addFields([{id: "rawData"}], " ");
+        Popup.addDoneButton(() => {
             let gate = SerializerParser.parseCustomGate(document.getElementById("rawData").value);
             BuildMode.addGate(gate);
             buildModeLastCustomGate = gate.string;
-            Interface.closePopup();
+            Popup.close();
         });
-        button.innerHTML = "Done";
-        div.appendChild(button);
-        mainDiv.appendChild(div);
     }
 
     /*** Adds a gate to the simulation

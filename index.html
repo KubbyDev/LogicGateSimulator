@@ -8,7 +8,8 @@
 <body>
 
 <canvas id="canvas" width="1400" height="700"></canvas>
-<div id="popup_bg">
+
+<div id="popup_bg" onclick="Popup.closeIfClickedOnBackground()">
     <div id="popup_main_div">
         <!-- Filled by the program when needed -->
     </div>
@@ -31,6 +32,7 @@
 <script src="Simulator/Interface/Interface.js"></script>
 <script src="Simulator/Interface/Button.js"></script>
 <script src="Simulator/Interface/UserInteraction.js"></script>
+<script src="Simulator/Interface/Popup.js"></script>
 <script src="Simulator/Interface/Modes/BuildMode.js"></script>
 <script src="Simulator/Interface/Modes/WiringMode.js"></script>
 <script src="Simulator/Interface/Modes/InteractionMode.js"></script>
@@ -38,13 +40,11 @@
 <script>
 
     //TODO:
-    // Possible probleme SerializerParser line 174: si la gate n'est pas full sur les inputs
-    // Improve popup graphics + Enter pour Done, croix pour quitter
     // snap auto sur la connection la plus proche
     // Cleanup (comments + robustesse + generalisation de code) notamment refaire le menu build avec un truc plus general et plus propre
     // manuel d'utilisation dans le readme
     // serveur pour update auto des customgate
-    // Supprimer les Nodes dans le serializer de CustomGates (opti)
+    // Centrer gates au moemnt d'un load
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
@@ -68,7 +68,7 @@
         Gate.drawAll(gates);
         Interface.draw();
 
-    }, 10);
+    }, 1);
 
 </script>
 

@@ -168,24 +168,5 @@ class Interface {
             gate.fontSize *= factor;
         }
     }
-
-    static openPopup() {
-
-        popupBackground.style.display = 'block';
-        interfaceBlockInputs = true;
-    }
-
-    static closePopup() {
-
-        let mainDiv = document.getElementById("popup_main_div");
-        let child = mainDiv.lastElementChild;
-        while (child) {
-            mainDiv.removeChild(child);
-            child = mainDiv.lastElementChild;
-        }
-
-        popupBackground.style.display = 'none';
-        interfaceBlockInputs = false;
-    }
 }
 

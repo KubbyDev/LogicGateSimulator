@@ -29,7 +29,7 @@ document.onkeydown = function(event) {
 
     switch(event.key) {
         case 'Escape':
-            Interface.closePopup();
+            Popup.close();
     }
 
     if(interfaceBlockInputs)
