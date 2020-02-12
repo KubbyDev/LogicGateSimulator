@@ -14,6 +14,7 @@ class Gate {
         this.tempOutput = false;      // The output during the update. Copied in output at the end of the update
         this.output = false;          // State of the output of the gate
         this.maxInputs = 0;           // The maximum number of inputs this gate can have
+        this.maxOutputs = 1;          // The maximum number of outputs this gate can have
         this.id = -1;                 // The identifier of the gate (its index in gates)
 
         this.x = 10;                  // Position x of the center of the gate (horizontal, 0 = left)

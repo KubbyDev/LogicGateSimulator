@@ -16,7 +16,7 @@ class Interface {
 
     static draw() {
 
-        Interface.getCurrentMode().updateContextualMenu();
+        Interface.getCurrentMode().lateUpdate();
 
         // Mode selection buttons
         interfaceButtons[0].x = canvas.width/2 - interfaceButtons[0].width - interfaceButtonSpacing;
@@ -139,7 +139,7 @@ class Interface {
     }
 
     static update() {
-        Interface.getCurrentMode().update();
+        Interface.getCurrentMode().earlyUpdate();
     }
 
     /*** Returns the class that handles the selected mode */

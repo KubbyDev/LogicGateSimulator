@@ -6,16 +6,10 @@ class InteractionMode {
         return interactionModeButtons;
     }
 
-    /*** Called when the user clicks somewhere with this mode selected */
-    static onClick() {
+    // Events ----------------------------------------------------------------------------------------------------------
 
-        let selectedGate = getGateAtPosition(mouseX, mouseY);
-        if(selectedGate)
-            selectedGate.onClick();
-    }
-
-    /*** Called on every frame when this menu is selected */
-    static update() {
+    static init() {
+        interactionModeButtons = [];
     }
 
     /*** Called when the user switches to this mode */
@@ -23,12 +17,21 @@ class InteractionMode {
         interfaceMode = 2;
     }
 
-    /*** Updates and draws the menu on the right */
-    static updateContextualMenu() {
+    /*** Called on every frame when this menu is selected at
+     * the moment of the interface update (begining of the frame calculation)*/
+    static earlyUpdate() {
     }
 
-    static init() {
-        interactionModeButtons = [];
+    /*** Called on every frame when this menu is selected at
+     * the moment of the interface draw (end of the frame calculation)*/
+    static lateUpdate() {
+    }
+
+    /*** Called when the user clicks somewhere with this mode selected */
+    static onClick() {
+        let selectedGate = getGateAtPosition(mouseX, mouseY);
+        if(selectedGate)
+            selectedGate.onClick();
     }
 
     /*** Called for each key press with this mode selected */

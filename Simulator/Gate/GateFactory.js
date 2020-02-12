@@ -37,9 +37,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-
-
-            fillCircle(this.x + this.width/2 - circleRadius, this.y);
+            fillCircle(this.x + this.width/2 - circleRadius, this.y, circleRadius);
         };
         g.hideName = true;
 
@@ -68,8 +66,6 @@ class GateFactory {
             ctx.lineWidth = 1;
             ctx.strokeStyle = "#000000";
             ctx.stroke();
-
-
         };
         g.hideName = true;
 
@@ -97,8 +93,6 @@ class GateFactory {
             ctx.lineWidth = 1;
             ctx.strokeStyle = "#000000";
             ctx.stroke();
-
-
         };
         g.hideName = true;
 
@@ -136,8 +130,6 @@ class GateFactory {
             ctx.lineWidth = 3;
             ctx.strokeStyle = "#000000";
             ctx.stroke();
-
-
         };
         g.hideName = true;
 
@@ -167,9 +159,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-
-
-            fillCircle(this.x + this.width/2 - circleRadius, this.y);
+            fillCircle(this.x + this.width/2 - circleRadius, this.y, circleRadius);
         };
         g.hideName = true;
 
@@ -201,7 +191,7 @@ class GateFactory {
 
 
 
-            fillCircle(this.x + this.width/2 - circleRadius, this.y);
+            fillCircle(this.x + this.width/2 - circleRadius, this.y, circleRadius);
         };
         g.hideName = true;
 
@@ -242,7 +232,7 @@ class GateFactory {
 
 
 
-            fillCircle(this.x + this.width/2 - circleRadius, this.y);
+            fillCircle(this.x + this.width/2 - circleRadius, this.y, circleRadius);
         };
         g.hideName = true;
 

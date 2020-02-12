@@ -1,7 +1,9 @@
 /*
 Custom gates are like a box where you put some gates but they are displayed as one gate.
 The simulator sees it as one gate, but during the simulation the custom gate will simulate its internal
-circuit as if it was real. Only the gate itself and the outputGates have ids (useful for saving)
+circuit as if it was real. The internal circuit is not directly connected to the incomming connections. Instead,
+when the gate is simulated the inputs of the custom gate are copied to the inputs of its internal gates.
+Only the gate itself has an Id
  */
 class CustomGate extends Gate {
 

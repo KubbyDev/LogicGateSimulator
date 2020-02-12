@@ -66,10 +66,11 @@ class SerializerParser {
             connect(customGate.internGates[i], data);
         }
 
+        customGate.maxOutputs = customGate.outputGates.length;
         return customGate
             .setGraphicProperties(
                 mouseX, mouseY,
-                100, 30+Math.max(customGate.maxInputs,customGate.outputGates.length)*20,
+                100, 30+Math.max(customGate.maxInputs,customGate.maxOutputs)*20,
                 "#379f1f", parts[0]
             );
     }

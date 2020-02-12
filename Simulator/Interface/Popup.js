@@ -29,10 +29,12 @@ class Popup {
     // Closes the popup if the user clicked on the background
     static closeIfClickedOnBackground() {
 
+        // Does nothing if the user clicked on the popup
         if(mouseX > canvas.width*0.1 && mouseX < canvas.width*0.9
         && mouseY > canvas.height*0.1 && mouseY < canvas.height*0.9)
             return;
 
+        // Closes the popup if the user clicked on the background
         Popup.close();
     }
 

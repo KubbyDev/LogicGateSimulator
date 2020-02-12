@@ -15,8 +15,6 @@
     </div>
 </div>
 
-<script src="Simulator/Tools.js"></script>
-
 <script src="Simulator/Gate/GateFactory.js"></script>
 <script src="Simulator/Gate/Connection.js"></script>
 <script src="Simulator/Gate/Gate.js"></script>
@@ -37,14 +35,22 @@
 <script src="Simulator/Interface/Modes/WiringMode.js"></script>
 <script src="Simulator/Interface/Modes/InteractionMode.js"></script>
 
+<script src="Simulator/Tools.js"></script>
+
 <script>
 
     //TODO:
     // snap auto sur la connection la plus proche
-    // Cleanup (comments + robustesse + generalisation de code) notamment refaire le menu build avec un truc plus general et plus propre
-    // manuel d'utilisation dans le readme
     // serveur pour update auto des customgate
     // Centrer gates au moemnt d'un load
+    // Supprimer les nodes dans les custom gates
+    /* Cleanup (comments + robustesse + generalisation de code)
+    const instead of let if possible
+    refaire le menu build en plus propre et general
+    passer les constantes dans des classes
+    gate drawing tools in GateFactory */
+    // Setup babel
+    // manuel d'utilisation dans le readme
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
