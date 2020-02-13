@@ -1,2 +1,10 @@
+# Usual trash files
 .idea/
 *.iml
+
+# Babel files (and node)
+node_modules/
+.babelrc
+babelOutput.js
+package-lock.json
+package.json

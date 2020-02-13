@@ -2,7 +2,7 @@ let wiringModeSelectedOutput; // The gate output that will be used for the conne
 let wiringModeSelectedInput; // The gate input that will be used for the connection that is being built
 let wiringModeInputIndex; // The index of the selectedOutput among the inputs of the selectedInput
 let wiringModeButtons; // Buttons that should be displayed only in this mode
-wiringMode_AUTO_SNAP_RANGE = 50; // Maximum distance of the auto select of connection slots
+let wiringMode_AUTO_SNAP_RANGE = 50; // Maximum distance of the auto select of connection slots
 
 class WiringMode {
 

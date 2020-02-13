@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logic Gate Simulator</title>
+    <link rel="stylesheet" type="text/css" href="Style.css"/>
+</head>
+<body>
+
+<canvas id="canvas" width="1400" height="700"></canvas>
+
+<div id="popup_bg" onclick="Popup.closeIfClickedOnBackground()">
+    <div id="popup_main_div">
+        <!-- Filled by the program when needed -->
+    </div>
+</div>
+<!-- -->
+<script src="Gate/GateFactory.js"></script>
+<script src="Gate/Connection.js"></script>
+<script src="Gate/Gate.js"></script>
+<script src="Gate/Special/Clock.js"></script>
+<script src="Gate/Special/Output.js"></script>
+<script src="Gate/Special/Switch.js"></script>
+<script src="Gate/Special/Input.js"></script>
+<script src="Gate/Special/ConnectionNode.js"></script>
+<script src="Gate/Special/CustomGate.js"></script>
+<script src="Gate/SerializerParser.js"></script>
+<script src="Gate/Save.js"></script>
+
+<script src="Interface/Interface.js"></script>
+<script src="Interface/Button.js"></script>
+<script src="Interface/UserInteraction.js"></script>
+<script src="Interface/Popup.js"></script>
+<script src="Interface/Modes/BuildMode.js"></script>
+<script src="Interface/Modes/WiringMode.js"></script>
+<script src="Interface/Modes/InteractionMode.js"></script>
+
+<script src="Tools.js"></script>
+<script src="Main.js"></script>
+
+</body>
+</html>
