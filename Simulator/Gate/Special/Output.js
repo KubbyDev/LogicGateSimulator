@@ -18,11 +18,6 @@ class Output extends Gate {
         this.color = this.output ? this.upColor : this.downColor;
     }
 
-    // Prevents the gate from having outputs
-    getConnector(x,y) {
-        return 1;
-    }
-
     // Graphical properties --------------------------------------------------------------------------------------------
 
 }

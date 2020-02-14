@@ -1,15 +1,17 @@
 //TODO:
-// snap auto sur la connection la plus proche
-// serveur pour update auto des customgate
+/* serveur pour update auto des customgate
+ * Index pour ouvrir tel ou tel fichier sur le serveur (index herberge sur le server)
+ * Essayer de mettre en place le ouvrir avec
+ * Possibilite de choisir entre fichiers heberges sur le server ou sur le git pages
+ * Save -> POST sur le serveur qui met a jour toutes les gates. Erreurs: Circular dependencies, Changed number I/O
+ * Get custom gates updates every X seconds */
 // Centrer gates au moemnt d'un load
-// Supprimer les nodes dans les custom gates
 /* Cleanup (comments + robustesse + generalisation de code)
- * const instead of let if possible
  * refaire le menu build en plus propre et general
- * passer les constantes dans des classes
  * gate drawing tools in GateFactory */
-// Setup babel
 // manuel d'utilisation dans le readme
+// Dezoom cause display bug on custom gates outputs
+// GateFactory function names are changed by the minification
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -22,6 +24,7 @@ setTimeout(() => {
 
     Interface.init();
 
+    // Main program loop
     setInterval(() => {
 
         Interface.clear();
@@ -37,4 +40,4 @@ setTimeout(() => {
 
     }, 1);
 
-}, 10);
+}, 100);

@@ -1,16 +1,20 @@
-let interfaceBackgroundColor = "#353535";
-let interfaceButtonSpacing = 5;
-let interfaceZoomFactor = 1; // The bigger this number is, the bigger the gates will be
-let interfaceMode = 0;
-let interfaceBlockInputs = false;
-let interfaceButtons = [];
-
 class Interface {
 
     //Interface modes: 0 = Build, 1: Wiring, 2: Interaction
 
+    static BACKGROUND_COLOR = "#353535";
+    static BUTTON_SPACING = 5;
+
+    static zoomFactor = 1; // The bigger this number is, the bigger the gates will be
+    static mode = 0;
+    static blockInputs = false;
+    static buttons = [];
+
+    static negCircleR = 5; // Radius of the circle that represents negation on gates
+    static connectionWidth = 3; // Width of the lines representing connections
+
     static clear() {
-        ctx.fillStyle = interfaceBackgroundColor;
+        ctx.fillStyle = Interface.BACKGROUND_COLOR;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
@@ -19,44 +23,44 @@ class Interface {
         Interface.getCurrentMode().lateUpdate();
 
         // Mode selection buttons
-        interfaceButtons[0].x = canvas.width/2 - interfaceButtons[0].width - interfaceButtonSpacing;
-        interfaceButtons[0].y = interfaceButtons[0].height/2 + interfaceButtonSpacing;
-        interfaceButtons[1].x = canvas.width/2;
-        interfaceButtons[1].y = interfaceButtons[0].height/2 + interfaceButtonSpacing;
-        interfaceButtons[2].x = canvas.width/2 + interfaceButtons[0].width + interfaceButtonSpacing;
-        interfaceButtons[2].y = interfaceButtons[0].height/2 + interfaceButtonSpacing;
-        interfaceButtons[0].draw();
-        interfaceButtons[1].draw();
-        interfaceButtons[2].draw();
+        Interface.buttons[0].x = canvas.width/2 - Interface.buttons[0].width - Interface.BUTTON_SPACING;
+        Interface.buttons[0].y = Interface.buttons[0].height/2 + Interface.BUTTON_SPACING;
+        Interface.buttons[1].x = canvas.width/2;
+        Interface.buttons[1].y = Interface.buttons[0].height/2 + Interface.BUTTON_SPACING;
+        Interface.buttons[2].x = canvas.width/2 + Interface.buttons[0].width + Interface.BUTTON_SPACING;
+        Interface.buttons[2].y = Interface.buttons[0].height/2 + Interface.BUTTON_SPACING;
+        Interface.buttons[0].draw();
+        Interface.buttons[1].draw();
+        Interface.buttons[2].draw();
 
         // Save / Load buttons
-        interfaceButtons[3].x = (0.5)*interfaceButtons[3].width + interfaceButtonSpacing;
-        interfaceButtons[3].y = (0.5)*interfaceButtons[3].height + interfaceButtonSpacing;
-        interfaceButtons[4].x = (1.5)*interfaceButtons[3].width + 2*interfaceButtonSpacing;
-        interfaceButtons[4].y = (0.5)*interfaceButtons[3].height + interfaceButtonSpacing;
-        interfaceButtons[3].draw();
-        interfaceButtons[4].draw();
+        Interface.buttons[3].x = (0.5)*Interface.buttons[3].width + Interface.BUTTON_SPACING;
+        Interface.buttons[3].y = (0.5)*Interface.buttons[3].height + Interface.BUTTON_SPACING;
+        Interface.buttons[4].x = (1.5)*Interface.buttons[3].width + 2*Interface.BUTTON_SPACING;
+        Interface.buttons[4].y = (0.5)*Interface.buttons[3].height + Interface.BUTTON_SPACING;
+        Interface.buttons[3].draw();
+        Interface.buttons[4].draw();
 
         // Play / Pause button
-        interfaceButtons[5].x = (0.5)*interfaceButtons[5].width + interfaceButtonSpacing;
-        interfaceButtons[5].y = (0.5)*interfaceButtons[5].height + interfaceButtons[3].height + 2*interfaceButtonSpacing;
-        interfaceButtons[5].draw();
+        Interface.buttons[5].x = (0.5)*Interface.buttons[5].width + Interface.BUTTON_SPACING;
+        Interface.buttons[5].y = (0.5)*Interface.buttons[5].height + Interface.buttons[3].height + 2*Interface.BUTTON_SPACING;
+        Interface.buttons[5].draw();
 
         // Next frame button (Only if the simulator is paused)
         if(framesToCalculate === 0) {
-            interfaceButtons[6].x = (1.5) * interfaceButtons[6].width + 2 * interfaceButtonSpacing;
-            interfaceButtons[6].y = (0.5) * interfaceButtons[6].height + interfaceButtons[4].height + 2 * interfaceButtonSpacing;
-            interfaceButtons[6].draw();
+            Interface.buttons[6].x = (1.5) * Interface.buttons[6].width + 2 * Interface.BUTTON_SPACING;
+            Interface.buttons[6].y = (0.5) * Interface.buttons[6].height + Interface.buttons[4].height + 2 * Interface.BUTTON_SPACING;
+            Interface.buttons[6].draw();
         }
         else {
-            interfaceButtons[6].x = -1000
-            interfaceButtons[6].y = -1000;
+            Interface.buttons[6].x = -1000
+            Interface.buttons[6].y = -1000;
         }
     }
 
     static getButtonAtPosition(x, y) {
 
-        for (let button of Interface.getCurrentMode().buttons.concat(interfaceButtons))
+        for (let button of Interface.getCurrentMode().buttons.concat(Interface.buttons))
             if (Math.abs(x - button.x) < button.width / 2 && Math.abs(y - button.y) < button.height / 2)
                 return button;
 
@@ -69,7 +73,7 @@ class Interface {
         WiringMode.init();
         InteractionMode.init();
 
-        interfaceButtons = [
+        Interface.buttons = [
             new Button()
                 .setGraphicProperties(90, 30, "Build", "#ffffff")
                 .setOnClick(() => BuildMode.enable()),
@@ -81,10 +85,10 @@ class Interface {
                 .setOnClick(() => InteractionMode.enable()),
             new Button()
                 .setGraphicProperties(50, 40, "Save", "#00e1ff")
-                .setOnClick(() => saveSimulatorState()),
+                .setOnClick(() => SimulatorState.save()()),
             new Button()
                 .setGraphicProperties(50, 40, "Load", "#00e1ff")
-                .setOnClick(() => askForStateSave()),
+                .setOnClick(() => SimulatorState.askForSave()),
             new Button()
                 .setGraphicProperties(30, 30, "", "#ff9100")
                 .setOnClick(() => framesToCalculate = - !framesToCalculate), // Sets to -1 if the current value is 0, 0 otherwise
@@ -94,7 +98,7 @@ class Interface {
         ];
 
         // Pause/Play button
-        interfaceButtons[5].drawCenter = function() {
+        Interface.buttons[5].drawCenter = function() {
             ctx.beginPath();
 
             // If the simulator is paused
@@ -121,7 +125,7 @@ class Interface {
 
         };
         // Next frame button
-        interfaceButtons[6].drawCenter = function() {
+        Interface.buttons[6].drawCenter = function() {
             ctx.beginPath();
 
             ctx.moveTo(this.x - this.width / 20 - this.width / 6, this.y + this.height / 4);
@@ -144,7 +148,7 @@ class Interface {
 
     /*** Returns the class that handles the selected mode */
     static getCurrentMode() {
-        switch(interfaceMode) {
+        switch(Interface.mode) {
             case 0: return BuildMode;
             case 1: return WiringMode;
             case 2: return InteractionMode;
@@ -153,9 +157,9 @@ class Interface {
 
     static zoom(factor) {
 
-        interfaceZoomFactor *= factor;
-        circleRadius *= factor;
-        connectionWidth *= factor;
+        Interface.zoomFactor *= factor;
+        Interface.negCircleR *= factor;
+        Interface.connectionWidth *= factor;
 
         for(let gate of gates) {
 

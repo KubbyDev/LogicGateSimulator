@@ -9,7 +9,7 @@ class Popup {
         Popup.mainDiv.appendChild(Popup.containerDiv);
 
         popupBackground.style.display = 'block';
-        interfaceBlockInputs = true;
+        Interface.blockInputs = true;
     }
 
     static close() {
@@ -23,7 +23,7 @@ class Popup {
         }
 
         popupBackground.style.display = 'none';
-        interfaceBlockInputs = false;
+        Interface.blockInputs = false;
     }
 
     // Closes the popup if the user clicked on the background

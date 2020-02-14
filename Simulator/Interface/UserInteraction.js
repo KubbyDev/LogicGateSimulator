@@ -10,11 +10,11 @@ document.addEventListener('mousemove', function(event) {
 // Listens for mouse clicks
 document.addEventListener('click', function() {
 
-    if(interfaceBlockInputs)
+    if(Interface.blockInputs)
         return;
 
     // If the user clicked on a button, triggers the onClick function of the button
-    let clickedButton = Interface.getButtonAtPosition(mouseX, mouseY);
+    const clickedButton = Interface.getButtonAtPosition(mouseX, mouseY);
     if(clickedButton) {
         clickedButton.onClick();
         return;
@@ -32,7 +32,7 @@ document.onkeydown = function(event) {
             Popup.close();
     }
 
-    if(interfaceBlockInputs)
+    if(Interface.blockInputs)
         return;
 
     switch(event.key) {
@@ -53,17 +53,8 @@ document.onkeydown = function(event) {
 // Listens for mouse wheel inputs
 canvas.addEventListener('wheel', function(event) {
 
-    if(interfaceBlockInputs)
+    if(Interface.blockInputs)
         return;
 
     Interface.zoom(1 - event.deltaY/1000);
 });
-
-function getGateAtPosition(x, y) {
-
-    for (let gate of gates)
-        if (Math.abs(x - gate.x) < gate.width / 2 && Math.abs(y - gate.y) < gate.height / 2)
-            return gate;
-
-    return null;
-}

@@ -1,11 +1,11 @@
-let clockOpenedPopup; // This variable saves the clock that requested a popup openning (the one that should be modified)
-
 class Clock extends Gate {
 
     /*
         This gate has no inputs
         It counts the number of frames and its outputs changes every <period> frames
      */
+
+    static openedPopup; // This variable saves the clock that requested a popup openning (the one that should be modified)
 
     constructor() {
         super();
@@ -32,19 +32,19 @@ class Clock extends Gate {
         Popup.addFields([{id: "clockPeriod", defaultValue: this.period}], "Period (milliseconds):");
         Popup.addFields([{id: "clockCurrent", defaultValue: this.current}], "Current (milliseconds):");
         Popup.addDoneButton(Clock.chooseParameters);
-        clockOpenedPopup = this;
+        Clock.openedPopup = this;
     }
 
     /*** This function is called by the Done button on the popup */
     static chooseParameters() {
 
-        let period = document.getElementById("clockPeriod").value;
+        const period = document.getElementById("clockPeriod").value;
         if(!isNaN(period))
-            clockOpenedPopup.period = period;
+            Clock.openedPopup.period = period;
 
-        let current = document.getElementById("clockCurrent").value;
+        const current = document.getElementById("clockCurrent").value;
         if(!isNaN(current))
-            clockOpenedPopup.current = current;
+            Clock.openedPopup.current = current;
 
         Popup.close();
     }

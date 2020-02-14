@@ -54,7 +54,11 @@ content = f.read()
 f.close()
 # Uses javascript-minifier.com to minify the babel output
 data = dict(input=content)
-minifiedContent = str(requests.post(__jsMinifierUrl, data=data, allow_redirects=True).content, "utf-8")
+minifiedContent = content
+
+# Had to remove the minification because it changed the function names, causing problems with the GateFactory
+#str(requests.post(__jsMinifierUrl, data=data, allow_redirects=True).content, "utf-8")
+
 # Creates and opens the HTML file and writes the first part (which doesn't change)
 file = open("index.html", "w+")
 file.write(__htmlBegin)

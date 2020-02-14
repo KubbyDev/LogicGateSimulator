@@ -39,7 +39,7 @@ class Button {
         ctx.fillRect(this.x - this.width/2, this.y - this.height/2, this.width, this.height);
 
         // Middle
-        ctx.fillStyle = interfaceBackgroundColor;
+        ctx.fillStyle = Interface.BACKGROUND_COLOR;
         ctx.fillRect(
             this.x - this.width/2 + this.width/15,
             this.y - this.height/2 + this.height/15,

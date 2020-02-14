@@ -1,37 +1,33 @@
-let buildModeSelectedGate = null;
-let buildModeSelectorPosition = 0; // Index of the first button displayed in the list on the right
-let buildModeListLength = 0; // Number of buttons in the list on the right
-let buildModeButtons = []; // Buttons that should be displayed only in this mode
-let buildModeLastCustomGate = ""; // Last custom gate loaded
-let buildModeLastGate = "";
-
 class BuildMode {
 
-    static get buttons() {
-        return buildModeButtons;
-    }
+    static selectedGate = null;
+    static selectorPosition = 0; // Index of the first button displayed in the list on the right
+    static listLength = 0; // Number of buttons in the list on the right
+    static lastCustomGate = ""; // Last custom gate loaded
+    static lastGate = ""; // The last gate that was placed. Press space to place it again
+    static buttons; // Buttons that should be displayed only in this mode
 
     // Events ----------------------------------------------------------------------------------------------------------
 
     static init() {
 
         // Create all the buttons of the list on the right
-        buildModeButtons = [
+        BuildMode.buttons = [
             new Button()
                 .setGraphicProperties(80, 50, "Destroy", "#ae110b")
-                .setOnClick(() => BuildMode.removeGate(buildModeSelectedGate)),
+                .setOnClick(() => BuildMode.removeGate(BuildMode.selectedGate)),
             new Button()
                 .setGraphicProperties(80, 30, "UP", "#379f1f")
-                .setOnClick(() => buildModeSelectorPosition = Math.max(0, buildModeSelectorPosition-1)),
+                .setOnClick(() => BuildMode.selectorPosition = Math.max(0, BuildMode.selectorPosition-1)),
             new Button()
                 .setGraphicProperties(80, 30, "DOWN", "#379f1f")
-                .setOnClick(() => buildModeSelectorPosition = Math.min(buildModeButtons.length-buildModeListLength-5, buildModeSelectorPosition+1)),
+                .setOnClick(() => BuildMode.selectorPosition = Math.min(BuildMode.buttons.length-BuildMode.listLength-5, BuildMode.selectorPosition+1)),
             new Button()
                 .setGraphicProperties(150, 60, "Create Custom Gate", "#379f1f")
                 .setOnClick(() => CustomGate.openPopup()),
             new Button()
                 .setGraphicProperties(150, 60, "Last Custom Gate", "#379f1f")
-                .setOnClick(() => BuildMode.addGate(SerializerParser.parseCustomGate(buildModeLastCustomGate))),
+                .setOnClick(() => BuildMode.addGate(SerializerParser.parseCustomGate(BuildMode.lastCustomGate))),
             new Button()
                 .setGraphicProperties(80, 80, "AND", "#379f1f")
                 .setOnClick(() => BuildMode.addGate(GateFactory.AND(mouseX, mouseY))),
@@ -80,7 +76,7 @@ class BuildMode {
         ];
 
         // Draws arrows on the buttons to control the list of gates
-        buildModeButtons[1].drawCenter = function() {
+        BuildMode.buttons[1].drawCenter = function() {
             ctx.beginPath();
             ctx.moveTo(this.x - this.width/8, this.y + this.height/8);
             ctx.lineTo(this.x + this.width/8, this.y + this.height/8);
@@ -90,7 +86,7 @@ class BuildMode {
             ctx.fill();
 
         };
-        buildModeButtons[2].drawCenter = function() {
+        BuildMode.buttons[2].drawCenter = function() {
             ctx.beginPath();
             ctx.moveTo(this.x - this.width/8, this.y - this.height/8);
             ctx.lineTo(this.x + this.width/8, this.y - this.height/8);
@@ -104,17 +100,17 @@ class BuildMode {
 
     /*** Called when the user switches to this mode */
     static enable() {
-        interfaceMode = 0;
-        buildModeSelectedGate = null;
+        Interface.mode = 0;
+        BuildMode.selectedGate = null;
     }
 
     /*** Called on every frame when this menu is selected at
      * the moment of the interface update (begining of the frame calculation)*/
     static earlyUpdate() {
 
-        if(buildModeSelectedGate) {
-            buildModeSelectedGate.x = mouseX;
-            buildModeSelectedGate.y = mouseY;
+        if(BuildMode.selectedGate) {
+            BuildMode.selectedGate.x = mouseX;
+            BuildMode.selectedGate.y = mouseY;
         }
     }
 
@@ -125,76 +121,76 @@ class BuildMode {
         // Displays the list of gates on the right
 
         // To limit problems we start by putting everything in the exterior of the screen
-        for(let button of buildModeButtons) {
+        for(let button of BuildMode.buttons) {
             button.x = -100;
             button.y = -100;
         }
 
         // Destroy button
-        buildModeButtons[0].x = canvas.width - buildModeButtons[0].width/2 - interfaceButtonSpacing;
-        buildModeButtons[0].y = canvas.height - buildModeButtons[0].height/2 - interfaceButtonSpacing;
-        buildModeButtons[0].draw();
+        BuildMode.buttons[0].x = canvas.width - BuildMode.buttons[0].width/2 - Interface.BUTTON_SPACING;
+        BuildMode.buttons[0].y = canvas.height - BuildMode.buttons[0].height/2 - Interface.BUTTON_SPACING;
+        BuildMode.buttons[0].draw();
 
         // Calculates the number of buttons that can be displayed
-        buildModeListLength = Math.floor(
+        BuildMode.listLength = Math.floor(
             (canvas.height
-                - buildModeButtons[0].height
-                - 2*buildModeButtons[1].height
-                - 5*interfaceButtonSpacing)
-            / (buildModeButtons[5].height+interfaceButtonSpacing));
+                - BuildMode.buttons[0].height
+                - 2*BuildMode.buttons[1].height
+                - 5*Interface.BUTTON_SPACING)
+            / (BuildMode.buttons[5].height+Interface.BUTTON_SPACING));
 
         // Buttons to control the list (up and down)
-        buildModeButtons[1].x = canvas.width - buildModeButtons[1].width/2 - interfaceButtonSpacing;
-        buildModeButtons[1].y = buildModeButtons[1].height/2 + interfaceButtonSpacing;
-        buildModeButtons[2].x = canvas.width - buildModeButtons[2].width/2 - interfaceButtonSpacing;
-        buildModeButtons[2].y = buildModeButtons[5].height*buildModeListLength + 1.5*buildModeButtons[1].height + interfaceButtonSpacing*(2+buildModeListLength);
-        buildModeButtons[1].draw();
-        buildModeButtons[2].draw();
+        BuildMode.buttons[1].x = canvas.width - BuildMode.buttons[1].width/2 - Interface.BUTTON_SPACING;
+        BuildMode.buttons[1].y = BuildMode.buttons[1].height/2 + Interface.BUTTON_SPACING;
+        BuildMode.buttons[2].x = canvas.width - BuildMode.buttons[2].width/2 - Interface.BUTTON_SPACING;
+        BuildMode.buttons[2].y = BuildMode.buttons[5].height*BuildMode.listLength + 1.5*BuildMode.buttons[1].height + Interface.BUTTON_SPACING*(2+BuildMode.listLength);
+        BuildMode.buttons[1].draw();
+        BuildMode.buttons[2].draw();
 
         // Updates the list if there is space on the bottom (if the user went down with small screen and then full screen)
-        if(5+buildModeSelectorPosition+buildModeListLength-1 >= buildModeButtons.length)
-            buildModeSelectorPosition = buildModeButtons.length-buildModeListLength-5;
+        if(5+BuildMode.selectorPosition+BuildMode.listLength-1 >= BuildMode.buttons.length)
+            BuildMode.selectorPosition = BuildMode.buttons.length-BuildMode.listLength-5;
 
         // Gate creation buttons
-        for(let i = 0; i < buildModeListLength; i++) {
+        for(let i = 0; i < BuildMode.listLength; i++) {
 
-            if(buildModeSelectorPosition+i+5 > buildModeButtons.length) // If there is no more buttons to display, breaks
+            if(BuildMode.selectorPosition+i+5 > BuildMode.buttons.length) // If there is no more buttons to display, breaks
                 break;
 
-            buildModeButtons[buildModeSelectorPosition+i+5].x = canvas.width - buildModeButtons[5].width/2 - interfaceButtonSpacing;
-            buildModeButtons[buildModeSelectorPosition+i+5].y = buildModeButtons[1].height + (i+0.5)*(buildModeButtons[5].height) + (i+2)*interfaceButtonSpacing;
-            buildModeButtons[buildModeSelectorPosition+i+5].draw();
+            BuildMode.buttons[BuildMode.selectorPosition+i+5].x = canvas.width - BuildMode.buttons[5].width/2 - Interface.BUTTON_SPACING;
+            BuildMode.buttons[BuildMode.selectorPosition+i+5].y = BuildMode.buttons[1].height + (i+0.5)*(BuildMode.buttons[5].height) + (i+2)*Interface.BUTTON_SPACING;
+            BuildMode.buttons[BuildMode.selectorPosition+i+5].draw();
         }
 
         // Custom gate buttons
-        buildModeButtons[3].x = buildModeButtons[3].width/2 + interfaceButtonSpacing;
-        buildModeButtons[3].y = canvas.height - buildModeButtons[3].height/2 - interfaceButtonSpacing;
-        if(buildModeLastCustomGate !== "") {
+        BuildMode.buttons[3].x = BuildMode.buttons[3].width/2 + Interface.BUTTON_SPACING;
+        BuildMode.buttons[3].y = canvas.height - BuildMode.buttons[3].height/2 - Interface.BUTTON_SPACING;
+        if(BuildMode.lastCustomGate !== "") {
 
-            buildModeButtons[4].x = buildModeButtons[3].width + buildModeButtons[4].width/2 + 2*interfaceButtonSpacing;
-            buildModeButtons[4].y = canvas.height - buildModeButtons[4].height/2 - interfaceButtonSpacing;
-            buildModeButtons[4].draw();
+            BuildMode.buttons[4].x = BuildMode.buttons[3].width + BuildMode.buttons[4].width/2 + 2*Interface.BUTTON_SPACING;
+            BuildMode.buttons[4].y = canvas.height - BuildMode.buttons[4].height/2 - Interface.BUTTON_SPACING;
+            BuildMode.buttons[4].draw();
         } else {
 
-            buildModeButtons[4].x = -100;
-            buildModeButtons[4].y = -100;
+            BuildMode.buttons[4].x = -100;
+            BuildMode.buttons[4].y = -100;
         }
-        buildModeButtons[3].draw();
+        BuildMode.buttons[3].draw();
     }
 
     /*** Called when the user clicks somewhere with this mode selected */
     static onClick() {
 
-        if(buildModeSelectedGate !== null)
-            buildModeSelectedGate = null;
+        if(BuildMode.selectedGate !== null)
+            BuildMode.selectedGate = null;
         else
-            buildModeSelectedGate = getGateAtPosition(mouseX, mouseY);
+            BuildMode.selectedGate = Tools.getGateAtPosition(mouseX, mouseY);
     }
 
     /*** Called for each key press with this mode selected */
     static onKeyPressed(key) {
         if(key === 'Delete')
-            BuildMode.removeGate(buildModeSelectedGate);
+            BuildMode.removeGate(BuildMode.selectedGate);
         if(key === 'a')
             BuildMode.addGate(GateFactory.AND(mouseX, mouseY), false);
         if(key === 'o')
@@ -204,10 +200,10 @@ class BuildMode {
         if(key === 'x')
             BuildMode.addGate(GateFactory.XOR(mouseX, mouseY), false);
         if(key === ' ') {
-            if(buildModeLastGate === "CUSTOM")
-                BuildMode.addGate(SerializerParser.parseCustomGate(buildModeLastCustomGate), false);
-            else if(buildModeLastGate !== "") {
-                let gateConstructor = GateFactory[buildModeLastGate];
+            if(BuildMode.lastGate === "CUSTOM")
+                BuildMode.addGate(SerializerParser.parseCustomGate(BuildMode.lastCustomGate), false);
+            else if(BuildMode.lastGate !== "") {
+                const gateConstructor = GateFactory[BuildMode.lastGate];
                 BuildMode.addGate(gateConstructor(mouseX,mouseY), false);
             }
         }
@@ -222,9 +218,9 @@ class BuildMode {
         Popup.addText("Data for your gate (you can generate it with the Build Custom Gate button)");
         Popup.addFields([{id: "rawData"}], " ");
         Popup.addDoneButton(() => {
-            let gate = SerializerParser.parseCustomGate(document.getElementById("rawData").value);
+            const gate = SerializerParser.parseCustomGate(document.getElementById("rawData").value);
             BuildMode.addGate(gate);
-            buildModeLastCustomGate = gate.string;
+            BuildMode.lastCustomGate = gate.string;
             Popup.close();
         });
     }
@@ -234,12 +230,12 @@ class BuildMode {
     static addGate(gate, select) {
 
         if(select === undefined || select)
-            buildModeSelectedGate = gate;
+            BuildMode.selectedGate = gate;
 
         gate.id = Gate.nextID;
         Gate.nextID++;
 
-        buildModeLastGate = gate.type;
+        BuildMode.lastGate = gate.type;
 
         gates.push(gate);
     }
@@ -248,7 +244,7 @@ class BuildMode {
     static removeGate(gate) {
 
         gates = gates.remove(gate);
-        buildModeSelectedGate = null;
+        BuildMode.selectedGate = null;
 
         if(gate instanceof CustomGate)
             for(let outputGate of gate.outputGates)

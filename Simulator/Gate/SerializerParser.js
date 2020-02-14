@@ -13,10 +13,10 @@ class SerializerParser {
         customGate.type = "CUSTOM";
         customGate.string = rawData;
 
-        let parts = rawData.split(';');
+        const parts = rawData.split(';');
 
         // Inputs decoding
-        let inputsData = parts[1].split('&').filter(data => data !== "");
+        const inputsData = parts[1].split('&').filter(data => data !== "");
         for(let i = 0; i < inputsData.length; i++) {
             let input = new Gate();
             input.name = inputsData[i];
@@ -25,18 +25,18 @@ class SerializerParser {
         customGate.maxInputs = inputsData.length;
 
         // Outputs decoding
-        let outputsData = parts[2].split('&').filter(data => data !== "");
+        const outputsData = parts[2].split('&').filter(data => data !== "");
         for(let i = 0; i < outputsData.length; i++) {
-            let data = outputsData[i].split('§');
+            const data = outputsData[i].split('§');
             let output = GateFactory.NODE(0,0);
             output.name = data[0];
             customGate.outputGates[i] = output;
         }
 
         // Intern gates decoding
-        let gatesData = parts[3].split('&').filter(data => data !== "");
+        const gatesData = parts[3].split('&').filter(data => data !== "");
         for(let i = 0; i < gatesData.length; i++) {
-            let gateParameters = gatesData[i].split('§')[0].split('@');
+            const gateParameters = gatesData[i].split('§')[0].split('@');
             //Calls the function that has the name corresponding to the type of the gate in GateFactory
             customGate.internGates[i] = GateFactory[gateParameters[0]](0,0);
             customGate.internGates[i].parseParameters(gateParameters);
@@ -57,7 +57,7 @@ class SerializerParser {
 
         //Outputs
         for(let i = 0; i < outputsData.length; i++) {
-            let data = outputsData[i].split('§').filter(data => data !== "");
+            const data = outputsData[i].split('§').filter(data => data !== "");
             connect(customGate.outputGates[i], data);
         }
         //InternGates
@@ -85,7 +85,7 @@ class SerializerParser {
     static serializeCustomGate(name, inputNames, outputNames) {
 
         // Saves the current state of the simulator to be able to edit this custom gate later
-        saveSimulatorState(name);
+        SimulatorState.save(name);
 
         let data = "";
 

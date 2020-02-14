@@ -1,13 +1,12 @@
-let connectionWidth = 3;
-let connectionDownColor = "#d3d3d3";
-let connectionUpColor = "#ea120c";
-
 class Connection {
 
     /*
         This class represents a connection between two gates
         Connections start from an Gate's input and go backward to reach another Gate's output
      */
+
+    static downColor = "#d3d3d3";
+    static upColor = "#ea120c";
 
     constructor(origin, destination) {
         this.destination = destination;  // The gate from which this connection starts (this connection is the output of this gate)
@@ -41,16 +40,16 @@ class Connection {
      * @param i: index of the input on which this connection is on the origin */
     draw(i) {
 
-        let inputPosition = this.origin.getInputPosition(i); //Position of the connection on the input side of the origin
-        let outputPosition = this.destination.getOutputPosition(); //Position of the connection on the ouput side of the destination
+        const inputPosition = this.origin.getInputPosition(i); //Position of the connection on the input side of the origin
+        const outputPosition = this.destination.getOutputPosition(); //Position of the connection on the ouput side of the destination
 
         ctx.beginPath();
         ctx.moveTo(inputPosition[0], inputPosition[1]);
         for(let point of this.calculateIntermediates(this.destination.x, this.destination.y, this.origin.x, inputPosition[1]))
             ctx.lineTo(point[0], point[1]);
         ctx.lineTo(outputPosition[0], outputPosition[1]);
-        ctx.lineWidth = connectionWidth;
-        ctx.strokeStyle = this.getValue() ? connectionUpColor : connectionDownColor;
+        ctx.lineWidth = Interface.connectionWidth;
+        ctx.strokeStyle = this.getValue() ? Connection.upColor : Connection.downColor;
         ctx.stroke();
 
     }
@@ -59,8 +58,8 @@ class Connection {
      * From is the destination, To is the origin */
     calculateIntermediates(fromX, fromY, toX, toY) {
 
-        let averageX = (toX + fromX) /2;
-        let averageY = (toY + fromY) /2;
+        const averageX = (toX + fromX) /2;
+        const averageY = (toY + fromY) /2;
 
         // Case where the origin is behind the destination
         if(toX - this.origin.width/2 - this.origin.width/6 < fromX + this.destination.width/2 + this.destination.width/6)

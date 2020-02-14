@@ -40,38 +40,6 @@ class CustomGate extends Gate {
         return this.outputGates[index];
     }
 
-    /*** Returns the index of the nearest connector
-     * If it is an input the index will be positive (1 and higher), negative if it is an output (-1 and lower) */
-    getConnector(x,y) {
-
-        if(x > this.x || this.maxInputs < 1) { // If we are on the right of the gate or if it has no input
-
-            let minDistY = Infinity;
-            let minIndex = 0;
-            for(let i = 0; i < this.outputGates.length; i++) {
-                let dist = Math.abs(this.y - this.height/2 + this.height*(i+1)/(this.outputGates.length+1) - y);
-                if(dist < minDistY) {
-                    minIndex = i+1;
-                    minDistY = dist;
-                }
-            }
-
-            return -minIndex;
-        }
-
-        let minDistY = Infinity;
-        let minIndex = 0;
-        for(let i = 0; i < this.maxInputs; i++) {
-            let dist = Math.abs(this.getInputPosition(i)[1] - y);
-            if(dist < minDistY) {
-                minIndex = i+1;
-                minDistY = dist;
-            }
-        }
-
-        return minIndex;
-    }
-
     /*** Displays a popup that shows the string used to build this gate */
     onClick() {
         Popup.open();
@@ -96,7 +64,7 @@ class CustomGate extends Gate {
         // Updates the position of the outputs so connections are displayed correctly
         for(let i = 0; i < this.outputGates.length; i++) {
 
-            let position = this.getOutputPosition(i);
+            const position = this.getOutputPosition(i);
             this.outputGates[i].x = position[0];
             this.outputGates[i].y = position[1];
         }
@@ -109,11 +77,11 @@ class CustomGate extends Gate {
         ctx.textBaseline = "middle";
         ctx.font = (this.fontSize*0.8) + "px Arial";
         for(let i = 0; i < this.outputGates.length; i++) {
-            let position = this.getOutputPosition(i);
+            const position = this.getOutputPosition(i);
             ctx.fillText(this.outputGates[i].name, position[0] - this.width/10, position[1]);
         }
         for(let i = 0; i < this.inputGates.length; i++) {
-            let position = this.getInputPosition(i);
+            const position = this.getInputPosition(i);
             ctx.fillText(this.inputGates[i].name, position[0] - this.width/10, position[1]);
         }
     }
@@ -121,7 +89,7 @@ class CustomGate extends Gate {
     /*** Returns the position of the ith output on the gate */
     getOutputPosition(index) {
         return [
-            this.x + this.width/2 - connectionWidth,
+            this.x + this.width/2 - Interface.connectionWidth,
             this.y - this.height/2 + this.height*(index+1)/(this.outputGates.length+1)
         ]
     }
@@ -184,7 +152,7 @@ class CustomGate extends Gate {
             gate.onClick();
 
             // Saves this gate as the lastCustomGate
-            buildModeLastCustomGate = gate.string;
+            BuildMode.lastCustomGate = gate.string;
         });
     }
 }

@@ -26,7 +26,7 @@ class GateFactory {
             ctx.beginPath();
 
             ctx.moveTo(this.x - this.width/2, this.y - this.height/2);
-            ctx.lineTo(this.x + this.width/2 - circleRadius*2, this.y);
+            ctx.lineTo(this.x + this.width/2 - Interface.negCircleR*2, this.y);
             ctx.lineTo(this.x - this.width/2, this.y + this.height/2);
             ctx.lineTo(this.x - this.width/2, this.y - this.height/2);
 
@@ -37,7 +37,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            fillCircle(this.x + this.width/2 - circleRadius, this.y, circleRadius);
+            Tools.fillCircle(this.x + this.width/2 - Interface.negCircleR, this.y, Interface.negCircleR);
         };
         g.hideName = true;
 
@@ -147,8 +147,8 @@ class GateFactory {
             ctx.beginPath();
 
             ctx.moveTo(this.x - this.width/2, this.y - this.height/2);
-            ctx.lineTo(this.x + this.width/2 - this.height/2 - circleRadius*2, this.y - this.height/2);
-            ctx.arc(this.x + this.width/2 - this.height/2 - circleRadius*2, this.y, this.height/2, -Math.PI/2, Math.PI/2);
+            ctx.lineTo(this.x + this.width/2 - this.height/2 - Interface.negCircleR*2, this.y - this.height/2);
+            ctx.arc(this.x + this.width/2 - this.height/2 - Interface.negCircleR*2, this.y, this.height/2, -Math.PI/2, Math.PI/2);
             ctx.lineTo(this.x - this.width/2, this.y + this.height/2);
             ctx.lineTo(this.x - this.width/2, this.y - this.height/2);
 
@@ -159,7 +159,7 @@ class GateFactory {
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            fillCircle(this.x + this.width/2 - circleRadius, this.y, circleRadius);
+            Tools.fillCircle(this.x + this.width/2 - Interface.negCircleR, this.y, Interface.negCircleR);
         };
         g.hideName = true;
 
@@ -178,9 +178,9 @@ class GateFactory {
 
             ctx.moveTo(this.x - this.width/2, this.y + this.height/2);
             ctx.quadraticCurveTo(this.x - this.width/4, this.y, this.x - this.width/2, this.y - this.height/2);
-            ctx.quadraticCurveTo(this.x + this.width/4 - 2*circleRadius, this.y - this.height/2, this.x + this.width/2 - 2*circleRadius, this.y);
+            ctx.quadraticCurveTo(this.x + this.width/4 - 2*Interface.negCircleR, this.y - this.height/2, this.x + this.width/2 - 2*Interface.negCircleR, this.y);
             ctx.moveTo(this.x - this.width/2, this.y + this.height/2);
-            ctx.quadraticCurveTo(this.x + this.width/4 - 2*circleRadius, this.y + this.height/2, this.x + this.width/2 - 2*circleRadius, this.y);
+            ctx.quadraticCurveTo(this.x + this.width/4 - 2*Interface.negCircleR, this.y + this.height/2, this.x + this.width/2 - 2*Interface.negCircleR, this.y);
 
             ctx.fillStyle = this.color;
             ctx.fill();
@@ -191,7 +191,7 @@ class GateFactory {
 
 
 
-            fillCircle(this.x + this.width/2 - circleRadius, this.y, circleRadius);
+            Tools.fillCircle(this.x + this.width/2 - Interface.negCircleR, this.y, Interface.negCircleR);
         };
         g.hideName = true;
 
@@ -209,9 +209,9 @@ class GateFactory {
 
             ctx.moveTo(this.x - this.width/2 + this.width/8, this.y + this.height/2);
             ctx.quadraticCurveTo(this.x - this.width/4 + this.width/8, this.y, this.x - this.width/2 + this.width/8, this.y - this.height/2);
-            ctx.quadraticCurveTo(this.x + this.width/4 - 2*circleRadius, this.y - this.height/2, this.x + this.width/2 - 2*circleRadius, this.y);
+            ctx.quadraticCurveTo(this.x + this.width/4 - 2*Interface.negCircleR, this.y - this.height/2, this.x + this.width/2 - 2*Interface.negCircleR, this.y);
             ctx.moveTo(this.x - this.width/2 + this.width/8, this.y + this.height/2);
-            ctx.quadraticCurveTo(this.x + this.width/4 - 2*circleRadius, this.y + this.height/2, this.x + this.width/2 - 2*circleRadius, this.y);
+            ctx.quadraticCurveTo(this.x + this.width/4 - 2*Interface.negCircleR, this.y + this.height/2, this.x + this.width/2 - 2*Interface.negCircleR, this.y);
 
             ctx.fillStyle = this.color;
             ctx.fill();
@@ -232,7 +232,7 @@ class GateFactory {
 
 
 
-            fillCircle(this.x + this.width/2 - circleRadius, this.y, circleRadius);
+            Tools.fillCircle(this.x + this.width/2 - Interface.negCircleR, this.y, Interface.negCircleR);
         };
         g.hideName = true;
 

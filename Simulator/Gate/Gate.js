@@ -65,7 +65,7 @@ class Gate {
     /*** Updates the tempOutput of the gate according to the inputs
      * Can be overriden by child classes for custom behaviour */
     update() {
-        let inputs = this.inputs.map(connection => connection !== undefined && connection.getValue());
+        const inputs = this.inputs.map(connection => connection !== undefined && connection.getValue());
         this.tempOutput = this.activation(inputs);
     }
 
@@ -91,27 +91,6 @@ class Gate {
             for(let i = 0; i < g.inputs.length; i++)
                 if(g.inputs[i] && g.inputs[i].destination === gate)
                     g.inputs[i] = undefined;
-    }
-
-    /*** Returns the index of the nearest connector
-     * If it is an input the index will be positive (1 and higher), negative if it is an output (-1 and lower)
-     * Overriden by CustomGate to be able to select the output */
-    getConnector(x,y) {
-
-        if(x > this.x || this.maxInputs < 1) // If the position is on the right then the output is selected
-            return -1;
-
-        let minDistY = Infinity;
-        let minIndex = 0;
-        for(let i = 0; i < this.maxInputs; i++) {
-            let dist = Math.abs(this.getInputPosition(i)[1] - y);
-            if(dist < minDistY) {
-                minIndex = i+1;
-                minDistY = dist;
-            }
-        }
-
-        return minIndex;
     }
 
     /*** Returns the corresponding gate for a given output number (useful for custom gates) */
@@ -151,13 +130,13 @@ class Gate {
 
         this.x = x;
         this.y = y;
-        this.width = width * interfaceZoomFactor;
-        this.height = height * interfaceZoomFactor;
+        this.width = width * Interface.zoomFactor;
+        this.height = height * Interface.zoomFactor;
         this.color = color;
         if(name)
             this.name = name;
 
-        this.fontSize *= interfaceZoomFactor;
+        this.fontSize *= Interface.zoomFactor;
 
         return this;
     }
@@ -216,7 +195,7 @@ class Gate {
     /*** Returns the position of the output in the simulator plane */
     getOutputPosition() {
         return [
-            this.x + this.width/2 - connectionWidth,
+            this.x + this.width/2 - Interface.connectionWidth,
             this.y
         ]
     }

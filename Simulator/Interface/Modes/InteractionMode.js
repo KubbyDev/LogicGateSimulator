@@ -1,20 +1,16 @@
-let interactionModeButtons = []; // Buttons that should be displayed only in this mode
-
 class InteractionMode {
 
-    static get buttons() {
-        return interactionModeButtons;
-    }
+    static buttons; // Buttons that should be displayed only in this mode
 
     // Events ----------------------------------------------------------------------------------------------------------
 
     static init() {
-        interactionModeButtons = [];
+        InteractionMode.buttons = [];
     }
 
     /*** Called when the user switches to this mode */
     static enable() {
-        interfaceMode = 2;
+        Interface.mode = 2;
     }
 
     /*** Called on every frame when this menu is selected at
@@ -29,7 +25,7 @@ class InteractionMode {
 
     /*** Called when the user clicks somewhere with this mode selected */
     static onClick() {
-        let selectedGate = getGateAtPosition(mouseX, mouseY);
+        const selectedGate = Tools.getGateAtPosition(mouseX, mouseY);
         if(selectedGate)
             selectedGate.onClick();
     }
