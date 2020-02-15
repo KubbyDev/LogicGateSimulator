@@ -9,6 +9,7 @@ class Output extends Gate {
         super();
         this.upColor = "#ea120c";
         this.downColor = "#7a7a7a";
+        this.maxOutputs = 0;
     }
 
     // Functionnal properties ------------------------------------------------------------------------------------------

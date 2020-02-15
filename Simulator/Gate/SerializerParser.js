@@ -30,6 +30,7 @@ class SerializerParser {
             const data = outputsData[i].split('§');
             let output = GateFactory.NODE(0,0);
             output.name = data[0];
+            output.width = 0;
             customGate.outputGates[i] = output;
         }
 
@@ -160,12 +161,23 @@ class SerializerParser {
             return -1;
         }
 
-        // Saves the number of gates before breaking the custom gates
-        let previousLength = gates.length;
         // Breaks all the custom gates (transfers their intern gates to the simulator world)
-        for(let i = 0; i < previousLength; i++)
+        for(let i = 0; i < gates.length; i++)
             if(gates[i] instanceof CustomGate)
                 breakCustomGate(gates[i]);
+
+        // Removes all the nodes to optimize
+        // Moves all the connection to nodes to the inputs of those nodes
+        for(let gate of gates) {
+            for(let i = 0; i < gate.maxInputs; i++) {
+                // If there is an input on this gate at position i
+                if(gate.inputs[i])
+                    // Follows the connections until a gate that is not a Node is found
+                    gate.inputs[i].destination = gate.inputs[i].getInput();
+            }
+        }
+        // Removes the nodes
+        gates = gates.filter(g => !(g instanceof ConnectionNode));
 
         // Deletes all the custom gates from the list and sorts them
         // by decreasing height (increasing y) so the inputs and the outputs are in the right order

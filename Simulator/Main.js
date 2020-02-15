@@ -5,13 +5,8 @@
  * Possibilite de choisir entre fichiers heberges sur le server ou sur le git pages
  * Save -> POST sur le serveur qui met a jour toutes les gates. Erreurs: Circular dependencies, Changed number I/O
  * Get custom gates updates every X seconds */
-// Centrer gates au moemnt d'un load
-/* Cleanup (comments + robustesse + generalisation de code)
- * refaire le menu build en plus propre et general
- * gate drawing tools in GateFactory */
+// Cleanup (comments + robustesse + generalisation de code)
 // manuel d'utilisation dans le readme
-// Dezoom cause display bug on custom gates outputs
-// GateFactory function names are changed by the minification
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");

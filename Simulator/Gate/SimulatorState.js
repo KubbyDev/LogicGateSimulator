@@ -6,7 +6,7 @@ class SimulatorState {
 
         let data = {
             gates: [],
-            zoomFactor: Interface.zoomFactor
+            interfaceZoomFactor: Interface.zoomFactor
         };
 
         // Creates an object with all the useful information for each gate
@@ -56,6 +56,10 @@ class SimulatorState {
 
         const dataObj = JSON.parse(data);
 
+        // Stops if the save contains no gate
+        if(dataObj.gates.length === 0)
+            return;
+
         // The ids in the save may not start at the same point. So while loading, all ids are offset by the number
         // of gates already in the simulation state before loading.
         const gatesIdOffset = Gate.nextID;
@@ -78,11 +82,19 @@ class SimulatorState {
             Object.assign(gate, saveObj);
 
             gate.id += gatesIdOffset; // Makes sure there is no ID collisions with already placed gates
-            gate.x *= Interface.zoomFactor/dataObj.zoomFactor; // Updates the gaps between gates (width, height and
-            gate.y *= Interface.zoomFactor/dataObj.zoomFactor; // fontSize are updated by setGraphicProperties)
+            gate.x *= Interface.zoomFactor/dataObj.interfaceZoomFactor; // Updates the gaps between gates (width, height and
+            gate.y *= Interface.zoomFactor/dataObj.interfaceZoomFactor; // fontSize are updated by setGraphicProperties)
 
             return gate;
         });
+
+        // Centers the gates on the screen
+        let averageX = newGates.reduce((total, gate) => total + gate.x, 0) / newGates.length;
+        let averageY = newGates.reduce((total, gate) => total + gate.y, 0) / newGates.length;
+        for(let gate of newGates) {
+            gate.x += canvas.width/2 - averageX;
+            gate.y += canvas.height/2 - averageY;
+        }
 
         // Finds the gate with the given id
         // outputIndex is for custom gates because they can have multiple

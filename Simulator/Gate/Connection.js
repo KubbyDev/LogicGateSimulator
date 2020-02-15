@@ -15,16 +15,17 @@ class Connection {
 
     // Functionnal properties ------------------------------------------------------------------------------------------
 
-    /*** Returns the gate the determines the state of this connection
-     * Generally is the just this.destination. But if this.destination is a Node,
+    /*** Returns the gate that determines the state of this connection
+     * Generally it is just this.destination. But if this.destination is a Node,
      * we have to go further because Nodes don't slow down current */
     getInput() {
 
-        if(this.destination instanceof ConnectionNode)
+        if(this.destination instanceof ConnectionNode) {
             if(this.destination.inputs[0])
                 return this.destination.inputs[0].getInput();
             else
                 return undefined;
+        }
 
         return this.destination;
     }

@@ -6,13 +6,13 @@ class GateFactory {
     static UP(x, y) {
         return new Gate()
             .setFonctionnalProperties("UP", () => true, [])
-            .setGraphicProperties(x,y,40,40,"#ae110b", "1");
+            .setGraphicProperties(x,y,40,40,"#ae110b");
     }
 
     static DOWN(x, y) {
         return new Gate()
             .setFonctionnalProperties("DOWN", () => false, [])
-            .setGraphicProperties(x,y,40,40,"#5f5f5f", "0");
+            .setGraphicProperties(x,y,40,40,"#5f5f5f");
     }
 
     static NOT(x, y, input) {

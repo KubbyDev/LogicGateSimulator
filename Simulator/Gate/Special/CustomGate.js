@@ -90,7 +90,7 @@ class CustomGate extends Gate {
     getOutputPosition(index) {
         return [
             this.x + this.width/2 - Interface.connectionWidth,
-            this.y - this.height/2 + this.height*(index+1)/(this.outputGates.length+1)
+            this.y - this.height/2 + this.height*(index+1)/(this.maxOutputs+1)
         ]
     }
 

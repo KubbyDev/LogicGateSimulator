@@ -14,9 +14,9 @@
 
 import os
 import requests
+import re
 
 __babelOutputPath = "babelOutput.js"
-__jsMinifierUrl = "https://javascript-minifier.com/raw"
 __htmlBegin = \
 """<!DOCTYPE html>
 <html lang="en">
@@ -46,7 +46,13 @@ __htmlEnd = \
 </body>
 </html>
 """
+__commentDetectionRegex = r'(\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/)|(\/\/.*)'
+# Thanks to this site: https://blog.ostermiller.org/finding-comments-in-source-code-using-regular-expressions/
 
+
+def simpleMinifiy(string):
+    withoutComment = re.sub(__commentDetectionRegex, '', string)
+    return re.sub(r'[\n\r]*', '', withoutComment)
 
 # Reads the babel output
 f = open(__babelOutputPath, "r")
@@ -54,11 +60,7 @@ content = f.read()
 f.close()
 # Uses javascript-minifier.com to minify the babel output
 data = dict(input=content)
-minifiedContent = content
-
-# Had to remove the minification because it changed the function names, causing problems with the GateFactory
-#str(requests.post(__jsMinifierUrl, data=data, allow_redirects=True).content, "utf-8")
-
+minifiedContent = simpleMinifiy(content)
 # Creates and opens the HTML file and writes the first part (which doesn't change)
 file = open("index.html", "w+")
 file.write(__htmlBegin)
