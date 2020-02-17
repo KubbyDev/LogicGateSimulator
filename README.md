@@ -1,76 +1,60 @@
 # Logic Gate Simulator
 
-intro
-
+A simulator made to design and test logic gates circuits. This simulator can handle all basic gates, clocks, custom gates etc... Cycles can be formed in the circuits, openning the way for circuits containing latches for example.  
+This simulator was made in JavaScript so no installation is required.  
 Try it out: [https://kubbydev.github.io/LogicGateSimulator/](https://kubbydev.github.io/LogicGateSimulator/)
 
-## Demo
+This link leads to the generated version of the code (the version that went through Babel and a JavaScript minifier). The source code can be found in the Simulator folder in the git repository's root.  
+Resources containing pre-made custom gates and example projects can be found in the Resources folder in the git repository's root. 
 
-## Installation
+![Demo](https://i.imgur.com/zIkdO9B.jpg)
 
-## How to use it
+## User manual
+
+The simulator is designed to be as simple and easy to use as possible, but a user manual is always helpful.
 
 There are 3 modes:
 
-- Build to create, move or destroy gates  
-- Wiring to make connections between gates  
-- Interaction to interact with some gates (switch between states or get information)
+- Build: Create, move or destroy gates  
+- Wiring: Make connections between gates  
+- Interaction: Interact with some gates (switch between states or get information)
 
-You can switch between modes by clicking on the buttons on the top center of the screen or by pressing B (build), W (wiring) or I (interaction).
+To switch between modes, one can click on the buttons on the top center of the screen or press B (build), W (wiring) or I (interaction).
 
 ### Build mode
 
-When build mode is activated, you have a menu on the right with a list of all the gates you can create. To create a gate, click on it and click again at the place where you want it to go. This menu contains basic gates (AND, OR, NOT, XOR, NAND...), but also some special gates (they will be explained later) and custom gates (they will be explained later too).  
-You can also grab an already placed gate by clicking on it, then click again to place it or click on Destroy to destroy it.
+When build mode is activated, there is a menu on the right with a list of all the gates that can be created. A gate can be created by clicking on it in the menu, and then clicking where the gate is desired to be. This menu contains basic gates (AND, OR, NOT, XOR, NAND...), and also some special gates and custom gates that will be explained later.  
+A gate can be destroyed by moving it on the Destroy button of by pressing Del with the gate selected.  
+Common gates can be placed with hotkeys: A (AND), O (OR), N (NOT), X (XOR)  
+The last gate that was placed can be placed again by pressing Space.
 
 ### Wiring mode
 
-When wiring mode is activated, you can click on a gate to start a wire, and click on another gate to end it. If you click on the right side of the gate, the output of the gate will be selected, and the inputs if you click on the left side. Click at a point where there is nothing to cancel a wire. You can use Nodes to redirect or split wires (Node is a gate available in the gates list but it transfers current instantaneously).
+When wiring mode is activated, one can start a wire by clicking on a gate input or output, and click on another gate to end it. A wire can be canceled by clicking where there is nothing.  
+Nodes can be used to redirect or split wires (Node is a gate available in the gates list but it transfers current instantaneously while other gates take one frame to update).
 
 ### Interaction mode
 
-When interaction mode is activated, you can click on a gate to interact with it. Interactions will be detailed later, but in general you can either change the state of the gate (switches, clocks...), or get information about it (custom gates, clocks...).
+When interaction mode is activated, one can click on a gate to interact with it. Interactions will be detailed later, but in general they will either change the state of the gate (switches, clocks...), or get information about it (custom gates, clocks...).
 
 ### Special gates
 
-Clock:  
-The clock will change its output every x frames (1 second = 100 frames). It cannot take any input. If you click on it in Interaction mode you can change the number of frames between 2 state changes and the current counter (Setting the counter can be useful to synchronise clocks while the simulator is paused).
+**Clock:**  
+The clock will change its output every x frames (1 second = 1000 frames). It cannot take any input. Clicking on it in Interaction mode will open a popup to change the number of frames between 2 state changes and the current counter (Setting the counter can be useful to synchronise clocks while the simulator is paused).
 
-Input:  
-Click on it to switch between on and off (Also used to mark inputs of custom gates).
+**Input:**  
+Clicking on it will switch between on and off (Also used to mark inputs of custom gates).
 
-Output:  
-Does nothing and does not have an output. It can be used as a sort of light bulb (Its real use is to mark outputs of custom gates).
+**Output:**  
+Does nothing and does not have an output. It can be used as a sort of LED (Its real use is to mark outputs of custom gates).
 
-Switch:  
-Click on it to toggle between open and closed.
+**Switch:**  
+Clicking on it will toggle between opened and closed.
 
 ### Custom gates
 
-Custom gates are like boxes that hide a circuit. They are simulated as if the internal circuit of the gate was in the simulator itself. To create a custom gate, place input and output gates and connect them via some circuit. The input gates will be the inputs of the custom gate and the output gate will be its outputs. Then, in build mode, click create custom gate on the bottom left of the screen. You can then choose the name of your gate and the names of its inputs and outputs. Then click done and the simulator will give you the code to generate your custom gate and generate one automatically. You are then able to generate your custom gate with the "Custom" button in the gates list.
-You can get the generation code of a custom gate by clicking on it in Interaction mode.
-
-
-
-
-
-
-
-
-A simulator to design and test logic gates circuits. It can handle all basic gates, clocks with custom periods, switches etc...  
-
-Cycles can be formed in the circuits, openning the way for circuits containing latches for examples.  
-
-
-![Simulator](https://i.imgur.com/azMWKRQ.jpg)
-
-The simulator gives an important feature: custom gates. If you place inputs and outputs around your circuit and press Create Custom Gate, you can create a single square that hides all the gates of your circuit (The RS is a custom gate on the image above).  
-The simulator will give you a save of your custom gate as a string, so you can save it and place it later with the custom gate button on the bottom of the gates list.
-
-This image represents the circuit of a 7 segments display and its use
-
+Custom gates are boxes that hide a circuit. They are simulated as if the internal circuit of the gate was in the simulator itself.  
+To create a custom gate, one can place input and output gates and connect them via some circuit. The input gates will be the inputs of the custom gate and the output gates will be its outputs. When the circuit is done, one can click create custom gate on the bottom left of the screen (in build mode) to start the custom gate generation process. This button will open a popup where the name of the gate and the names of its inputs and outputs can be chosen. When Done is clicked the simulator will display the code to generate the custom gate and generate one automatically.  
+The generation code of the gate can also be found by clicking on the gate in Interaction mode. The gate can then be generated as many times as needed with the Custom button in the gates list (in build mode). Generation codes can also be saved and shared as they are not dependant of a simulator instance.  
+Here is an example of a custom gate. On the left there is the circuit with 4 inputs and 7 outputs. On the right the green square is the generated gate with the 4 inputs and the 7 outputs.
 ![Seven Segments](https://i.imgur.com/nR4tC1C.png)
-
-The simulator lacks 2 important features that can be implemented in the future:
-- A possibility to save circuits (for the moment the only way to do that is to make a custom gate)
-- A possibility to edit custom gates (could be solved by saving feature).

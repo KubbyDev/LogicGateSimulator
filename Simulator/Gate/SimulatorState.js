@@ -2,7 +2,7 @@ class SimulatorState {
 
     // Saving --------------------------------------------------------------------------------------------------------------
 
-    static save(saveName) {
+    static export(saveName) {
 
         let data = {
             gates: [],
@@ -37,7 +37,7 @@ class SimulatorState {
 
     // Loading -------------------------------------------------------------------------------------------------------------
 
-    static askForSave() {
+    static askForImport() {
 
         // Asks the user to choose a .lgs file
         let elem = window.document.createElement('INPUT');
@@ -45,14 +45,14 @@ class SimulatorState {
         elem.type = "file";
         elem.click();
 
-        // Reads the file and calls SimulatorState.load with its content
+        // Reads the file and calls SimulatorState.import with its content
         elem.addEventListener('change', () => {
             if(elem.files[0])
-                elem.files[0].text().then(SimulatorState.load);
+                elem.files[0].text().then(SimulatorState.import);
         });
     }
 
-    static load(data) {
+    static import(data) {
 
         const dataObj = JSON.parse(data);
 

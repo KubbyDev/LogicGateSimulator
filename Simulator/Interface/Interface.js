@@ -33,7 +33,7 @@ class Interface {
         Interface.buttons[1].draw();
         Interface.buttons[2].draw();
 
-        // Save / Load buttons
+        // Import / Export buttons
         Interface.buttons[3].x = (0.5)*Interface.buttons[3].width + Interface.BUTTON_SPACING;
         Interface.buttons[3].y = (0.5)*Interface.buttons[3].height + Interface.BUTTON_SPACING;
         Interface.buttons[4].x = (1.5)*Interface.buttons[3].width + 2*Interface.BUTTON_SPACING;
@@ -84,11 +84,11 @@ class Interface {
                 .setGraphicProperties(90, 30, "Interaction", "#ffffff")
                 .setOnClick(() => InteractionMode.enable()),
             new Button()
-                .setGraphicProperties(50, 40, "Save", "#00e1ff")
-                .setOnClick(() => SimulatorState.save()()),
+                .setGraphicProperties(70, 40, "Import", "#00e1ff")
+                .setOnClick(() => SimulatorState.askForImport()),
             new Button()
-                .setGraphicProperties(50, 40, "Load", "#00e1ff")
-                .setOnClick(() => SimulatorState.askForSave()),
+                .setGraphicProperties(70, 40, "Export", "#00e1ff")
+                .setOnClick(() => SimulatorState.export()),
             new Button()
                 .setGraphicProperties(30, 30, "", "#ff9100")
                 .setOnClick(() => framesToCalculate = - !framesToCalculate), // Sets to -1 if the current value is 0, 0 otherwise

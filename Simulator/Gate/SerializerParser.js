@@ -86,7 +86,7 @@ class SerializerParser {
     static serializeCustomGate(name, inputNames, outputNames) {
 
         // Saves the current state of the simulator to be able to edit this custom gate later
-        SimulatorState.save(name);
+        SimulatorState.export(name);
 
         let data = "";
 
