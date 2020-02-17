@@ -5,8 +5,8 @@ class SerializerParser {
     /*** Creates a Custom gate from the data string
      * Format: Name;input_1&...&input_n;output_1&...&output_n;intern_1&...&intern_n
      * Input: Name
-     * Output: Name§input_1_index§...§input_n_index
-     * InternGate: Type@param_2@...@param_n§input_1_index§...§input_n_index */
+     * Output: Name$input_1_index$...$input_n_index
+     * InternGate: Type@param_2@...@param_n$input_1_index$...$input_n_index */
     static parseCustomGate(rawData) {
 
         let customGate = new CustomGate();
@@ -27,7 +27,7 @@ class SerializerParser {
         // Outputs decoding
         const outputsData = parts[2].split('&').filter(data => data !== "");
         for(let i = 0; i < outputsData.length; i++) {
-            const data = outputsData[i].split('§');
+            const data = outputsData[i].split('$');
             let output = GateFactory.NODE(0,0);
             output.name = data[0];
             output.width = 0;
@@ -37,9 +37,10 @@ class SerializerParser {
         // Intern gates decoding
         const gatesData = parts[3].split('&').filter(data => data !== "");
         for(let i = 0; i < gatesData.length; i++) {
-            const gateParameters = gatesData[i].split('§')[0].split('@');
+            const gateParameters = gatesData[i].split('$')[0].split('@');
             //Calls the function that has the name corresponding to the type of the gate in GateFactory
-            customGate.internGates[i] = GateFactory[gateParameters[0]](0,0);
+            const constructor = GateFactory[gateParameters[0]];
+            customGate.internGates[i] = constructor(0,0);
             customGate.internGates[i].parseParameters(gateParameters);
         }
 
@@ -58,12 +59,12 @@ class SerializerParser {
 
         //Outputs
         for(let i = 0; i < outputsData.length; i++) {
-            const data = outputsData[i].split('§').filter(data => data !== "");
+            const data = outputsData[i].split('$').filter(data => data !== "");
             connect(customGate.outputGates[i], data);
         }
         //InternGates
         for(let i = 0; i < gatesData.length; i++) {
-            let data = gatesData[i].split('§').filter(data => data !== "");
+            let data = gatesData[i].split('$').filter(data => data !== "");
             connect(customGate.internGates[i], data);
         }
 
@@ -81,8 +82,8 @@ class SerializerParser {
     /*** Serializes all the gates in the simulator world
      * Format: Name;input_1&...&input_n;output_1&...&output_n;intern_1&...&intern_n
      * Input: Name
-     * Output: Name§input_1_index§...§input_n_index
-     * InternGate: Type@param_2@...@param_n§input_1_index§...§input_n_index */
+     * Output: Name$input_1_index$...$input_n_index
+     * InternGate: Type@param_2@...@param_n$input_1_index$...$input_n_index */
     static serializeCustomGate(name, inputNames, outputNames) {
 
         // Saves the current state of the simulator to be able to edit this custom gate later
@@ -197,12 +198,12 @@ class SerializerParser {
 
             if (gate instanceof Output) {
 
-                data += outputNames[index] + '§';
+                data += outputNames[index] + '$';
                 for (let input of gate.inputs)
-                    data += (input ? getIndex(input.destination) : "NULL") + '§';
+                    data += (input ? getIndex(input.destination) : "NULL") + '$';
                 index++;
 
-                addSeparator('§', '&');
+                addSeparator('$', '&');
             }
         }
 
@@ -213,12 +214,12 @@ class SerializerParser {
 
             if (!(gate instanceof Output) && !(gate instanceof Input)) {
 
-                data += gate.type + gate.serializeParameters() + '§';
+                data += gate.type + gate.serializeParameters() + '$';
                 for (let input of gate.inputs)
-                    data += (input ? getIndex(input.destination) : "NULL") + '§';
+                    data += (input ? getIndex(input.destination) : "NULL") + '$';
                 index++;
 
-                addSeparator('§', '&');
+                addSeparator('$', '&');
             }
         }
 

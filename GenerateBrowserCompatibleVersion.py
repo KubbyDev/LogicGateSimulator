@@ -46,26 +46,23 @@ __htmlEnd = \
 </body>
 </html>
 """
-__commentDetectionRegex = r'(\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/)|(\/\/.*)'
-# Thanks to this site: https://blog.ostermiller.org/finding-comments-in-source-code-using-regular-expressions/
+__jsMinifierURL = "https://javascript-minifier.com/raw"
 
-
-def simpleMinifiy(string):
-    withoutComment = re.sub(__commentDetectionRegex, '', string)
-    return re.sub(r'[\n\r]*', '', withoutComment)
+def minifiy(content):
+    data = dict(input=content)
+    return str(requests.post(__jsMinifierURL, data=data, allow_redirects=True).content, "utf-8")
 
 # Reads the babel output
 f = open(__babelOutputPath, "r")
 content = f.read()
 f.close()
 # Uses javascript-minifier.com to minify the babel output
-data = dict(input=content)
-minifiedContent = simpleMinifiy(content)
+minifiedContent = minifiy(content)
 # Creates and opens the HTML file and writes the first part (which doesn't change)
 file = open("index.html", "w+")
 file.write(__htmlBegin)
 # Write the javascript in the generated HTML
 file.write(minifiedContent + "\n")
-# Writes the first part (which doesn't change) and closes the file
+# Writes the last part (which doesn't change) and closes the file
 file.write(__htmlEnd)
 file.close()
