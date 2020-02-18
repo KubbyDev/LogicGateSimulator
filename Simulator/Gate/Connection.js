@@ -46,7 +46,7 @@ class Connection {
 
         ctx.beginPath();
         ctx.moveTo(inputPosition[0], inputPosition[1]);
-        for(let point of this.calculateIntermediates(this.destination.x, this.destination.y, this.origin.x, inputPosition[1]))
+        for(let point of this.calculateIntermediates(outputPosition[0], outputPosition[1], inputPosition[0], inputPosition[1]))
             ctx.lineTo(point[0], point[1]);
         ctx.lineTo(outputPosition[0], outputPosition[1]);
         ctx.lineWidth = Interface.connectionWidth;
@@ -63,12 +63,12 @@ class Connection {
         const averageY = (toY + fromY) /2;
 
         // Case where the origin is behind the destination
-        if(toX - this.origin.width/2 - this.origin.width/6 < fromX + this.destination.width/2 + this.destination.width/6)
+        if(toX - Interface.connectionGap < fromX + Interface.connectionGap)
             return [
-                [toX - this.origin.width/2 - this.origin.width/6, toY],
-                [toX - this.origin.width/2 - this.origin.width/6, averageY],
-                [fromX + this.destination.width/2 + this.destination.width/6, averageY],
-                [fromX + this.destination.width/2 + this.destination.width/6, fromY],
+                [toX - Interface.connectionGap, toY],
+                [toX - Interface.connectionGap, averageY],
+                [fromX + Interface.connectionGap, averageY],
+                [fromX + Interface.connectionGap, fromY],
             ];
         else
             return [

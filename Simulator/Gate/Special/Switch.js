@@ -10,7 +10,7 @@ class Switch extends Gate {
     update() {
 
         if(!this.isOn) {
-            this.tempOutput = false;
+            this.output = false;
             return;
         }
 

@@ -20,7 +20,7 @@ class Clock extends Gate {
         this.current--;
         if(this.current < 0) {
             this.current = this.period;
-            this.tempOutput = !this.output;
+            this.output = !this.output;
         }
     }
 

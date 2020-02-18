@@ -15,7 +15,7 @@ class Input extends Gate {
     // Functionnal properties ------------------------------------------------------------------------------------------
 
     update() {
-        this.tempOutput = this.isOn;
+        this.output = this.isOn;
     }
 
     /*** Toggles the output */

@@ -12,6 +12,7 @@ class Interface {
 
     static negCircleR = 5; // Radius of the circle that represents negation on gates
     static connectionWidth = 3; // Width of the lines representing connections
+    static connectionGap = 30; // Gap between the gate and the turn when a connection goes backwards
 
     static clear() {
         ctx.fillStyle = Interface.BACKGROUND_COLOR;
@@ -160,6 +161,7 @@ class Interface {
         Interface.zoomFactor *= factor;
         Interface.negCircleR *= factor;
         Interface.connectionWidth *= factor;
+        Interface.connectionGap *= factor;
 
         for(let gate of gates) {
 

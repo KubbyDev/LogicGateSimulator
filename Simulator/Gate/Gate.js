@@ -11,7 +11,7 @@ class Gate {
 
         this.activation = () => true; // Activation function. For example to create an AND put (a,b) => a&&b
         this.inputs = [];             // References to Connections that lead to the gates that serves as input of this gate
-        this.tempOutput = false;      // The output during the update. Copied in output at the end of the update
+        this.prevOutput = false;      // The output the gate should have had on the previous tick
         this.output = false;          // State of the output of the gate
         this.maxInputs = 0;           // The maximum number of inputs this gate can have
         this.maxOutputs = 1;          // The maximum number of outputs this gate can have
@@ -62,24 +62,30 @@ class Gate {
             this.inputs.push(new Connection(this, gate));
     }
 
-    /*** Updates the tempOutput of the gate according to the inputs
-     * Can be overriden by child classes for custom behaviour */
+    /*** Updates the output of the gate according to the inputs
+     * Can be overriden by child classes for custom behaviour
+     * There are 2 requirements for the signal propagation:
+     * 1: The signal must propagate through a gate in one tick
+     * 2: The propagation must be asymetric in some way, imperfect (if it was perfect we could have flickering problems)
+     * The solution is to update the output of the gates one by one following one condition:
+     * If the desired output is the same as the desired output of the previous tick, update, else, do nothing
+     * Then, when this update is done on all the gates, calculate the desired output once again for each gate
+     * and put it in theprevious desired output (for the next update) */
     update() {
         const inputs = this.inputs.map(connection => connection !== undefined && connection.getValue());
-        this.tempOutput = this.activation(inputs);
+        const desiredOutput = this.activation(inputs);
+        if(desiredOutput === this.prevOutput)
+            this.output = desiredOutput;
     }
-
-    /*** Call this function at the end of each update */
     tickEnd() {
-        this.output = this.tempOutput;
+        const inputs = this.inputs.map(connection => connection !== undefined && connection.getValue());
+        this.prevOutput = this.activation(inputs);
     }
 
     /*** Updates all the gates */
     static updateAll(gates) {
-
         for(let gate of gates)
             gate.update();
-
         for(let gate of gates)
             gate.tickEnd();
     }
