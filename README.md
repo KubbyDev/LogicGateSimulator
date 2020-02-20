@@ -5,9 +5,9 @@ This simulator was made in JavaScript so no installation is required.
 Try it out: [https://kubbydev.github.io/LogicGateSimulator/](https://kubbydev.github.io/LogicGateSimulator/)
 
 This link leads to the generated version of the code (the version that went through Babel and a JavaScript minifier). The source code can be found in the Simulator folder in the git repository's root.  
-Resources containing pre-made custom gates and example projects can be found in the Resources folder in the git repository's root. 
+Resources containing pre-made custom gates and example projects can be found in the Resources folder in the git repository's root.  
 
-![Demo](https://i.imgur.com/zIkdO9B.jpg)
+![Demo](https://github.com/KubbyDev/LogicGateSimulator/raw/master/Demo.gif "Demo")
 
 ## User manual
 
@@ -57,4 +57,8 @@ Custom gates are boxes that hide a circuit. They are simulated as if the interna
 To create a custom gate, one can place input and output gates and connect them via some circuit. The input gates will be the inputs of the custom gate and the output gates will be its outputs. When the circuit is done, one can click create custom gate on the bottom left of the screen (in build mode) to start the custom gate generation process. This button will open a popup where the name of the gate and the names of its inputs and outputs can be chosen. When Done is clicked the simulator will display the code to generate the custom gate and generate one automatically.  
 The generation code of the gate can also be found by clicking on the gate in Interaction mode. The gate can then be generated as many times as needed with the Custom button in the gates list (in build mode). Generation codes can also be saved and shared as they are not dependant of a simulator instance.  
 Here is an example of a custom gate. On the left there is the circuit with 4 inputs and 7 outputs. On the right the green square is the generated gate with the 4 inputs and the 7 outputs.
-![Seven Segments](https://i.imgur.com/nR4tC1C.png)
+![Seven Segments](https://i.imgur.com/zWht46R.jpg)
+
+### Saving
+
+The simulator state can be saved at any time using the Export button. It will generate a .lgs file and download it. Saves can then be imported using the Import button. The content of an import is always placed in the center of the screen without removing the gates currently in the simulator (The simulator can be cleared just by refreshing the page).
