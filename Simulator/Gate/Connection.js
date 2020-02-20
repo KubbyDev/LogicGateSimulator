@@ -6,7 +6,7 @@ class Connection {
      */
 
     static downColor = "#d3d3d3";
-    static upColor = "#ea120c";
+    static upColor = "#ffff00";
 
     constructor(origin, destination) {
         this.destination = destination;  // The gate from which this connection starts (this connection is the output of this gate)

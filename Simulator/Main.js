@@ -1,6 +1,10 @@
 // TODO:
 // Common custom gates dans le menu de creation
 // StackOverflow with connection cycles
+// Deplacement en groupe
+// Creation de circuit a partir d'une equation
+// Fleche pour passer les frames
+// Deplacement grossier avec shift
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");

@@ -6,7 +6,7 @@ class ConnectionNode extends Gate {
 
     constructor() {
         super();
-        this.upColor = "#ea120c";
+        this.upColor = "#ffff00";
         this.downColor = "#7a7a7a";
     }
 
