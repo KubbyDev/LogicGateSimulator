@@ -107,7 +107,7 @@ class Popup {
     static addDoneButton(clickEvent) {
         let b = document.createElement("BUTTON");
         b.innerHTML = "Done";
-        b.addEventListener('click', clickEvent);
+        b.addEventListener('click', clickEvent ? clickEvent : Popup.close);
         b.classList.add("popupDoneButton");
 
         Popup.containerDiv.appendChild(b);
@@ -137,5 +137,14 @@ class Popup {
         t.innerHTML = text;
         t.classList.add("popupText");
         Popup.containerDiv.appendChild(t);
+    }
+
+    // Opens an error message popup
+    static openError(message) {
+        Popup.open();
+        Popup.addTitle("Error");
+        Popup.addSpace();
+        Popup.addText(message);
+        Popup.addDoneButton();
     }
 }

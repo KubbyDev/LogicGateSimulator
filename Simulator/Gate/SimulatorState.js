@@ -54,81 +54,91 @@ class SimulatorState {
 
     static import(data) {
 
-        const dataObj = JSON.parse(data);
+        try {
 
-        // Stops if the save contains no gate
-        if(dataObj.gates.length === 0)
-            return;
+            const dataObj = JSON.parse(data);
 
-        // The ids in the save may not start at the same point. So while loading, all ids are offset by the number
-        // of gates already in the simulation state before loading.
-        const gatesIdOffset = Gate.nextID;
+            // Stops if the save contains no gate
+            if(dataObj.gates.length === 0)
+                return;
 
-        // Builds all the gates
-        const newGates = dataObj.gates.map(saveObj => {
+            // The ids in the save may not start at the same point. So while loading, all ids are offset by the number
+            // of gates already in the simulation state before loading.
+            const gatesIdOffset = Gate.nextID;
 
-            let gate;
-            if(saveObj.type === "CUSTOM") {
-                gate = SerializerParser.parseCustomGate(saveObj.string);
+            // Builds all the gates
+            const newGates = dataObj.gates.map(saveObj => {
 
+                let gate;
+                if(saveObj.type === "CUSTOM") {
+                    gate = SerializerParser.parseCustomGate(saveObj.string);
+                    if(!gate) return; // If the custom gate parsing fails it automatically displays an error so we just stop
+                }
+                else {
+                    // Calls the function of name obj.type in GateFactory
+                    const gateConstructor = GateFactory[saveObj.type];
+                    gate = gateConstructor(0,0);
+                }
+
+                // Copies all the properties of save object into the gate
+                Object.assign(gate, saveObj);
+
+                gate.id += gatesIdOffset; // Makes sure there is no ID collisions with already placed gates
+                gate.x *= Interface.zoomFactor/dataObj.interfaceZoomFactor; // Updates the gaps between gates (width, height and
+                gate.y *= Interface.zoomFactor/dataObj.interfaceZoomFactor; // fontSize are updated by setGraphicProperties)
+
+                return gate;
+            });
+
+            // Centers the gates on the screen
+            let averageX = newGates.reduce((total, gate) => total + gate.x, 0) / newGates.length;
+            let averageY = newGates.reduce((total, gate) => total + gate.y, 0) / newGates.length;
+            for(let gate of newGates) {
+                gate.x += canvas.width/2 - averageX;
+                gate.y += canvas.height/2 - averageY;
             }
-            else {
-                // Calls the function of name obj.type in GateFactory
-                const gateConstructor = GateFactory[saveObj.type];
-                gate = gateConstructor(0,0);
+
+            // Finds the gate with the given id
+            // outputIndex is for custom gates because they can have multiple
+            function findGate(id, outputIndex) {
+
+                const res = newGates.find(gate => gate.id === id);
+                if(outputIndex === undefined)
+                    return res;
+
+                // If the outputIndex was given it means the gate is a CustomGate
+                return res.outputGates[outputIndex];
             }
 
-            // Copies all the properties of save object into the gate
-            Object.assign(gate, saveObj);
+            // For each gate, replaces each index in gate.inputs by a Connection to the gate at this index
+            for(let gate of newGates) {
+                let inputs = gate.inputs;
+                gate.inputs = [];
+                for(let i = 0; i < inputs.length; i++) {
+                    if (inputs[i] === null)
+                        continue;
 
-            gate.id += gatesIdOffset; // Makes sure there is no ID collisions with already placed gates
-            gate.x *= Interface.zoomFactor/dataObj.interfaceZoomFactor; // Updates the gaps between gates (width, height and
-            gate.y *= Interface.zoomFactor/dataObj.interfaceZoomFactor; // fontSize are updated by setGraphicProperties)
-
-            return gate;
-        });
-
-        // Centers the gates on the screen
-        let averageX = newGates.reduce((total, gate) => total + gate.x, 0) / newGates.length;
-        let averageY = newGates.reduce((total, gate) => total + gate.y, 0) / newGates.length;
-        for(let gate of newGates) {
-            gate.x += canvas.width/2 - averageX;
-            gate.y += canvas.height/2 - averageY;
-        }
-
-        // Finds the gate with the given id
-        // outputIndex is for custom gates because they can have multiple
-        function findGate(id, outputIndex) {
-
-            const res = newGates.find(gate => gate.id === id);
-            if(outputIndex === undefined)
-                return res;
-
-            // If the outputIndex was given it means the gate is a CustomGate
-            return res.outputGates[outputIndex];
-        }
-
-        // For each gate, replaces each index in gate.inputs by a Connection to the gate at this index
-        for(let gate of newGates) {
-            let inputs = gate.inputs;
-            gate.inputs = [];
-            for(let i = 0; i < inputs.length; i++) {
-                if (inputs[i] === null)
-                    continue;
-
-                // inputs[i][0] is the id of the gate. If the gate is a custom gate, inputs[i][1] is
-                // the index of the connected output (will be undefined otherwise)
-                const destination = findGate(inputs[i][0] + gatesIdOffset, inputs[i][1]);
-                gate.inputs[i] = new Connection(gate, destination);
+                    // inputs[i][0] is the id of the gate. If the gate is a custom gate, inputs[i][1] is
+                    // the index of the connected output (will be undefined otherwise)
+                    const destination = findGate(inputs[i][0] + gatesIdOffset, inputs[i][1]);
+                    gate.inputs[i] = new Connection(gate, destination);
+                }
             }
+
+            // Adds the new gates to the simulation world
+            gates = gates.concat(newGates);
+
+            // Computes the new nextID
+            for(let gate of gates)
+                Gate.nextID = Math.max(Gate.nextID, gate.id);
+            Gate.nextID++;
+
         }
-
-        // Adds the new gates to the simulation world
-        gates = gates.concat(newGates);
-
-        // Computes the new nextID
-        for(let gate of gates)
-            Gate.nextID = Math.max(Gate.nextID, gate.id);
-        Gate.nextID++;
+        catch(e) {
+            // If the input is incorrect, displays an error popup
+            console.log(new Date().toJSON() + "\nError while parsing save data\n" + e.stack);
+            Popup.close();
+            Popup.openError("An error occured while parsing save data");
+        }
     }
 }

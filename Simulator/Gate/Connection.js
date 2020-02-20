@@ -6,7 +6,7 @@ class Connection {
      */
 
     static downColor = "#d3d3d3";
-    static upColor = "#ffff00";
+    static upColor = "#ffbf00";
 
     constructor(origin, destination) {
         this.destination = destination;  // The gate from which this connection starts (this connection is the output of this gate)
@@ -17,18 +17,26 @@ class Connection {
 
     /*** Returns the gate that determines the state of this connection
      * Generally it is just this.destination. But if this.destination is a Node,
-     * we have to go further because Nodes don't slow down current */
-    getInput() {
+     * we have to go further because Nodes don't slow down current
+     * Don't pay attention to the argument, it's used in case of a recursive call to avoid stackoverflow */
+    getInput(visited) {
 
         // If the destination is a Node
         if(this.destination instanceof ConnectionNode) {
 
-            // TODO Do something to prevent large cycles that would still cause StackOverflow
+            // If it's the first call then visited is not defined
+            if(visited === undefined)
+                visited = [];
 
-            // If the Node has an input and is not connected to itself, does a recursive call of the
-            // input of the node. Otherwise the whole connection has no input
-            if(this.destination.inputs[0] && this.destination.inputs[0] !== this)
-                return this.destination.inputs[0].getInput();
+            // If the destination is already visited, stops and returns undefined (the connection has no input)
+            if(visited.includes(this.destination.id))
+                return undefined;
+
+            visited.push(this.destination.id);
+
+            // If the Node has an input, does a recursive call on it. Otherwise the connection has no input
+            if(this.destination.inputs[0])
+                return this.destination.inputs[0].getInput(visited);
 
             return undefined;
         }

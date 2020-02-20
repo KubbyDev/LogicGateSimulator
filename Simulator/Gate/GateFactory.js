@@ -6,7 +6,7 @@ class GateFactory {
     static UP(x, y) {
         return new Gate()
             .setFonctionnalProperties("UP", () => true, [])
-            .setGraphicProperties(x,y,40,40,"#ffff00");
+            .setGraphicProperties(x,y,40,40,"#ffbf00");
     }
 
     static DOWN(x, y) {

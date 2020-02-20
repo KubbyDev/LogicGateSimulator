@@ -9,72 +9,82 @@ class SerializerParser {
      * InternGate: Type@param_2@...@param_n$input_1_index$...$input_n_index */
     static parseCustomGate(rawData) {
 
-        let customGate = new CustomGate();
-        customGate.type = "CUSTOM";
-        customGate.string = rawData;
+        try {
 
-        const parts = rawData.split(';');
+            let customGate = new CustomGate();
+            customGate.type = "CUSTOM";
+            customGate.string = rawData;
 
-        // Inputs decoding
-        const inputsData = parts[1].split('&').filter(data => data !== "");
-        for(let i = 0; i < inputsData.length; i++) {
-            let input = new Gate();
-            input.name = inputsData[i];
-            customGate.inputGates[i] = input;
-        }
-        customGate.maxInputs = inputsData.length;
+            const parts = rawData.split(';');
 
-        // Outputs decoding
-        const outputsData = parts[2].split('&').filter(data => data !== "");
-        for(let i = 0; i < outputsData.length; i++) {
-            const data = outputsData[i].split('$');
-            let output = GateFactory.NODE(0,0);
-            output.name = data[0];
-            output.width = 0;
-            customGate.outputGates[i] = output;
-        }
-
-        // Intern gates decoding
-        const gatesData = parts[3].split('&').filter(data => data !== "");
-        for(let i = 0; i < gatesData.length; i++) {
-            const gateParameters = gatesData[i].split('$')[0].split('@');
-            //Calls the function that has the name corresponding to the type of the gate in GateFactory
-            const constructor = GateFactory[gateParameters[0]];
-            customGate.internGates[i] = constructor(0,0);
-            customGate.internGates[i].parseParameters(gateParameters);
-        }
-
-        // Connexions decoding
-        function connect(gate, data) {
-
-            // For each index in the data
-            for(let i = 1; i < data.length; i++) {
-                if(data[i] !== '') // if the index is not empty
-                    // Creates a connection to an input if the index refers to an input, otherwise to an intern gate
-                    gate.inputs[i-1] = new Connection(gate, data[i] < customGate.maxInputs
-                        ? customGate.inputGates[data[i]]
-                        : customGate.internGates[data[i] - customGate.maxInputs]);
+            // Inputs decoding
+            const inputsData = parts[1].split('&').filter(data => data !== "");
+            for (let i = 0; i < inputsData.length; i++) {
+                let input = new Gate();
+                input.name = inputsData[i];
+                customGate.inputGates[i] = input;
             }
-        }
+            customGate.maxInputs = inputsData.length;
 
-        //Outputs
-        for(let i = 0; i < outputsData.length; i++) {
-            const data = outputsData[i].split('$').filter(data => data !== "");
-            connect(customGate.outputGates[i], data);
-        }
-        //InternGates
-        for(let i = 0; i < gatesData.length; i++) {
-            let data = gatesData[i].split('$').filter(data => data !== "");
-            connect(customGate.internGates[i], data);
-        }
+            // Outputs decoding
+            const outputsData = parts[2].split('&').filter(data => data !== "");
+            for (let i = 0; i < outputsData.length; i++) {
+                const data = outputsData[i].split('$');
+                let output = GateFactory.NODE(0, 0);
+                output.name = data[0];
+                output.width = 0;
+                customGate.outputGates[i] = output;
+            }
 
-        customGate.maxOutputs = customGate.outputGates.length;
-        return customGate
-            .setGraphicProperties(
-                mouseX, mouseY,
-                100, 30+Math.max(customGate.maxInputs,customGate.maxOutputs)*20,
-                "#379f1f", parts[0]
+            // Intern gates decoding
+            const gatesData = parts[3].split('&').filter(data => data !== "");
+            for (let i = 0; i < gatesData.length; i++) {
+                const gateParameters = gatesData[i].split('$')[0].split('@');
+                //Calls the function that has the name corresponding to the type of the gate in GateFactory
+                const constructor = GateFactory[gateParameters[0]];
+                customGate.internGates[i] = constructor(0, 0);
+                customGate.internGates[i].parseParameters(gateParameters);
+            }
+
+            // Connexions decoding
+            function connect(gate, data) {
+
+                // For each index in the data
+                for (let i = 1; i < data.length; i++) {
+                    if (data[i] !== '') // if the index is not empty
+                        // Creates a connection to an input if the index refers to an input, otherwise to an intern gate
+                        gate.inputs[i - 1] = new Connection(gate, data[i] < customGate.maxInputs
+                            ? customGate.inputGates[data[i]]
+                            : customGate.internGates[data[i] - customGate.maxInputs]);
+                }
+            }
+
+            //Outputs
+            for (let i = 0; i < outputsData.length; i++) {
+                const data = outputsData[i].split('$').filter(data => data !== "");
+                connect(customGate.outputGates[i], data);
+            }
+            //InternGates
+            for (let i = 0; i < gatesData.length; i++) {
+                let data = gatesData[i].split('$').filter(data => data !== "");
+                connect(customGate.internGates[i], data);
+            }
+
+            customGate.maxOutputs = customGate.outputGates.length;
+
+            return customGate.setGraphicProperties(
+                    mouseX, mouseY,
+                    100, 30 + Math.max(customGate.maxInputs, customGate.maxOutputs) * 20,
+                    "#379f1f", parts[0]
             );
+        }
+        catch(e) {
+            // If the input is incorrect, displays an error popup and returns undefined
+            console.log(new Date().toJSON() + "\nError while parsing gate data\n" + rawData + "\n" + e.stack);
+            Popup.close();
+            Popup.openError("An error occured while parsing gate data:\n" + rawData);
+            return undefined;
+        }
     }
 
     // Serialization ---------------------------------------------------------------------------------------------------

@@ -138,6 +138,8 @@ class BuildMode {
                 - 2*BuildMode.buttons[1].height
                 - 5*Interface.BUTTON_SPACING)
             / (BuildMode.buttons[5].height+Interface.BUTTON_SPACING));
+        // Avoids trying to display more buttons than we have if the screen to too large
+        BuildMode.listLength = Math.min(BuildMode.listLength, BuildMode.buttons.length - 5);
 
         // Buttons to control the list (up and down)
         BuildMode.buttons[1].x = canvas.width - BuildMode.buttons[1].width/2 - Interface.BUTTON_SPACING;
@@ -219,6 +221,7 @@ class BuildMode {
         Popup.addFields([{id: "rawData"}], " ");
         Popup.addDoneButton(() => {
             const gate = SerializerParser.parseCustomGate(document.getElementById("rawData").value);
+            if(!gate) return; // Aborts if an error occured
             BuildMode.addGate(gate);
             BuildMode.lastCustomGate = gate.string;
             Popup.close();
