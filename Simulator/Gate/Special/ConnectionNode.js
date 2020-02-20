@@ -28,7 +28,7 @@ class ConnectionNode extends Gate {
                 continue;
 
             for(let i = 0; i < gate.outputGates.length; i++)
-                if(gate.outputGates[i] == this) // only 2 =, it's normal
+                if(gate.outputGates[i] === this)
                     return {gate: gate, outputIndex: i};
         }
         return null;

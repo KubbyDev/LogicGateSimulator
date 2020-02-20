@@ -124,7 +124,11 @@ class SimulatorState {
         }
 
         // Adds the new gates to the simulation world
-        Gate.nextID += newGates.length;
         gates = gates.concat(newGates);
+
+        // Computes the new nextID
+        for(let gate of gates)
+            Gate.nextID = Math.max(Gate.nextID, gate.id);
+        Gate.nextID++;
     }
 }

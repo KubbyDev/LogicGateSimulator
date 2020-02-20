@@ -12,7 +12,7 @@ class Interface {
 
     static negCircleR = 5; // Radius of the circle that represents negation on gates
     static connectionWidth = 3; // Width of the lines representing connections
-    static connectionGap = 30; // Gap between the gate and the turn when a connection goes backwards
+    static connectionGap = 20; // Gap between the gate and the turn when a connection goes backwards
 
     static clear() {
         ctx.fillStyle = Interface.BACKGROUND_COLOR;
@@ -24,6 +24,9 @@ class Interface {
         Interface.getCurrentMode().lateUpdate();
 
         // Mode selection buttons
+        Interface.buttons[0].color = Interface.mode === 0 ? "#ffeb47" : "#ffffff";
+        Interface.buttons[1].color = Interface.mode === 1 ? "#ffeb47" : "#ffffff";
+        Interface.buttons[2].color = Interface.mode === 2 ? "#ffeb47" : "#ffffff";
         Interface.buttons[0].x = canvas.width/2 - Interface.buttons[0].width - Interface.BUTTON_SPACING;
         Interface.buttons[0].y = Interface.buttons[0].height/2 + Interface.BUTTON_SPACING;
         Interface.buttons[1].x = canvas.width/2;

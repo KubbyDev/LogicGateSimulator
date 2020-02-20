@@ -20,11 +20,17 @@ class Connection {
      * we have to go further because Nodes don't slow down current */
     getInput() {
 
+        // If the destination is a Node
         if(this.destination instanceof ConnectionNode) {
-            if(this.destination.inputs[0])
+
+            // TODO Do something to prevent large cycles that would still cause StackOverflow
+
+            // If the Node has an input and is not connected to itself, does a recursive call of the
+            // input of the node. Otherwise the whole connection has no input
+            if(this.destination.inputs[0] && this.destination.inputs[0] !== this)
                 return this.destination.inputs[0].getInput();
-            else
-                return undefined;
+
+            return undefined;
         }
 
         return this.destination;

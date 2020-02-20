@@ -1,5 +1,6 @@
 // TODO:
-// Last custom gates used
+// Common custom gates dans le menu de creation
+// StackOverflow with connection cycles
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");

@@ -60,15 +60,6 @@ Array.prototype.removeAll = function(values) {
     });
 };
 
-/*** Searches if the array contains values (compares references, not whole objects) */
-Array.prototype.includesByReference = function(value) {
-    for(let element of this) {
-        if(element == value) // The double = is not a mistake
-            return true;
-    }
-    return false;
-};
-
 // Forces the canvas to resize when the window is resized, and resizes it on start
 window.onresize = Tools.resizeCanvas;
 Tools.resizeCanvas();
