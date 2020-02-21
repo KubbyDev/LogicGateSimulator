@@ -1,18 +1,18 @@
 class Interface {
 
-    //Interface modes: 0 = Build, 1: Wiring, 2: Interaction
-
     static BACKGROUND_COLOR = "#353535";
-    static BUTTON_SPACING = 5;
+    static BUTTON_SPACING = 5; // Number of pixels separating 2 interface buttons
+    static GATE_SNAP_DIV_SIZE = 10; // Size of a division of the gate snap grid. Decrease to have more liberty when pressing Shift
 
-    static zoomFactor = 1; // The bigger this number is, the bigger the gates will be
-    static mode = 0;
-    static blockInputs = false;
-    static buttons = [];
+    static zoomFactor; // The bigger this number is, the bigger the gates will be
+    static mode; // Interface modes: 0 = Build, 1: Wiring, 2: Interaction
+    static blockInputs; // When true prevents user event from reaching the mode's event handlers
+    static buttons; // Buttons that don't depend on a mode
+    static origin; // Reference point on the plane. Moves with zoom. Used for the gate snap on shift
 
-    static negCircleR = 5; // Radius of the circle that represents negation on gates
-    static connectionWidth = 3; // Width of the lines representing connections
-    static connectionGap = 20; // Gap between the gate and the turn when a connection goes backwards
+    static negCircleR; // Radius of the circle that represents negation on gates
+    static connectionWidth; // Width of the lines representing connections
+    static connectionGap; // Gap between the gate and the turn when a connection goes backwards
 
     static clear() {
         ctx.fillStyle = Interface.BACKGROUND_COLOR;
@@ -72,6 +72,14 @@ class Interface {
     }
 
     static init() {
+
+        Interface.origin = [0,0];
+        Interface.zoomFactor = 1;
+        Interface.mode = 0;
+        Interface.blockInputs = false;
+        Interface.negCircleR = 5;
+        Interface.connectionGap = 20;
+        Interface.connectionWidth = 3;
 
         BuildMode.init();
         WiringMode.init();
@@ -147,7 +155,11 @@ class Interface {
     }
 
     static update() {
+
         Interface.getCurrentMode().earlyUpdate();
+
+        if(rightArrowPressed && framesToCalculate >= 0)
+            framesToCalculate = Math.max(framesToCalculate, 1);
     }
 
     /*** Returns the class that handles the selected mode */
@@ -165,7 +177,11 @@ class Interface {
         Interface.negCircleR *= factor;
         Interface.connectionWidth *= factor;
         Interface.connectionGap *= factor;
+        Interface.origin[0] = (Interface.origin[0] - mouseX)*factor + mouseX;
+        Interface.origin[1] = (Interface.origin[1] - mouseY)*factor + mouseY;
 
+        // The x, y, width and height values on the gates are not fixed, they vary with zoom
+        // The display system uses these values direclty
         for(let gate of gates) {
 
             gate.width *= factor;

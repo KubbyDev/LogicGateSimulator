@@ -1,9 +1,6 @@
 // TODO:
-// Common custom gates dans le menu de creation
 // Deplacement en groupe
 // Creation de circuit a partir d'une equation
-// Fleche pour passer les frames
-// Deplacement grossier avec shift
 // Rendre l'utilisation possible sur mobile
 // Deplacement sans zoom
 

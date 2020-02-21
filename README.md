@@ -26,7 +26,7 @@ To switch between modes, one can click on the buttons on the top center of the s
 When build mode is activated, there is a menu on the right with a list of all the gates that can be created. A gate can be created by clicking on it in the menu, and then clicking where the gate is desired to be. This menu contains basic gates (AND, OR, NOT, XOR, NAND...), and also some special gates and custom gates that will be explained later.  
 A gate can be destroyed by moving it on the Destroy button of by pressing Del with the gate selected.  
 Common gates can be placed with hotkeys: A (AND), O (OR), N (NOT), X (XOR)  
-The last gate that was placed can be placed again by pressing Space.
+The last gate that was placed can be placed again by pressing Space. Pressing shift will force the gate to be placed on one spot of a virtual grid.
 
 ### Wiring mode
 
@@ -53,10 +53,10 @@ Clicking on it will toggle between opened and closed.
 
 ### Custom gates
 
-Custom gates are boxes that hide a circuit. They are simulated as if the internal circuit of the gate was in the simulator itself.  
-To create a custom gate, one can place input and output gates and connect them via some circuit. The input gates will be the inputs of the custom gate and the output gates will be its outputs. When the circuit is done, one can click create custom gate on the bottom left of the screen (in build mode) to start the custom gate generation process. This button will open a popup where the name of the gate and the names of its inputs and outputs can be chosen. When Done is clicked the simulator will display the code to generate the custom gate and generate one automatically.  
-The generation code of the gate can also be found by clicking on the gate in Interaction mode. The gate can then be generated as many times as needed with the Custom button in the gates list (in build mode). Generation codes can also be saved and shared as they are not dependant of a simulator instance.  
-Here is an example of a custom gate. On the left there is the circuit with 4 inputs and 7 outputs. On the right the green square is the generated gate with the 4 inputs and the 7 outputs.
+Custom gates are boxes that hide a circuit. They are simulated as if the internal circuit of the gate was in the simulator itself. To create a custom gate, one can place input and output gates and connect them via some circuit. The input gates will be the inputs of the custom gate and the output gates will be its outputs. When the circuit is done, one can click create custom gate on the bottom left of the screen (in build mode) to start the custom gate generation process. This button will open a popup where the name of the gate and the names of its inputs and outputs can be chosen. Then pressing Done will make the simulator display the code to generate the custom gate and generate one automatically.  
+The generation code of the gate can also be found by clicking on the gate in Interaction mode. The gate can then be generated as many times as needed with the Custom button in the gates list (in build mode). Generation codes can also be saved and shared as they are not dependant of a simulator instance. In fact there is a library available in the Resources folder.  
+Here is an example of a custom gate. On the left there is the circuit with 4 inputs and 7 outputs. On the right the green square is the generated gate with the 4 inputs and the 7 outputs.  
+  
 ![Seven Segments](https://i.imgur.com/zWht46R.jpg)
 
 ### Saving

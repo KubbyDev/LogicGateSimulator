@@ -39,6 +39,7 @@ class Popup {
     }
 
     // Adds a field group to the popup. Title is the text displayed on top on the field group (not mandatory).
+    // Returns an array with the created fields, and the title in first position if one was given
     // fields must be of this form:
     // [
     //     {id: fieldId, defaultValue: defaultValue},
@@ -49,6 +50,7 @@ class Popup {
 
         // The parent element of the field. Changes to the title element if a title is given
         let fieldsContainer = Popup.containerDiv;
+        let elements = [];
 
         // Creates the title and adds it to the popup
         if(title) {
@@ -57,6 +59,7 @@ class Popup {
             text.classList.add("popupElementTitle");
             Popup.containerDiv.appendChild(text);
             fieldsContainer = text;
+            elements.push(text);
         }
 
         // Creates the fields and adds them as child of the title
@@ -68,10 +71,15 @@ class Popup {
             input.classList.add("popupInput");
 
             fieldsContainer.appendChild(input);
+
+            elements.push(input);
         }
+
+        return elements;
     }
 
     // Adds a button group to the popup. Title is the text displayed on top on the button group (not mandatory).
+    // Returns an array with the created buttons, and the title in first position if one was given
     // buttons must be of this form:
     // [
     //     {clickEvent: buttonClickEvent, title: buttonTitle},
@@ -82,6 +90,7 @@ class Popup {
 
         // The parent element of the field. Changes to the title element if a title is given
         let buttonsContainer = Popup.containerDiv;
+        let elements = [];
 
         // Creates the title and adds it to the popup
         if(title) {
@@ -90,6 +99,7 @@ class Popup {
             text.classList.add("popupElementTitle");
             Popup.containerDiv.appendChild(text);
             buttonsContainer = text;
+            elements.push(text);
         }
 
         // Creates the fields and adds them as child of the title
@@ -101,42 +111,51 @@ class Popup {
             b.classList.add("popupButton");
 
             buttonsContainer.appendChild(b);
+
+            elements.push(b);
         }
+
+        return elements;
     }
 
+    // Adds a Done button with given event and returns it
     static addDoneButton(clickEvent) {
         let b = document.createElement("BUTTON");
         b.innerHTML = "Done";
         b.addEventListener('click', clickEvent ? clickEvent : Popup.close);
         b.classList.add("popupDoneButton");
-
         Popup.containerDiv.appendChild(b);
+        return b;
     }
 
-    // Adds a title with given text to the popup
+    // Adds a title with given text to the popup and returns it
     static addTitle(text) {
-        let separator = document.createElement("HR");
-        separator.innerHTML = text;
-        separator.classList.add("popupTitle");
-        Popup.containerDiv.appendChild(separator);
+        let title = document.createElement("HR");
+        title.innerHTML = text;
+        title.classList.add("popupTitle");
+        Popup.containerDiv.appendChild(title);
+        return title;
     }
 
-    // Adds a given amount of empty lines on the popup
+    // Adds a given amount of empty lines on the popup and returns them
     static addSpace(size) {
 
         if (size === undefined)
             size = 1;
 
+        let elements = [];
         for (let i = 0; i < size; i++)
-            Popup.addText("<br>");
+            elements.push(Popup.addText("<br>"));
+        return elements;
     }
 
-    // Adds a text to the popup
+    // Adds a text to the popup and returns it
     static addText(text) {
         let t = document.createElement("P");
         t.innerHTML = text;
         t.classList.add("popupText");
         Popup.containerDiv.appendChild(t);
+        return t;
     }
 
     // Opens an error message popup

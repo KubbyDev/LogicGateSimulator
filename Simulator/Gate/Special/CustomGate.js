@@ -119,16 +119,18 @@ class CustomGate extends Gate {
         let inputs = [];
         for(let i = 0; i < nbInputs; i++)
             inputs.push({id: "input" + i});
+        Popup.addText("Input names: ");
         if(inputs.length > 0)
-            Popup.addFields(inputs, "Input names");
+            Popup.addFields(inputs, " ");
         Popup.addSpace();
 
         //Creates the fields for the outputs
         let outputs = [];
         for(let i = 0; i < nbOutputs; i++)
             outputs.push({id: "output" + i});
+        Popup.addText("Output names: ");
         if(inputs.length > 0)
-            Popup.addFields(outputs, "Output names");
+            Popup.addFields(outputs, " ");
         Popup.addSpace();
 
         Popup.addDoneButton(() => {

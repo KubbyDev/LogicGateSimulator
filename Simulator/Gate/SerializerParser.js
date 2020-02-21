@@ -74,7 +74,7 @@ class SerializerParser {
 
             return customGate.setGraphicProperties(
                     mouseX, mouseY,
-                    100, 30 + Math.max(customGate.maxInputs, customGate.maxOutputs) * 20,
+                    100, 20 + Math.max(customGate.maxInputs, customGate.maxOutputs) * 20,
                     "#379f1f", parts[0]
             );
         }

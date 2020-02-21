@@ -24,12 +24,30 @@ document.addEventListener('click', function() {
     Interface.getCurrentMode().onClick();
 });
 
+// Tracks key presses
+let shiftPressed = false;
+let rightArrowPressed = false;
+document.onkeyup = function(event) {
+
+    if(event.key === 'Shift')
+        shiftPressed = false;
+    if(event.key === 'ArrowRight')
+        rightArrowPressed = false;
+};
+
 // Listens for keyboard inputs
 document.onkeydown = function(event) {
 
     switch(event.key) {
         case 'Escape':
             Popup.close();
+            break;
+        case 'Shift':
+            shiftPressed = true;
+            break;
+        case 'ArrowRight':
+            rightArrowPressed = true;
+            break;
     }
 
     if(Interface.blockInputs)

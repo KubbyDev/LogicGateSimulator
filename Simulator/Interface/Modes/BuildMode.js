@@ -1,5 +1,13 @@
 class BuildMode {
 
+    static COMMONLY_USED_GATES = [
+        {name: "AND3", code: "AND3;A&B&C;O$4;AND$0$1&AND$3$2"},
+        {name: "AND4", code: "AND4;A&B&C&D;O$5;AND$0$1&AND$4$6&AND$2$3"},
+        {name: "OR3", code: "OR3;A&B&C;O$4;OR$0$1&OR$3$2"},
+        {name: "OR4", code: "OR4;A&B&C&D;O$5;OR$0$1&OR$4$6&OR$2$3"},
+        {name: "SR Latch", code: "SR;R&S;Q$2&/Q$3;NOR$0$3&NOR$2$1"},
+    ];
+
     static selectedGate = null;
     static selectorPosition = 0; // Index of the first button displayed in the list on the right
     static listLength = 0; // Number of buttons in the list on the right
@@ -105,12 +113,19 @@ class BuildMode {
     }
 
     /*** Called on every frame when this menu is selected at
-     * the moment of the interface update (begining of the frame calculation)*/
+     * the moment of the interface update (begining of the frame calculation) */
     static earlyUpdate() {
 
         if(BuildMode.selectedGate) {
-            BuildMode.selectedGate.x = mouseX;
-            BuildMode.selectedGate.y = mouseY;
+
+            if (shiftPressed) {
+                const pos = BuildMode.getSnappedPosition(mouseX, mouseY);
+                BuildMode.selectedGate.x = pos[0];
+                BuildMode.selectedGate.y = pos[1];
+            } else {
+                BuildMode.selectedGate.x = mouseX;
+                BuildMode.selectedGate.y = mouseY;
+            }
         }
     }
 
@@ -215,10 +230,21 @@ class BuildMode {
 
     /*** Opens the popup that asks for a string to build a CustomGate */
     static openCustomGatePopup() {
+
         Popup.open();
         Popup.addTitle("Custom Gate");
         Popup.addText("Data for your gate (you can generate it with the Build Custom Gate button)");
-        Popup.addFields([{id: "rawData"}], " ");
+        const dataField = Popup.addFields([{id: "rawData"}], " ")[1];
+
+        Popup.addSpace(2);
+        Popup.addText("Commonly used gates:");
+        Popup.addButtons(BuildMode.COMMONLY_USED_GATES.map(element => {
+            return {
+                clickEvent: () => { dataField.value = element.code; },
+                title: element.name
+            };
+        }), " ");
+
         Popup.addDoneButton(() => {
             const gate = SerializerParser.parseCustomGate(document.getElementById("rawData").value);
             if(!gate) return; // Aborts if an error occured
@@ -254,5 +280,23 @@ class BuildMode {
                 Gate.removeAllConnectionsTo(outputGate, gates);
         else
             Gate.removeAllConnectionsTo(gate, gates);
+    }
+
+    /*** Rounds the mouse position to a position on a virtual grid to allow users to align everything */
+    static getSnappedPosition(x, y) {
+
+        // Gets the position of the gate in the main grid
+        x = (x - Interface.origin[0]) / Interface.zoomFactor;
+        y = (y - Interface.origin[1]) / Interface.zoomFactor;
+
+        // Snaps it to a position in this grid
+        x = Interface.GATE_SNAP_DIV_SIZE * Math.round(x / Interface.GATE_SNAP_DIV_SIZE);
+        y = Interface.GATE_SNAP_DIV_SIZE * Math.round(y / Interface.GATE_SNAP_DIV_SIZE);
+
+        // Calculates the real position
+        x = x * Interface.zoomFactor + Interface.origin[0];
+        y = y * Interface.zoomFactor + Interface.origin[1];
+
+        return [x, y];
     }
 }
