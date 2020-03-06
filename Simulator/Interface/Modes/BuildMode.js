@@ -1,12 +1,6 @@
 class BuildMode {
 
-    static COMMONLY_USED_GATES = [
-        {name: "AND3", code: "AND3;A&B&C;O$4;AND$0$1&AND$3$2"},
-        {name: "AND4", code: "AND4;A&B&C&D;O$5;AND$0$1&AND$4$6&AND$2$3"},
-        {name: "OR3", code: "OR3;A&B&C;O$4;OR$0$1&OR$3$2"},
-        {name: "OR4", code: "OR4;A&B&C&D;O$5;OR$0$1&OR$4$6&OR$2$3"},
-        {name: "SR Latch", code: "SR;R&S;Q$2&/Q$3;NOR$0$3&NOR$2$1"},
-    ];
+    static GATES_LIBRARY; // Initialised in the init function. Displayed in the custom gate build popup
 
     static selectedGate = null;
     static selectorPosition = 0; // Index of the first button displayed in the list on the right
@@ -18,6 +12,8 @@ class BuildMode {
     // Events ----------------------------------------------------------------------------------------------------------
 
     static init() {
+
+        BuildMode.GATES_LIBRARY = gatesLibrary; // In GatesLibrary.js
 
         // Create all the buttons of the list on the right
         BuildMode.buttons = [
@@ -237,8 +233,8 @@ class BuildMode {
         const dataField = Popup.addFields([{id: "rawData"}], " ")[1];
 
         Popup.addSpace(2);
-        Popup.addText("Commonly used gates:");
-        Popup.addButtons(BuildMode.COMMONLY_USED_GATES.map(element => {
+        Popup.addText("Gates library:");
+        Popup.addButtons(BuildMode.GATES_LIBRARY.map(element => {
             return {
                 clickEvent: () => { dataField.value = element.code; },
                 title: element.name

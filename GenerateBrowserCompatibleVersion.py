@@ -53,12 +53,15 @@ def minifiy(content):
     return str(requests.post(__jsMinifierURL, data=data, allow_redirects=True).content, "utf-8")
 
 # Reads the babel output
+print("Reading babel output...")
 f = open(__babelOutputPath, "r")
 content = f.read()
 f.close()
 # Uses javascript-minifier.com to minify the babel output
+print("Minifying babel output...")
 minifiedContent = minifiy(content)
 # Creates and opens the HTML file and writes the first part (which doesn't change)
+print("Generating output file...")
 file = open("index.html", "w+")
 file.write(__htmlBegin)
 # Write the javascript in the generated HTML
