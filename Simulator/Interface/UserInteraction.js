@@ -24,6 +24,24 @@ document.addEventListener('click', function() {
     Interface.getCurrentMode().onClick();
 });
 
+// Mobile compatilibity: When the user touches the screen it triggers a click, then moving the finger will move
+// the mouse position, and releasing will trigger another click event. It's not ideal but it works without changing
+// anything in the rest of the program
+document.addEventListener('touchstart', function(event) {
+    mouseX = event.changedTouches[0].pageX;
+    mouseY = event.changedTouches[0].pageY;
+    document.dispatchEvent(new Event('click'));
+});
+document.addEventListener('touchend', function(event) {
+    mouseX = event.changedTouches[0].pageX;
+    mouseY = event.changedTouches[0].pageY;
+    document.dispatchEvent(new Event('click'));
+});
+document.addEventListener('touchmove', function(event) {
+    mouseX = event.changedTouches[0].pageX;
+    mouseY = event.changedTouches[0].pageY;
+});
+
 // Tracks key presses
 let shiftPressed = false;
 let rightArrowPressed = false;

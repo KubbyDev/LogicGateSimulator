@@ -8,6 +8,3 @@ node_modules/
 babelOutput.js
 package-lock.json
 package.json
-
-# The server I use to test modification on mobile devices without having to commit
-MobileTestingServer.js

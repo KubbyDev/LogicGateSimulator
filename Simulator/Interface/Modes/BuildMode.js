@@ -115,7 +115,7 @@ class BuildMode {
         if(BuildMode.selectedGate) {
 
             if (shiftPressed) {
-                const pos = BuildMode.getSnappedPosition(mouseX, mouseY);
+                const pos = Interface.getSnappedPosition(mouseX, mouseY);
                 BuildMode.selectedGate.x = pos[0];
                 BuildMode.selectedGate.y = pos[1];
             } else {
@@ -276,23 +276,5 @@ class BuildMode {
                 Gate.removeAllConnectionsTo(outputGate, gates);
         else
             Gate.removeAllConnectionsTo(gate, gates);
-    }
-
-    /*** Rounds the mouse position to a position on a virtual grid to allow users to align everything */
-    static getSnappedPosition(x, y) {
-
-        // Gets the position of the gate in the main grid
-        x = (x - Interface.origin[0]) / Interface.zoomFactor;
-        y = (y - Interface.origin[1]) / Interface.zoomFactor;
-
-        // Snaps it to a position in this grid
-        x = Interface.GATE_SNAP_DIV_SIZE * Math.round(x / Interface.GATE_SNAP_DIV_SIZE);
-        y = Interface.GATE_SNAP_DIV_SIZE * Math.round(y / Interface.GATE_SNAP_DIV_SIZE);
-
-        // Calculates the real position
-        x = x * Interface.zoomFactor + Interface.origin[0];
-        y = y * Interface.zoomFactor + Interface.origin[1];
-
-        return [x, y];
     }
 }

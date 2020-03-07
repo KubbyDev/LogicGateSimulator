@@ -6,7 +6,8 @@ class SimulatorState {
 
         let data = {
             gates: [],
-            interfaceZoomFactor: Interface.zoomFactor
+            interfaceZoomFactor: Interface.zoomFactor,
+            origin: Interface.origin,
         };
 
         // Creates an object with all the useful information for each gate
@@ -90,12 +91,24 @@ class SimulatorState {
                 return gate;
             });
 
-            // Centers the gates on the screen
-            let averageX = newGates.reduce((total, gate) => total + gate.x, 0) / newGates.length;
-            let averageY = newGates.reduce((total, gate) => total + gate.y, 0) / newGates.length;
+            // Calculates the average of the gates positions
+            let posX = newGates.reduce((total, gate) => total + gate.x, 0) / newGates.length;
+            let posY = newGates.reduce((total, gate) => total + gate.y, 0) / newGates.length;
+            // Calculates the offset to apply in order for the snapping grid to be synchronised between the
+            // current simulation and the imported gates
+            if(dataObj.origin) {
+                dataObj.origin[0] *= Interface.zoomFactor/dataObj.interfaceZoomFactor;
+                dataObj.origin[1] *= Interface.zoomFactor/dataObj.interfaceZoomFactor;
+                dataObj.origin[0] += canvas.width/2 - posX;
+                dataObj.origin[1] += canvas.height/2 - posY;
+                const snapped = Interface.getSnappedPosition(dataObj.origin[0], dataObj.origin[1]);
+                posX -= snapped[0] - dataObj.origin[0];
+                posY -= snapped[1] - dataObj.origin[1];
+            }
+            // Applies the offset to all the gates
             for(let gate of newGates) {
-                gate.x += canvas.width/2 - averageX;
-                gate.y += canvas.height/2 - averageY;
+                gate.x += canvas.width/2 - posX;
+                gate.y += canvas.height/2 - posY;
             }
 
             // Finds the gate with the given id
@@ -135,7 +148,7 @@ class SimulatorState {
 
         }
         catch(e) {
-            // If the input is incorrect, displays an error popup
+            // If something went wrong, displays an error popup
             console.log(new Date().toJSON() + "\nError while parsing save data\n" + e.stack);
             Popup.close();
             Popup.openError("An error occured while parsing save data");
