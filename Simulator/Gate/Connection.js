@@ -46,7 +46,7 @@ class Connection {
 
     /*** Returns the state of this connection */
     getValue() {
-        return this.getInput() !== undefined && this.getInput().output;
+        return this.getInput() !== undefined && this.getInput().output !== undefined && this.getInput().output;
     }
 
     // Graphical properties --------------------------------------------------------------------------------------------

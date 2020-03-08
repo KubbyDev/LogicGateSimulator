@@ -21,7 +21,7 @@ class CustomGate extends Gate {
 
         // Takes the input values and puts them in the input gates
         for(let i = 0; i < this.inputGates.length; i++)
-            this.inputGates[i].output = this.inputs[i] && this.inputs[i].getValue();
+            this.inputGates[i].output = this.inputs[i] !== undefined && this.inputs[i].getValue();
 
         // Simulates the internal circuit
         // The outputs of the custom gate are Nodes connected to some

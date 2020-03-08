@@ -72,7 +72,9 @@ class Gate {
      * Then, when this update is done on all the gates, calculate the desired output once again for each gate
      * and put it in theprevious desired output (for the next update) */
     update() {
-        const inputs = this.inputs.map(connection => connection !== undefined && connection.getValue());
+        const inputs = [];
+        for(let i = 0; i < this.maxInputs; i++)
+            inputs[i] = this.inputs[i] !== undefined && this.inputs[i].getValue();
         const desiredOutput = this.activation(inputs);
         if(desiredOutput === this.prevOutput)
             this.output = desiredOutput;
@@ -95,7 +97,7 @@ class Gate {
 
         for(let g of allGates)
             for(let i = 0; i < g.inputs.length; i++)
-                if(g.inputs[i] && g.inputs[i].destination === gate)
+                if(g.inputs[i] !== undefined && g.inputs[i].destination === gate)
                     g.inputs[i] = undefined;
     }
 
