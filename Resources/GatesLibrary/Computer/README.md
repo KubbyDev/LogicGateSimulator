@@ -33,3 +33,10 @@ Merges two 8 lines buses (with OR gates)
 ```
 MERGE;A0&A1&A2&A3&A4&A5&A6&A7&B0&B1&B2&B3&B4&B5&B6&B7;O0$16&O1$17&O2$18&O3$19&O4$20&O5$21&O6$22&O7$23;OR$0$8&OR$1$9&OR$2$10&OR$3$11&OR$4$12&OR$5$13&OR$6$14&OR$7$15
 ```
+
+## Adder
+
+Adds A, B and Cin. The result is R, Cout is the carry bit of the operation.
+```
+ADD;A&B&Cin;R$4&Cout$6;XOR$0$1&XOR$3$2&AND$0$1&OR$5$7&AND$3$2
+```
