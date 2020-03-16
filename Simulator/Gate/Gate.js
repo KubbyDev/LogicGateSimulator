@@ -80,7 +80,9 @@ class Gate {
             this.output = desiredOutput;
     }
     tickEnd() {
-        const inputs = this.inputs.map(connection => connection !== undefined && connection.getValue());
+        const inputs = [];
+        for(let i = 0; i < this.maxInputs; i++)
+            inputs[i] = this.inputs[i] !== undefined && this.inputs[i].getValue();
         this.prevOutput = this.activation(inputs);
     }
 
@@ -195,7 +197,7 @@ class Gate {
     /*** Returns the position of the ith input in the simulator plane */
     getInputPosition(index) {
         return [
-            this.x - this.width/2  + this.width/4,
+            this.x - this.width/2 + Interface.connectionWidth,
             this.y - this.height/2 + this.height*(index+1)/(this.maxInputs+1)
         ]
     }

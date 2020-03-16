@@ -82,7 +82,7 @@ class CustomGate extends Gate {
         }
         for(let i = 0; i < this.inputGates.length; i++) {
             const position = this.getInputPosition(i);
-            ctx.fillText(this.inputGates[i].name, position[0] - this.width/10, position[1]);
+            ctx.fillText(this.inputGates[i].name, position[0] + this.width/10, position[1]);
         }
     }
 

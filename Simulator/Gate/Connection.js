@@ -55,14 +55,17 @@ class Connection {
      * @param i: index of the input on which this connection is on the origin */
     draw(i) {
 
-        const inputPosition = this.origin.getInputPosition(i); //Position of the connection on the input side of the origin
-        const outputPosition = this.destination.getOutputPosition(); //Position of the connection on the ouput side of the destination
+        const inputPosition = this.origin.getInputPosition(i); // Position of the connection on the input side of the origin
+        const outputPosition = this.destination.getOutputPosition(); // Position of the connection on the ouput side of the destination
 
         ctx.beginPath();
-        ctx.moveTo(inputPosition[0], inputPosition[1]);
+        ctx.moveTo(inputPosition[0] + this.origin.width/4, inputPosition[1]);
+
         for(let point of this.calculateIntermediates(outputPosition[0], outputPosition[1], inputPosition[0], inputPosition[1]))
             ctx.lineTo(point[0], point[1]);
+
         ctx.lineTo(outputPosition[0], outputPosition[1]);
+
         ctx.lineWidth = Interface.connectionWidth;
         ctx.strokeStyle = this.getValue() ? Connection.upColor : Connection.downColor;
         ctx.stroke();
