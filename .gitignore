@@ -1,6 +1,7 @@
 # Usual trash files
 .idea/
 *.iml
+**/__pycache__/
 
 # Babel files (and node)
 node_modules/
