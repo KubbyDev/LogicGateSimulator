@@ -30,3 +30,18 @@ A master slave JK latch
 ```
 JK MSTSLV;/PRE&J&CLK&K&/CLE;Q$24&/Q$26;AND$2$8&NOT$2&NOT$6&NOT$7&AND$0$14&NAND$9$12&AND$10$17&NAND$11$4&AND$4$1&NAND$13$15&AND$5$12&AND$10$5&NAND$16$18&AND$3$0&AND$33$22&NOT$33&NOT$20&NOT$21&AND$0$28&NAND$23$26&AND$24$31&NAND$25$4&AND$4$10&NAND$27$29&AND$19$26&AND$24$19&NAND$30$32&AND$12$0&NOT$2
 ```
+
+## D latch
+
+A D latch with Enable
+<https://en.wikipedia.org/wiki/Flip-flop_(electronics)#Gated_D_latch>
+```
+D;D&E;Q$2&/Q$3;NOR$4$3&NOR$2$6&AND$1$5&NOT$0&AND$1$0
+```
+
+## D  (Synchronised on rising edges)
+
+A D latch that will update only when the clock turns high
+```
+D RIS;D&CLK;Q$2&/Q$3;NOR$4$3&NOR$2$6&AND$7$5&NOT$0&AND$7$0&AND$1$10&NOT$1&NOT$8&NOT$9
+```
