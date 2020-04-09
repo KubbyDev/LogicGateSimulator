@@ -1,0 +1,36 @@
+Signals:
+HT: Halt
+AI: A register in
+BI: B register in
+AO: A register out
+SU: Subtract (sum = a-b instead of a+b)
+SO: Sum out (sum = a+b or a-b)
+MI: Memory address register in (4 first bits of the bus)
+RI: RAM in
+RO: RAM out
+II: Instruction register in
+IO: Instruction register out (4 last bits to 4 first bits of the bus)
+CE: Counter enable (increments program counter)
+CI: Counter in (Jump)
+CO: Counter out
+OI: Output in
+FI: Flags in
+IE: Instruction end (resets the microcode counter)
+
+Instructions:
+0000: NOP          No operation
+0001: HLT          Halts
+0010: ADD addr     Adds the contents of the address to the A register
+0011: ADI value    Adds the given value (4 bits) to the A register
+0100: OUT          Outputs the value of the A register
+0101: OTR addr     Outputs the contents of the given address
+0110: SUB addr     Subtracts the contents of the address from the A register
+0111: SBI value    Subtracts the given value (4 bits) from the A register
+1000: JMP value    Jumps to the given line
+1001: JPC value    Jumps to the given line if the carry flag is set
+1010: JPZ value    Jumps to the given line is the zero flag is set
+1011: JPA          Jumps to the address stored in the A register
+1100: LDA addr     Loads the contents of the given address in the A register
+1101: LDI value    Loads the given value (4 bits) in the A register
+1110: STA addr     Stores the value of the A register to the given address
+1111: LDC          Loads the contents of the program counter to the A register
