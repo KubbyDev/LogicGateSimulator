@@ -29,8 +29,13 @@ class Clock extends Gate {
         Popup.open();
         Popup.addTitle("Clock configuration");
         Popup.addSpace();
-        Popup.addFields([{id: "clockPeriod", defaultValue: this.period}], "Period (milliseconds):");
-        Popup.addFields([{id: "clockCurrent", defaultValue: this.current}], "Current (milliseconds):");
+        Popup.addText("Period is the time in milliseconds between 2 state changes (rise or fall of the signal). " +
+            "Current is the time in milliseconds before the next state change (can be used to synchronise clocks " +
+            "during a pause).\nThese two values are accurate only if your computer can calculate one update is less " +
+            "than a millisecond. Otherwise then can be longer (but the clock will always wait for the given amount " +
+            "of updates).");
+        Popup.addFields([{id: "clockPeriod", defaultValue: this.period*2}], "Period:");
+        Popup.addFields([{id: "clockCurrent", defaultValue: this.current}], "Current:");
         Popup.addDoneButton(Clock.chooseParameters);
         Clock.openedPopup = this;
     }

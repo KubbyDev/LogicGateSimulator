@@ -15,20 +15,28 @@ setTimeout(() => {
 
     Interface.init();
 
-    // Main program loop
+    // Physics updates: Every 10 ms tries to do 10 updates (cant do setInterval 1 because browser limits to 10)
+    // If it can do more: waits, if time is up: stops (does less than 10 updates)
     setInterval(() => {
+        let startTime = Date.now(); // milliseconds
+        let nbCalculated = 0;
+        while(nbCalculated < 10 && Date.now() - startTime < 10) {
+            if (rightArrowPressed && framesToCalculate >= 0)
+                framesToCalculate = Math.max(framesToCalculate, 1);
+            if (framesToCalculate !== 0)
+                Gate.updateAll(gates);
+            if (framesToCalculate > 0)
+                framesToCalculate--;
+            nbCalculated++;
+        }
+    }, 10);
 
+    // Graphics updates: Every 50 ms (20 fps)
+    setInterval(() => {
         Interface.clear();
         Interface.update();
-
-        if(framesToCalculate !== 0)
-            Gate.updateAll(gates);
-        if(framesToCalculate > 0)
-            framesToCalculate--;
-
         Gate.drawAll(gates);
         Interface.draw();
-
-    }, 1);
+    }, 50);
 
 }, 100);

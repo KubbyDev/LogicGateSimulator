@@ -155,11 +155,7 @@ class Interface {
     }
 
     static update() {
-
         Interface.getCurrentMode().earlyUpdate();
-
-        if(rightArrowPressed && framesToCalculate >= 0)
-            framesToCalculate = Math.max(framesToCalculate, 1);
     }
 
     /*** Returns the class that handles the selected mode */

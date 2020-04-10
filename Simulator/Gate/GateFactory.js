@@ -269,6 +269,6 @@ class GateFactory {
     static SWITCH(x, y, input) {
         return new Switch()
             .setFonctionnalProperties("SWITCH", (i) => i[0], input, 1)
-            .setGraphicProperties(x, y, 45, 20, "#ffbb25")
+            .setGraphicProperties(x, y, 45, 20, "#ff5d2d")
     }
 }
