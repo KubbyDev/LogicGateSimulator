@@ -1,2 +1,4 @@
-LDI $00
+LDI 5
+SUB 15
 OUT 
+HLT

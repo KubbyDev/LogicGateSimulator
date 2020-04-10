@@ -1,4 +1,6 @@
 # This script compiles assembler code and outputs the binary to put in the RAM
+# You can add comments using at the beginning of the comment
+# When the output contains ---- it means these bits don't matter (ignored)
 
 # Instructions:
 # NOP          No operation
@@ -39,7 +41,7 @@ lineNumber = 0
 
 
 def error(message):
-    raise Exception("Could not assemble line %i: %s\n%s" % (lineNumber, line, message))
+    raise Exception("Could not assemble line %i: %s\n%s" % (lineNumber+1, line, message))
 
 
 def assemble_param(param):
@@ -58,7 +60,7 @@ def assemble_param(param):
 
 
 def assemble_line(line):
-    inst = line[:3]
+    inst = line[:3].upper()
     param = line[3:]
     if inst not in instructions: error("Unknown instruction: %s" % inst)
     opcode, params = instructions[inst]
@@ -73,12 +75,16 @@ file = open(path, "r")
 code = file.read()
 file.close()
 
-# Preprocesses the lines: removes all spaces and removes empty lines
+# Preprocesses the lines:
+# removes all spaces, tabs and comments
+# removes empty lines
 lines = []
 tmplines = code.split('\n')
 for line in tmplines:
     line = line.replace(' ','').replace('\t', '').replace('\r', '')
-    if line != "": lines.append(line)
+    if '#' in line: line = line[:line.find('#')]
+    if line == "": continue
+    lines.append(line)
 
 # Assembles each line
 linesCount = len(lines)
