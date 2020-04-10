@@ -34,7 +34,7 @@ class Clock extends Gate {
             "during a pause).\nThese two values are accurate only if your computer can calculate one update is less " +
             "than a millisecond. Otherwise then can be longer (but the clock will always wait for the given amount " +
             "of updates).");
-        Popup.addFields([{id: "clockPeriod", defaultValue: this.period*2}], "Period:");
+        Popup.addFields([{id: "clockPeriod", defaultValue: this.period}], "Period:");
         Popup.addFields([{id: "clockCurrent", defaultValue: this.current}], "Current:");
         Popup.addDoneButton(Clock.chooseParameters);
         Clock.openedPopup = this;
