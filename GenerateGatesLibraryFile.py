@@ -1,3 +1,5 @@
+# Generates the file that contains the information necessary to display the list of gates in the Build > Custom menu
+
 import os
 
 __GatesLibraryLocation = "Resources"+ os.path.sep +"GatesLibrary"

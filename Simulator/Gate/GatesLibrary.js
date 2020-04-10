@@ -28,4 +28,5 @@ const gatesLibrary = [
     {name: "Demultiplexer 8", code: "DEMUX8;I&S0&S1&S2;A$7&B$9&C$10&D$12&E$16&F$18&G$19&H$21;AND$22$5&NOT$2&AND$22$2&AND$4$8&NOT$1&AND$4$1&AND$6$11&NOT$1&AND$6$1&AND$24$14&NOT$2&AND$24$2&AND$13$17&NOT$1&AND$13$1&AND$15$20&NOT$1&AND$15$1&AND$0$23&NOT$3&AND$0$3"},
     {name: "Rising edge detector", code: "RIS EDGE;I;O$1;AND$0$4&NOT$0&NOT$2&NOT$3"},
     {name: "Falling edge detector", code: "FAL EDGE;I;O$1;NOR$0$4&NOT$3&NOT$0&NOT$2"},
+    {name: "Delay 20", code: "DELAY20;I;O$20;NOT$0&NOT$1&NOT$2&NOT$3&NOT$4&NOT$5&NOT$6&NOT$7&NOT$8&NOT$9&NOT$10&NOT$11&NOT$12&NOT$13&NOT$14&NOT$15&NOT$16&NOT$17&NOT$18&NOT$19"},
 ];

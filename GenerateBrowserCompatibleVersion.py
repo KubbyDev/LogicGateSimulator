@@ -1,16 +1,5 @@
 # This script takes the output of Babel and puts it in a single HTML file
-
-# Babel installation:
-# npm init
-# npm install babel-cli babel-core --save-dev
-# npx babel-upgrade --write
-# npm install @babel/preset-env --save-dev
-# npm install --save-dev @babel/plugin-proposal-class-properties
-# Setup file watcher on webstorm to make it automatic:
-# Program: $ProjectFileDir$\node_modules\.bin\babel
-# Arguments: Simulator\**\*.js Simulator\*.js --out-file babelOutput.js --minified --presets @babel/env
-# Output paths to refresh: babelOutput.js
-# Working directory: $ContentRoot$
+# Installation instruction at the bottom of the file
 
 import os
 import requests
@@ -69,3 +58,45 @@ file.write(minifiedContent + "\n")
 # Writes the last part (which doesn't change) and closes the file
 file.write(__htmlEnd)
 file.close()
+
+
+
+# Installation instructions --------------------------------------------------------------------------------------------
+
+# Babel installation with node:
+# npm init
+# npm install
+# npm install -g npm
+# npm install webpack
+# npm install babel-cli babel-core --save-dev
+# npm install @babel/core
+# npx babel-upgrade --write
+# npm install @babel/preset-env --save-dev
+# npm install --save-dev @babel/plugin-proposal-class-properties
+# npm install babel-plugin-cycle-circular
+# npm install --save-dev @babel/plugin-transform-classes
+# npm install babel-types
+# npm install circular-dependency-plugin
+# npm install
+
+# Setup a file watcher on webstorm to make it automatic:
+# Program: $ProjectFileDir$\node_modules\.bin\babel
+# Arguments: Simulator\*.js Simulator\**\*.js --out-file babelOutput.js --minified --presets @babel/env
+# Output paths to refresh: babelOutput.js
+# Working directory: $ContentRoot$
+
+# Create a ".babelrc" file with this (location: root directory (same as .gitignore for example):
+'''
+{
+  "presets": [
+    "@babel/preset-env"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "babel-plugin-cycle-circular",
+    "@babel/plugin-transform-classes"
+  ]
+}
+'''
+
+# Then just execute this script to generate index.html (I do it with an external tool on WebStorm)
