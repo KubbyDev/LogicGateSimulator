@@ -40,6 +40,10 @@ line = ""
 lineNumber = 0
 
 
+def tobinary(n):
+    return bin(n).replace("0b", "").zfill(4)
+    
+
 def error(message):
     raise Exception("Could not assemble line %i: %s\n%s" % (lineNumber+1, line, message))
 
@@ -56,7 +60,7 @@ def assemble_param(param):
     if paramInt < -8 or paramInt > 15: error("%s = %i cannot be encoded on 4 bits" % (param, paramInt))
     # Adds 16 if the number is negative (same effect as taking the 2s complement)
     if paramInt < 0: paramInt += 16
-    return bin(paramInt).replace("0b", "").zfill(4)
+    return tobinary(paramInt)
 
 
 def assemble_line(line):
@@ -91,7 +95,7 @@ linesCount = len(lines)
 res = ""
 while lineNumber < linesCount:
     line = lines[lineNumber]
-    res += assemble_line(line) + "\n"
+    res += tobinary(lineNumber) + ": " + assemble_line(line) + "\n"
     lineNumber += 1
 
 # Prints the results
