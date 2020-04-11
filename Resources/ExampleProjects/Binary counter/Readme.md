@@ -5,4 +5,4 @@ Steps to load it:
 - Open an empty simulator instance <https://kubbydev.github.io/LogicGateSimulator/>
 - Press import in the top left corner of the screen and select the file you downloaded
 
-![JKCounter](https://github.com/KubbyDev/LogicGateSimulator/tree/master/Resources/ExampleProjects/Binary%20counter/JKcounter.gif "JKCounter")
+![JKCounter](https://github.com/KubbyDev/LogicGateSimulator/raw/master/Resources/ExampleProjects/Binary%20counter/JKcounter.gif "JKCounter")

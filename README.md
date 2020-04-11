@@ -7,7 +7,7 @@ Try it out: [https://kubbydev.github.io/LogicGateSimulator/](https://kubbydev.gi
 This link leads to the generated version of the code (the version that went through Babel and a JavaScript minifier). The source code can be found in the Simulator folder in the repository's root.  
 Resources containing pre-made custom gates and example projects can be found in the Resources folder in the repository's root.  
 
-![Demo](https://github.com/KubbyDev/LogicGateSimulator/tree/master/Resources/ExampleProjects/Binary%20counter/JKcounter.gif "Demo")
+![Demo](https://github.com/KubbyDev/LogicGateSimulator/raw/master/Resources/ExampleProjects/Binary%20counter/JKcounter.gif "Demo")
 
 ## User manual
 
@@ -71,4 +71,4 @@ The default simulation speed is 1 update per millisecond. It can be controlled u
 The gif below shows a programmable 8-bit computer made to show the possibilities of the simulator. It is calculating the fibonacci sequence and returns to 0 when the maximum is reached (when it goes above 255). Better explanations can be found here:
 <https://github.com/KubbyDev/LogicGateSimulator/tree/master/Resources/ExampleProjects/8-bit%20computer>
 
-![Computer](https://github.com/KubbyDev/LogicGateSimulator/tree/master/Resources/ExampleProjects/8-bit%20computer/Computer.gif "Computer")
+![Computer](https://github.com/KubbyDev/LogicGateSimulator/raw/master/Resources/ExampleProjects/8-bit%20computer/Computer.gif "Computer")

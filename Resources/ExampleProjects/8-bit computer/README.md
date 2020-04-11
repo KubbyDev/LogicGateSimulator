@@ -6,7 +6,7 @@ Inspired by these (excellent) videos:
 ## Demo
 
 The gif below shows the computer calculating the fibonacci sequence (accelerated x20). The values it displays are hexadecimal. It returns to 0 when the maximum is reached (when it goes above 255).  
-![Computer](https://github.com/KubbyDev/LogicGateSimulator/tree/master/Resources/ExampleProjects/8-bit%20computer/Computer.gif "Computer")
+![Computer](https://github.com/KubbyDev/LogicGateSimulator/raw/master/Resources/ExampleProjects/8-bit%20computer/Computer.gif "Computer")
 
 This is the program that is being run:
 ![Program](https://i.imgur.com/QwNlpaw.png)
