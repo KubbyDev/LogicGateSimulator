@@ -32,7 +32,9 @@ Steps to reproduce it:
 
 This computer was not made for performance so its circuits are not optimal, it's more like a way to show the possibilities of the simulator.
 
+The computer architecture and the microcode are pretty much the same as Ben Eater's computer. One of the big differences is that I have a Instruction End signal that is placed at the end of every instruction of less than 8 steps. This signal resets the step counter and thus the control unit goes directly to the next instruction.
 An assembler and the microcode generation script can be found in the Programming folder
+![Organization](https://i.imgur.com/JohMPWa.png)
 
 Timings:
 - IN signals are applied on the rising edge of the clock
